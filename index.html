@@ -48,8 +48,8 @@
     * {
       box-sizing: border-box;
       -webkit-tap-highlight-color: transparent;
-      /* Custom Minecraft Sword Cursor Everywhere */
-      cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 16 16' shape-rendering='crispEdges'%3E%3Cpath fill='%23002b36' d='M0 0h3v1H0zM0 1h1v2H0zM3 1h1v1H3zM1 3h1v1H1zM4 2h1v1H4zM2 4h1v1H2zM5 3h1v1H5zM3 5h1v1H3zM6 4h1v1H6zM4 6h1v1H4zM7 5h1v1H7zM5 7h1v1H5zM8 6h1v1H8zM6 8h1v1H6zM9 7h1v1H9zM7 9h1v1H7z'/%3E%3Cpath fill='%2338f8ff' d='M1 1h2v1H1zM1 2h1v1H1zM2 2h1v1H2z'/%3E%3Cpath fill='%2300d0e0' d='M2 3h2v1H2zM3 4h2v1H3zM4 5h2v1H4zM5 6h2v1H5zM6 7h2v1H6zM7 8h2v1H7zM8 9h2v1H8z'/%3E%3Cpath fill='%23ff8533' d='M10 7h2v1h-2zM9 8h2v1H9zM7 10h2v2H7zM8 9h3v2H8z'/%3E%3Cpath fill='%237c3f00' d='M10 10h2v2h-2zM11 11h2v2h-2zM12 12h2v2h-2z'/%3E%3Cpath fill='%23f59e0b' d='M13 13h2v2h-2z'/%3E%3C/svg%3E") 2 2, auto !important;
+      /* Thick Minecraft Netherite Sword Cursor */
+      cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='36' height='36' viewBox='0 0 16 16' shape-rendering='crispEdges'%3E%3Cpath fill='%231b141c' d='M0 0h4v1H0zM0 1h1v3H0zM4 1h1v1H4zM1 4h1v1H1zM5 2h1v1H5zM2 5h1v1H2zM6 3h1v1H6zM3 6h1v1H3zM7 4h1v1H7zM4 7h1v1H4zM8 5h1v1H8zM5 8h1v1H5zM9 6h1v1H9zM6 9h1v1H6zM11 5h2v2h-2zM5 11h2v2H5zM10 10h1v1h-1zM11 10h1v1h-1zM10 11h1v1h-1zM13 11h1v1h-1zM11 13h1v1h-1zM13 12h3v4h-3zM12 13h4v3h-4z'/%3E%3Cpath fill='%23786a7a' d='M1 1h2v1H1zM1 2h1v1H1zM2 2h2v1H2zM3 3h2v1H3zM4 4h2v1H4zM5 5h2v1H5zM6 6h2v1H6zM7 7h2v1H7z'/%3E%3Cpath fill='%234d414f' d='M3 1h1v1H3zM1 3h2v1H1zM4 2h1v1H4zM2 4h2v1H2zM5 3h1v1H5zM3 5h2v1H3zM6 4h1v1H6zM4 6h2v1H4zM7 5h1v1H7zM5 7h2v1H5zM8 6h1v1H8zM6 8h2v1H6zM8 8h1v1H8z'/%3E%3Cpath fill='%23352b38' d='M10 6h2v2h-2zM9 7h3v2H9zM8 8h3v2H8zM7 9h3v2H7zM6 10h2v2H6z'/%3E%3Cpath fill='%23f59e0b' d='M11 6h1v1h-1zM9 9h1v1H9zM6 11h1v1H6zM14 14h1v1h-1z'/%3E%3Cpath fill='%237c3f2c' d='M10 10h2v2h-2zM11 11h2v2h-2zM12 12h2v2h-2z'/%3E%3Cpath fill='%234d414f' d='M13 13h2v2h-2z'/%3E%3C/svg%3E") 2 2, auto !important;
     }
 
     body {
@@ -119,15 +119,15 @@
 <body class="min-h-screen flex flex-col selection:bg-saffron-500 selection:text-white">
 
   <!-- ========================================================= -->
-  <!-- MOBILE & PC COMPATIBLE BACKGROUND (70% OPACITY)           -->
+  <!-- MOBILE & PC COMPATIBLE BACKGROUND (50% OPACITY)           -->
   <!-- ========================================================= -->
   <div class="fixed inset-0 -z-20 pointer-events-none overflow-hidden bg-dark-950">
     <img
       src="webbg.jpeg"
       alt="MahaCraft Background"
-      class="w-full h-full object-cover object-center opacity-70"
+      class="w-full h-full object-cover object-center opacity-50"
     />
-    <div class="absolute inset-0 bg-gradient-to-b from-dark-950/45 via-dark-950/60 to-dark-950/85"></div>
+    <div class="absolute inset-0 bg-gradient-to-b from-dark-950/50 via-dark-950/65 to-dark-950/85"></div>
   </div>
 
   <!-- Background Music (shopclass.mp3 - Loops continuously at low volume) -->
@@ -137,7 +137,7 @@
   <div class="saffron-top-line fixed top-0 left-0 right-0 z-50"></div>
 
   <!-- Toast Notification Container -->
-  <div id="toast-container" class="fixed top-24 right-4 sm:right-6 z-[100] flex flex-col gap-2.5 max-w-xs sm:max-w-sm w-full pointer-events-none"></div>
+  <div id="toast-container" class="fixed top-28 md:top-24 right-4 sm:right-6 z-[100] flex flex-col gap-2.5 max-w-xs sm:max-w-sm w-full pointer-events-none"></div>
 
   <!-- ========================================================= -->
   <!-- ACCEPT COOKIES BANNER                                     -->
@@ -286,19 +286,20 @@
   <!-- ========================================================= -->
   <div id="app-shell" class="hidden min-h-screen flex flex-col">
 
-    <!-- Top Navigation Bar -->
-    <header class="fixed top-[3px] left-0 right-0 z-40 bg-dark-950/90 backdrop-blur-xl border-b border-white/10">
-      <div class="max-w-7xl mx-auto px-3.5 sm:px-6 lg:px-8 h-16 sm:h-20 flex items-center justify-between gap-2 sm:gap-4">
+    <!-- Top Navigation Bar (Fixed Anti-Collapse Mobile & Desktop Header) -->
+    <header class="fixed top-[3px] left-0 right-0 z-40 bg-dark-950/95 backdrop-blur-xl border-b border-white/10 shadow-lg">
+      <!-- Top Row -->
+      <div class="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 h-16 sm:h-20 flex items-center justify-between gap-2">
         <!-- Brand -->
-        <button onclick="switchPage('home')" class="flex items-center gap-2.5 text-left group shrink-0">
+        <button onclick="switchPage('home')" class="flex items-center gap-2 sm:gap-3 text-left group shrink-0 min-w-0">
           <img
             src="mahacraftlogo.png"
             onerror="this.onerror=null; this.src='mahacraftlogo.jpg';"
             alt="MahaCraft"
-            class="w-9 h-9 sm:w-11 sm:h-11 object-contain rounded-lg"
+            class="w-9 h-9 sm:w-11 sm:h-11 object-contain rounded-lg shrink-0"
           />
-          <div>
-            <span class="font-display font-extrabold text-base sm:text-xl text-white tracking-tight block leading-none">
+          <div class="truncate">
+            <span class="font-display font-extrabold text-base sm:text-xl text-white tracking-tight block leading-none truncate">
               Maha<span class="text-saffron-500">Craft</span>
             </span>
             <span class="text-[10px] sm:text-[11px] text-gray-400 font-medium block mt-0.5">Official Store</span>
@@ -306,23 +307,23 @@
         </button>
 
         <!-- Desktop Navigation Links -->
-        <nav class="hidden md:flex items-center gap-1.5">
-          <button onclick="switchPage('home')" data-nav="home" class="nav-link px-4 py-2 rounded-xl text-sm font-semibold text-white bg-saffron-500 transition">
+        <nav class="hidden md:flex items-center gap-1 lg:gap-1.5 shrink-0">
+          <button onclick="switchPage('home')" data-nav="home" class="nav-link px-3.5 lg:px-4 py-2 rounded-xl text-sm font-semibold text-white bg-saffron-500 transition">
             Home
           </button>
-          <button onclick="switchPage('store')" data-nav="store" class="nav-link px-4 py-2 rounded-xl text-sm font-medium text-gray-300 hover:text-white hover:bg-white/5 transition">
+          <button onclick="switchPage('store')" data-nav="store" class="nav-link px-3.5 lg:px-4 py-2 rounded-xl text-sm font-medium text-gray-300 hover:text-white hover:bg-white/5 transition">
             Store
           </button>
-          <button onclick="switchPage('orders')" data-nav="orders" class="nav-link px-4 py-2 rounded-xl text-sm font-medium text-gray-300 hover:text-white hover:bg-white/5 transition">
+          <button onclick="switchPage('orders')" data-nav="orders" class="nav-link px-3.5 lg:px-4 py-2 rounded-xl text-sm font-medium text-gray-300 hover:text-white hover:bg-white/5 transition">
             My Orders
           </button>
-          <button onclick="switchPage('blog')" data-nav="blog" class="nav-link px-4 py-2 rounded-xl text-sm font-medium text-gray-300 hover:text-white hover:bg-white/5 transition">
+          <button onclick="switchPage('blog')" data-nav="blog" class="nav-link px-3.5 lg:px-4 py-2 rounded-xl text-sm font-medium text-gray-300 hover:text-white hover:bg-white/5 transition">
             Blog
           </button>
-          <button onclick="switchPage('support')" data-nav="support" class="nav-link px-4 py-2 rounded-xl text-sm font-medium text-gray-300 hover:text-white hover:bg-white/5 transition">
+          <button onclick="switchPage('support')" data-nav="support" class="nav-link px-3.5 lg:px-4 py-2 rounded-xl text-sm font-medium text-gray-300 hover:text-white hover:bg-white/5 transition">
             Support
           </button>
-          <button onclick="switchPage('about')" data-nav="about" class="nav-link px-4 py-2 rounded-xl text-sm font-medium text-gray-300 hover:text-white hover:bg-white/5 transition">
+          <button onclick="switchPage('about')" data-nav="about" class="nav-link px-3.5 lg:px-4 py-2 rounded-xl text-sm font-medium text-gray-300 hover:text-white hover:bg-white/5 transition">
             About & Sponsor
           </button>
           <!-- Strictly Visible ONLY to shardulraskar4@gmail.com -->
@@ -330,19 +331,19 @@
             id="nav-admin-btn"
             onclick="switchPage('admin')"
             data-nav="admin"
-            class="hidden ml-2 px-4 py-2 rounded-xl text-sm font-semibold text-saffron-400 border border-saffron-500/40 bg-saffron-500/10 hover:bg-saffron-500 hover:text-white transition"
+            class="hidden ml-1.5 px-3.5 lg:px-4 py-2 rounded-xl text-sm font-semibold text-saffron-400 border border-saffron-500/40 bg-saffron-500/10 hover:bg-saffron-500 hover:text-white transition"
           >
             Admin Panel
           </button>
         </nav>
 
         <!-- Right Controls: Music Toggle + IGN Profile Pill + Logout -->
-        <div class="flex items-center gap-2 sm:gap-2.5">
+        <div class="flex items-center gap-1.5 sm:gap-2.5 shrink-0">
           <!-- Background Music Toggle Button -->
           <button
             id="music-toggle-btn"
             onclick="toggleMusic()"
-            class="p-2 sm:p-2.5 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-saffron-400 transition"
+            class="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-saffron-400 flex items-center justify-center transition shrink-0"
             title="Toggle Background Music"
           >
             <i id="music-icon" data-lucide="volume-2" class="w-4 h-4"></i>
@@ -351,7 +352,7 @@
           <!-- Player IGN Button -->
           <button
             onclick="promptChangeIGN()"
-            class="flex items-center gap-2 pl-2 pr-2.5 sm:pr-3 py-1.5 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 transition"
+            class="h-9 sm:h-10 flex items-center gap-1.5 sm:gap-2 pl-1.5 sm:pl-2 pr-2.5 sm:pr-3 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 transition shrink-0"
             title="Click to update your Minecraft IGN"
           >
             <img
@@ -360,7 +361,7 @@
               alt="Avatar"
               class="w-6 h-6 sm:w-7 sm:h-7 rounded-md shrink-0"
             />
-            <span id="nav-player-ign" class="text-xs sm:text-sm font-semibold text-white max-w-[85px] sm:max-w-[120px] truncate">
+            <span id="nav-player-ign" class="text-xs sm:text-sm font-semibold text-white max-w-[72px] sm:max-w-[120px] truncate">
               Set IGN
             </span>
           </button>
@@ -368,7 +369,7 @@
           <!-- Logout Button -->
           <button
             onclick="handleLogout()"
-            class="p-2 sm:p-2.5 rounded-xl bg-white/5 hover:bg-red-500/20 border border-white/10 hover:border-red-500/40 text-gray-400 hover:text-red-400 transition"
+            class="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-white/5 hover:bg-red-500/20 border border-white/10 hover:border-red-500/40 text-gray-400 hover:text-red-400 flex items-center justify-center transition shrink-0"
             title="Logout"
           >
             <i data-lucide="log-out" class="w-4 h-4"></i>
@@ -376,20 +377,22 @@
         </div>
       </div>
 
-      <!-- Improved Smooth Mobile Navigation Bar -->
-      <div class="flex md:hidden items-center gap-1.5 overflow-x-auto no-scrollbar px-3.5 py-2 border-t border-white/10 bg-dark-950/95">
-        <button onclick="switchPage('home')" data-nav="home" class="nav-link shrink-0 px-3.5 py-1.5 rounded-lg text-xs font-semibold text-white bg-saffron-500">Home</button>
-        <button onclick="switchPage('store')" data-nav="store" class="nav-link shrink-0 px-3.5 py-1.5 rounded-lg text-xs font-medium text-gray-300">Store</button>
-        <button onclick="switchPage('orders')" data-nav="orders" class="nav-link shrink-0 px-3.5 py-1.5 rounded-lg text-xs font-medium text-gray-300">My Orders</button>
-        <button onclick="switchPage('blog')" data-nav="blog" class="nav-link shrink-0 px-3.5 py-1.5 rounded-lg text-xs font-medium text-gray-300">Blog</button>
-        <button onclick="switchPage('support')" data-nav="support" class="nav-link shrink-0 px-3.5 py-1.5 rounded-lg text-xs font-medium text-gray-300">Support</button>
-        <button onclick="switchPage('about')" data-nav="about" class="nav-link shrink-0 px-3.5 py-1.5 rounded-lg text-xs font-medium text-gray-300">About</button>
-        <button id="nav-admin-btn-mobile" onclick="switchPage('admin')" data-nav="admin" class="hidden shrink-0 px-3.5 py-1.5 rounded-lg text-xs font-semibold text-saffron-400 border border-saffron-500/40">Admin</button>
+      <!-- Second Row: Stable Mobile Navigation Bar (Never Collapses) -->
+      <div class="md:hidden w-full border-t border-white/10 bg-dark-900/95">
+        <div class="flex items-center justify-start sm:justify-center gap-1.5 overflow-x-auto no-scrollbar px-3 py-2">
+          <button onclick="switchPage('home')" data-nav="home" class="nav-link shrink-0 px-3.5 py-1.5 rounded-lg text-xs font-semibold text-white bg-saffron-500 whitespace-nowrap">Home</button>
+          <button onclick="switchPage('store')" data-nav="store" class="nav-link shrink-0 px-3.5 py-1.5 rounded-lg text-xs font-medium text-gray-300 whitespace-nowrap">Store</button>
+          <button onclick="switchPage('orders')" data-nav="orders" class="nav-link shrink-0 px-3.5 py-1.5 rounded-lg text-xs font-medium text-gray-300 whitespace-nowrap">My Orders</button>
+          <button onclick="switchPage('blog')" data-nav="blog" class="nav-link shrink-0 px-3.5 py-1.5 rounded-lg text-xs font-medium text-gray-300 whitespace-nowrap">Blog</button>
+          <button onclick="switchPage('support')" data-nav="support" class="nav-link shrink-0 px-3.5 py-1.5 rounded-lg text-xs font-medium text-gray-300 whitespace-nowrap">Support</button>
+          <button onclick="switchPage('about')" data-nav="about" class="nav-link shrink-0 px-3.5 py-1.5 rounded-lg text-xs font-medium text-gray-300 whitespace-nowrap">About</button>
+          <button id="nav-admin-btn-mobile" onclick="switchPage('admin')" data-nav="admin" class="hidden shrink-0 px-3.5 py-1.5 rounded-lg text-xs font-semibold text-saffron-400 border border-saffron-500/40 whitespace-nowrap">Admin</button>
+        </div>
       </div>
     </header>
 
-    <!-- Main Content Container -->
-    <main class="flex-grow pt-28 sm:pt-32 md:pt-28 pb-16 px-3.5 sm:px-6 lg:px-8 max-w-7xl w-full mx-auto">
+    <!-- Main Content Container (pt-36 on Mobile ensures zero overlap with 2-row header) -->
+    <main class="flex-grow pt-36 md:pt-28 pb-16 px-3.5 sm:px-6 lg:px-8 max-w-7xl w-full mx-auto">
 
       <!-- ===================================================== -->
       <!-- PAGE 1: HOME PAGE                                     -->
@@ -420,13 +423,13 @@
           </div>
 
           <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-center">
-            <!-- Mobile Logo on top for great mobile feel -->
-            <div class="flex lg:hidden justify-center pt-2">
+            <!-- Mobile Logo on top -->
+            <div class="flex lg:hidden justify-center pt-1">
               <img
                 src="mahacraftlogo.png"
                 onerror="this.onerror=null; this.src='mahacraftlogo.jpg';"
                 alt="MahaCraft Crest"
-                class="w-32 h-32 object-contain drop-shadow-2xl"
+                class="w-28 h-28 sm:w-32 sm:h-32 object-contain drop-shadow-2xl"
               />
             </div>
 
@@ -512,7 +515,6 @@
 
       <!-- ===================================================== -->
       <!-- PAGE 2: AMAZON-STYLE PROFESSIONAL E-COMMERCE STORE    -->
-      <!-- (Direct Buy Now Only — No Cart Clutter)               -->
       <!-- ===================================================== -->
       <section id="page-store" class="hidden space-y-6 sm:space-y-8">
 
@@ -609,7 +611,7 @@
       </section>
 
       <!-- ===================================================== -->
-      <!-- PAGE 5: SUPPORT TICKETS PAGE                          -->
+      <!-- PAGE 5: SUPPORT TICKETS PAGE (SINGLE + FIXED)         -->
       <!-- ===================================================== -->
       <section id="page-support" class="hidden space-y-6 sm:space-y-8">
         <div class="glass-card rounded-2xl p-5 sm:p-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
@@ -632,10 +634,10 @@
 
             <button
               onclick="openNewTicketModal()"
-              class="px-4 sm:px-5 py-3 rounded-xl bg-saffron-500 hover:bg-saffron-600 text-white font-semibold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-lg shadow-saffron-500/20 transition"
+              class="px-4 sm:px-5 py-3 rounded-xl bg-saffron-500 hover:bg-saffron-600 text-white font-semibold text-xs sm:text-sm flex items-center justify-center gap-1.5 shadow-lg shadow-saffron-500/20 transition"
             >
               <i data-lucide="plus" class="w-4 h-4"></i>
-              <span>+ New Ticket</span>
+              <span>New Ticket</span>
             </button>
           </div>
         </div>
@@ -653,7 +655,7 @@
       </section>
 
       <!-- ===================================================== -->
-      <!-- PAGE 6: ABOUT US & SPONSOR PAGE (NO UPI ID LEAK)      -->
+      <!-- PAGE 6: ABOUT US & SPONSOR PAGE                       -->
       <!-- ===================================================== -->
       <section id="page-about" class="hidden space-y-8 sm:space-y-10">
         <div class="glass-card rounded-2xl sm:rounded-3xl p-6 sm:p-12">
@@ -681,7 +683,7 @@
                 Every rank purchase or sponsor contribution goes directly toward server hosting, DDoS protection, and building new custom features for our players.
               </p>
 
-              <!-- Info Cards (No Phone/UPI ID Shown) -->
+              <!-- Info Cards -->
               <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-2">
                 <div class="p-4 rounded-2xl bg-dark-950/85 border border-white/10">
                   <span class="text-xs text-gray-400 block mb-1">Owner & Founder</span>
@@ -713,7 +715,7 @@
               </div>
             </div>
 
-            <!-- Sponsor & Donation QR Card (Only QR & App Button, No UPI ID Text) -->
+            <!-- Sponsor & Donation QR Card -->
             <div class="lg:col-span-5">
               <div class="glass-card-saffron rounded-2xl p-6 sm:p-7 text-center space-y-5">
                 <span class="px-3 py-1 rounded-full bg-saffron-500/20 text-saffron-400 text-xs font-semibold uppercase">
@@ -784,7 +786,7 @@
           </div>
         </div>
 
-        <!-- ADMIN TAB 1: STORE MANAGEMENT (TWO SEPARATE COLUMNS IN ADMIN) -->
+        <!-- ADMIN TAB 1: STORE MANAGEMENT -->
         <div id="admin-section-store" class="space-y-8 sm:space-y-10">
           <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8">
             <!-- Column 1: Add Rank (With Perks) -->
@@ -968,7 +970,7 @@ e.g. /fly command, 10 Homes, Custom Prefix" class="w-full px-4 py-3 rounded-xl b
               <span>Scan with any UPI App</span>
             </div>
 
-            <!-- Direct Open Payment App Button (No Raw UPI Text Displayed) -->
+            <!-- Direct Open Payment App Button -->
             <button
               type="button"
               onclick="openCheckoutPaymentApp()"
@@ -1391,8 +1393,8 @@ e.g. /fly command, 10 Homes, Custom Prefix" class="w-full px-4 py-3 rounded-xl b
       document.querySelectorAll(".nav-link").forEach(btn => {
         const active = btn.getAttribute("data-nav") === pageId;
         btn.className = active
-          ? "nav-link shrink-0 px-3.5 sm:px-4 py-1.5 sm:py-2 rounded-lg sm:rounded-xl text-xs sm:text-sm font-semibold text-white bg-saffron-500 transition"
-          : "nav-link shrink-0 px-3.5 sm:px-4 py-1.5 sm:py-2 rounded-lg sm:rounded-xl text-xs sm:text-sm font-medium text-gray-300 hover:text-white hover:bg-white/5 transition";
+          ? "nav-link shrink-0 px-3.5 sm:px-4 py-1.5 sm:py-2 rounded-lg sm:rounded-xl text-xs sm:text-sm font-semibold text-white bg-saffron-500 transition whitespace-nowrap"
+          : "nav-link shrink-0 px-3.5 sm:px-4 py-1.5 sm:py-2 rounded-lg sm:rounded-xl text-xs sm:text-sm font-medium text-gray-300 hover:text-white hover:bg-white/5 transition whitespace-nowrap";
       });
 
       window.scrollTo({ top: 0, behavior: "smooth" });
