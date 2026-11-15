@@ -2,7 +2,7 @@
 <html lang="en" class="dark">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <title>MahaCraft SMP — Official Webstore & Community</title>
 
   <!-- Tailwind CSS -->
@@ -47,47 +47,59 @@
   <style>
     * {
       box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+      /* Custom Minecraft Sword Cursor Everywhere */
+      cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 16 16' shape-rendering='crispEdges'%3E%3Cpath fill='%23002b36' d='M0 0h3v1H0zM0 1h1v2H0zM3 1h1v1H3zM1 3h1v1H1zM4 2h1v1H4zM2 4h1v1H2zM5 3h1v1H5zM3 5h1v1H3zM6 4h1v1H6zM4 6h1v1H4zM7 5h1v1H7zM5 7h1v1H5zM8 6h1v1H8zM6 8h1v1H6zM9 7h1v1H9zM7 9h1v1H7z'/%3E%3Cpath fill='%2338f8ff' d='M1 1h2v1H1zM1 2h1v1H1zM2 2h1v1H2z'/%3E%3Cpath fill='%2300d0e0' d='M2 3h2v1H2zM3 4h2v1H3zM4 5h2v1H4zM5 6h2v1H5zM6 7h2v1H6zM7 8h2v1H7zM8 9h2v1H8z'/%3E%3Cpath fill='%23ff8533' d='M10 7h2v1h-2zM9 8h2v1H9zM7 10h2v2H7zM8 9h3v2H8z'/%3E%3Cpath fill='%237c3f00' d='M10 10h2v2h-2zM11 11h2v2h-2zM12 12h2v2h-2z'/%3E%3Cpath fill='%23f59e0b' d='M13 13h2v2h-2z'/%3E%3C/svg%3E") 2 2, auto !important;
     }
+
     body {
       background-color: #090b10;
       color: #f3f4f6;
       font-family: 'Inter', sans-serif;
       overflow-x: hidden;
     }
-    /* Website Background Image with Visible Overlay */
-    .site-bg {
-      position: fixed;
-      inset: 0;
-      z-index: -2;
-      background-image: url('webbg.jpeg');
-      background-size: cover;
-      background-position: center;
-      background-attachment: fixed;
-      opacity: 0.34;
-    }
-    .site-bg-overlay {
-      position: fixed;
-      inset: 0;
-      z-index: -1;
-      background: radial-gradient(circle at 50% 15%, rgba(15, 19, 28, 0.72) 0%, rgba(9, 11, 16, 0.94) 100%);
-    }
+
     /* Clean Glass Cards */
     .glass-card {
-      background: rgba(20, 25, 36, 0.86);
+      background: rgba(15, 19, 28, 0.86);
       backdrop-filter: blur(14px);
       -webkit-backdrop-filter: blur(14px);
-      border: 1px solid rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.10);
     }
     .glass-card-saffron {
-      background: rgba(20, 25, 36, 0.9);
+      background: rgba(15, 19, 28, 0.90);
       backdrop-filter: blur(16px);
-      border: 1px solid rgba(255, 107, 0, 0.28);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 107, 0, 0.35);
     }
+
+    /* E-Commerce Product Card Hover */
+    .ecom-card {
+      background: rgba(15, 19, 28, 0.90);
+      backdrop-filter: blur(14px);
+      border: 1px solid rgba(255, 255, 255, 0.10);
+      transition: all 0.22s ease;
+    }
+    .ecom-card:hover {
+      transform: translateY(-4px);
+      border-color: rgba(255, 107, 0, 0.5);
+      box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.75), 0 0 25px -5px rgba(255, 107, 0, 0.18);
+    }
+
     .saffron-top-line {
       height: 3px;
       background: linear-gradient(90deg, #ff6b00 0%, #f59e0b 50%, #ff6b00 100%);
     }
-    /* Custom Scrollbar */
+
+    /* Hide scrollbar on mobile nav */
+    .no-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+    .no-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+
     ::-webkit-scrollbar {
       width: 6px;
       height: 6px;
@@ -106,51 +118,85 @@
 </head>
 <body class="min-h-screen flex flex-col selection:bg-saffron-500 selection:text-white">
 
-  <!-- Background Layer (webbg.jpeg) -->
-  <div class="site-bg"></div>
-  <div class="site-bg-overlay"></div>
+  <!-- ========================================================= -->
+  <!-- MOBILE & PC COMPATIBLE BACKGROUND (70% OPACITY)           -->
+  <!-- ========================================================= -->
+  <div class="fixed inset-0 -z-20 pointer-events-none overflow-hidden bg-dark-950">
+    <img
+      src="webbg.jpeg"
+      alt="MahaCraft Background"
+      class="w-full h-full object-cover object-center opacity-70"
+    />
+    <div class="absolute inset-0 bg-gradient-to-b from-dark-950/45 via-dark-950/60 to-dark-950/85"></div>
+  </div>
+
+  <!-- Background Music (shopclass.mp3 - Loops continuously at low volume) -->
+  <audio id="bg-music" src="shopclass.mp3" loop preload="auto"></audio>
 
   <!-- Top Saffron Accent Line -->
   <div class="saffron-top-line fixed top-0 left-0 right-0 z-50"></div>
 
   <!-- Toast Notification Container -->
-  <div id="toast-container" class="fixed bottom-6 right-6 z-[100] flex flex-col gap-3 max-w-sm w-full pointer-events-none px-4 sm:px-0"></div>
+  <div id="toast-container" class="fixed top-24 right-4 sm:right-6 z-[100] flex flex-col gap-2.5 max-w-xs sm:max-w-sm w-full pointer-events-none"></div>
+
+  <!-- ========================================================= -->
+  <!-- ACCEPT COOKIES BANNER                                     -->
+  <!-- ========================================================= -->
+  <div id="cookie-banner" class="fixed bottom-4 left-4 right-4 sm:left-auto sm:right-6 sm:max-w-md z-[90] hidden">
+    <div class="glass-card-saffron rounded-2xl p-4 sm:p-5 shadow-2xl flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+      <div class="space-y-1">
+        <div class="flex items-center gap-2 text-white font-display font-bold text-sm">
+          <i data-lucide="cookie" class="w-4 h-4 text-saffron-400"></i>
+          <span>Cookie Notice</span>
+        </div>
+        <p class="text-xs text-gray-300 leading-relaxed">
+          We use cookies to keep you logged in and save your in-game preferences on MahaCraft SMP.
+        </p>
+      </div>
+      <div class="flex items-center gap-2 w-full sm:w-auto shrink-0">
+        <button
+          onclick="acceptCookies()"
+          class="w-full sm:w-auto px-5 py-2.5 rounded-xl bg-saffron-500 hover:bg-saffron-600 text-white font-semibold text-xs shadow-lg shadow-saffron-500/25 transition"
+        >
+          Accept
+        </button>
+      </div>
+    </div>
+  </div>
 
   <!-- ========================================================= -->
   <!-- 1. MANDATORY LOGIN / REGISTER GATE                        -->
   <!-- ========================================================= -->
   <div id="auth-gate" class="min-h-screen w-full flex items-center justify-center p-4 sm:p-6 relative z-40">
-    <div class="glass-card-saffron w-full max-w-md rounded-2xl p-7 sm:p-9 shadow-2xl relative overflow-hidden">
-      <!-- Subtle Saffron Corner Accent -->
+    <div class="glass-card-saffron w-full max-w-md rounded-2xl p-6 sm:p-9 shadow-2xl relative overflow-hidden">
       <div class="absolute -top-16 -right-16 w-36 h-36 bg-saffron-500/15 rounded-full blur-2xl pointer-events-none"></div>
 
       <!-- Brand Logo & Title -->
-      <div class="flex flex-col items-center text-center mb-7">
+      <div class="flex flex-col items-center text-center mb-6">
         <img
           src="mahacraftlogo.png"
           onerror="this.onerror=null; this.src='mahacraftlogo.jpg';"
           alt="MahaCraft Logo"
-          class="w-24 h-24 object-contain drop-shadow-lg mb-3 rounded-xl"
+          class="w-20 h-20 sm:w-24 sm:h-24 object-contain drop-shadow-lg mb-3 rounded-xl"
         />
         <h1 class="font-display text-2xl sm:text-3xl font-extrabold tracking-tight text-white">
           Maha<span class="text-saffron-500">Craft</span> SMP
         </h1>
-        <p class="text-sm text-gray-400 mt-1">Sign in to access the official store & community</p>
+        <p class="text-xs sm:text-sm text-gray-300 mt-1">Sign in to access the official store & community</p>
       </div>
 
       <!-- Auth Tabs -->
-      <div class="grid grid-cols-2 gap-2 p-1 bg-dark-950/80 rounded-xl border border-white/10 mb-6">
-        <button id="tab-login-btn" onclick="switchAuthTab('login')" class="py-2.5 text-sm font-semibold rounded-lg bg-saffron-500 text-white transition">
+      <div class="grid grid-cols-2 gap-2 p-1 bg-dark-950/80 rounded-xl border border-white/10 mb-5">
+        <button id="tab-login-btn" onclick="switchAuthTab('login')" class="py-2.5 text-xs sm:text-sm font-semibold rounded-lg bg-saffron-500 text-white transition">
           Login
         </button>
-        <button id="tab-register-btn" onclick="switchAuthTab('register')" class="py-2.5 text-sm font-semibold rounded-lg text-gray-400 hover:text-white transition">
+        <button id="tab-register-btn" onclick="switchAuthTab('register')" class="py-2.5 text-xs sm:text-sm font-semibold rounded-lg text-gray-400 hover:text-white transition">
           Create Account
         </button>
       </div>
 
       <!-- Auth Form -->
       <form id="auth-form" onsubmit="handleAuthSubmit(event)" class="space-y-4">
-        <!-- In-Game Name (Shown on Register) -->
         <div id="ign-field-wrapper" class="hidden">
           <label class="block text-xs font-semibold uppercase tracking-wider text-gray-300 mb-1.5">
             Minecraft In-Game Name (IGN)
@@ -215,7 +261,7 @@
 
       <div class="relative flex py-5 items-center">
         <div class="flex-grow border-t border-white/10"></div>
-        <span class="flex-shrink mx-3 text-xs text-gray-500 uppercase">Or continue with</span>
+        <span class="flex-shrink mx-3 text-xs text-gray-400 uppercase">Or continue with</span>
         <div class="flex-grow border-t border-white/10"></div>
       </div>
 
@@ -242,26 +288,26 @@
 
     <!-- Top Navigation Bar -->
     <header class="fixed top-[3px] left-0 right-0 z-40 bg-dark-950/90 backdrop-blur-xl border-b border-white/10">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between gap-4">
+      <div class="max-w-7xl mx-auto px-3.5 sm:px-6 lg:px-8 h-16 sm:h-20 flex items-center justify-between gap-2 sm:gap-4">
         <!-- Brand -->
-        <button onclick="switchPage('home')" class="flex items-center gap-3 text-left group">
+        <button onclick="switchPage('home')" class="flex items-center gap-2.5 text-left group shrink-0">
           <img
             src="mahacraftlogo.png"
             onerror="this.onerror=null; this.src='mahacraftlogo.jpg';"
             alt="MahaCraft"
-            class="w-11 h-11 object-contain rounded-lg"
+            class="w-9 h-9 sm:w-11 sm:h-11 object-contain rounded-lg"
           />
           <div>
-            <span class="font-display font-extrabold text-lg sm:text-xl text-white tracking-tight block leading-none">
+            <span class="font-display font-extrabold text-base sm:text-xl text-white tracking-tight block leading-none">
               Maha<span class="text-saffron-500">Craft</span>
             </span>
-            <span class="text-[11px] text-gray-400 font-medium">Official Portal</span>
+            <span class="text-[10px] sm:text-[11px] text-gray-400 font-medium block mt-0.5">Official Store</span>
           </div>
         </button>
 
         <!-- Desktop Navigation Links -->
         <nav class="hidden md:flex items-center gap-1.5">
-          <button onclick="switchPage('home')" data-nav="home" class="nav-link px-4 py-2 rounded-xl text-sm font-medium text-white bg-white/10 transition">
+          <button onclick="switchPage('home')" data-nav="home" class="nav-link px-4 py-2 rounded-xl text-sm font-semibold text-white bg-saffron-500 transition">
             Home
           </button>
           <button onclick="switchPage('store')" data-nav="store" class="nav-link px-4 py-2 rounded-xl text-sm font-medium text-gray-300 hover:text-white hover:bg-white/5 transition">
@@ -290,34 +336,31 @@
           </button>
         </nav>
 
-        <!-- Right Controls: Cart Emoji Only + IGN Profile Pill -->
-        <div class="flex items-center gap-3">
-          <!-- Cart Button (Emoji Only + Count Badge) -->
+        <!-- Right Controls: Music Toggle + IGN Profile Pill + Logout -->
+        <div class="flex items-center gap-2 sm:gap-2.5">
+          <!-- Background Music Toggle Button -->
           <button
-            onclick="toggleCartDrawer(true)"
-            class="relative h-11 px-3.5 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 flex items-center justify-center transition"
-            title="Shopping Cart"
+            id="music-toggle-btn"
+            onclick="toggleMusic()"
+            class="p-2 sm:p-2.5 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-saffron-400 transition"
+            title="Toggle Background Music"
           >
-            <span class="text-lg leading-none">🛒</span>
-            <span
-              id="cart-count-badge"
-              class="ml-1.5 px-1.5 py-0.5 text-[11px] font-bold rounded-full bg-saffron-500 text-white leading-none"
-            >0</span>
+            <i id="music-icon" data-lucide="volume-2" class="w-4 h-4"></i>
           </button>
 
           <!-- Player IGN Button -->
           <button
             onclick="promptChangeIGN()"
-            class="flex items-center gap-2.5 pl-2 pr-3 py-1.5 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 transition"
+            class="flex items-center gap-2 pl-2 pr-2.5 sm:pr-3 py-1.5 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 transition"
             title="Click to update your Minecraft IGN"
           >
             <img
               id="nav-player-avatar"
               src="https://mc-heads.net/avatar/Steve/32"
               alt="Avatar"
-              class="w-7 h-7 rounded-md"
+              class="w-6 h-6 sm:w-7 sm:h-7 rounded-md shrink-0"
             />
-            <span id="nav-player-ign" class="text-sm font-semibold text-white max-w-[110px] truncate">
+            <span id="nav-player-ign" class="text-xs sm:text-sm font-semibold text-white max-w-[85px] sm:max-w-[120px] truncate">
               Set IGN
             </span>
           </button>
@@ -325,7 +368,7 @@
           <!-- Logout Button -->
           <button
             onclick="handleLogout()"
-            class="p-2.5 rounded-xl bg-white/5 hover:bg-red-500/20 border border-white/10 hover:border-red-500/40 text-gray-400 hover:text-red-400 transition"
+            class="p-2 sm:p-2.5 rounded-xl bg-white/5 hover:bg-red-500/20 border border-white/10 hover:border-red-500/40 text-gray-400 hover:text-red-400 transition"
             title="Logout"
           >
             <i data-lucide="log-out" class="w-4 h-4"></i>
@@ -333,9 +376,9 @@
         </div>
       </div>
 
-      <!-- Mobile Navigation Bar -->
-      <div class="flex md:hidden items-center gap-1.5 overflow-x-auto px-4 py-2.5 border-t border-white/5 bg-dark-950/95">
-        <button onclick="switchPage('home')" data-nav="home" class="nav-link shrink-0 px-3.5 py-1.5 rounded-lg text-xs font-medium text-white bg-white/10">Home</button>
+      <!-- Improved Smooth Mobile Navigation Bar -->
+      <div class="flex md:hidden items-center gap-1.5 overflow-x-auto no-scrollbar px-3.5 py-2 border-t border-white/10 bg-dark-950/95">
+        <button onclick="switchPage('home')" data-nav="home" class="nav-link shrink-0 px-3.5 py-1.5 rounded-lg text-xs font-semibold text-white bg-saffron-500">Home</button>
         <button onclick="switchPage('store')" data-nav="store" class="nav-link shrink-0 px-3.5 py-1.5 rounded-lg text-xs font-medium text-gray-300">Store</button>
         <button onclick="switchPage('orders')" data-nav="orders" class="nav-link shrink-0 px-3.5 py-1.5 rounded-lg text-xs font-medium text-gray-300">My Orders</button>
         <button onclick="switchPage('blog')" data-nav="blog" class="nav-link shrink-0 px-3.5 py-1.5 rounded-lg text-xs font-medium text-gray-300">Blog</button>
@@ -345,23 +388,22 @@
       </div>
     </header>
 
-    <!-- Main Content Container with Generous Top Spacing (Fixes Header Overlap) -->
-    <main class="flex-grow pt-32 md:pt-28 pb-20 px-4 sm:px-6 lg:px-8 max-w-7xl w-full mx-auto">
+    <!-- Main Content Container -->
+    <main class="flex-grow pt-28 sm:pt-32 md:pt-28 pb-16 px-3.5 sm:px-6 lg:px-8 max-w-7xl w-full mx-auto">
 
       <!-- ===================================================== -->
       <!-- PAGE 1: HOME PAGE                                     -->
       <!-- ===================================================== -->
-      <section id="page-home" class="space-y-12">
+      <section id="page-home" class="space-y-8 sm:space-y-12">
 
         <!-- Conditional Offer Banner (Controlled by Admin) -->
         <div id="home-promo-banner" class="hidden"></div>
 
         <!-- Hero Card with Subtle Saffron Lines & Bhagwa Flag Corner -->
-        <div class="glass-card-saffron rounded-3xl p-8 sm:p-12 lg:p-14 relative overflow-hidden">
-          <!-- Top Saffron Line inside Hero -->
+        <div class="glass-card-saffron rounded-2xl sm:rounded-3xl p-6 sm:p-10 lg:p-14 relative overflow-hidden">
           <div class="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-saffron-500 via-amber-400 to-saffron-500"></div>
 
-          <!-- Realistic Bhagwa Dhwaj (Swallowtail Flag Graphic) in Top Right Corner -->
+          <!-- Realistic Bhagwa Dhwaj in Top Right Corner -->
           <div class="hidden sm:block absolute top-6 right-8 pointer-events-none opacity-90">
             <svg width="88" height="72" viewBox="0 0 88 72" fill="none" xmlns="http://www.w3.org/2000/svg">
               <rect x="6" y="4" width="3.5" height="64" rx="1.75" fill="#D97706"/>
@@ -377,26 +419,36 @@
             </svg>
           </div>
 
-          <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
-            <div class="lg:col-span-8 space-y-6">
-              <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-saffron-500/15 border border-saffron-500/30 text-saffron-400 text-xs font-semibold tracking-wide uppercase">
+          <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-center">
+            <!-- Mobile Logo on top for great mobile feel -->
+            <div class="flex lg:hidden justify-center pt-2">
+              <img
+                src="mahacraftlogo.png"
+                onerror="this.onerror=null; this.src='mahacraftlogo.jpg';"
+                alt="MahaCraft Crest"
+                class="w-32 h-32 object-contain drop-shadow-2xl"
+              />
+            </div>
+
+            <div class="lg:col-span-8 space-y-5 text-center lg:text-left">
+              <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-saffron-500/15 border border-saffron-500/30 text-saffron-400 text-[11px] sm:text-xs font-semibold tracking-wide uppercase">
                 <span class="w-2 h-2 rounded-full bg-saffron-500 animate-pulse"></span>
                 Maharashtra's Survival Network
               </div>
 
-              <h1 class="font-display text-3xl sm:text-5xl font-extrabold text-white leading-tight">
+              <h1 class="font-display text-2xl sm:text-4xl lg:text-5xl font-extrabold text-white leading-tight">
                 Build Your Empire on <span class="text-saffron-500">MahaCraft SMP</span>
               </h1>
 
-              <p class="text-gray-300 text-base sm:text-lg leading-relaxed max-w-2xl">
+              <p class="text-gray-200 text-sm sm:text-base lg:text-lg leading-relaxed max-w-2xl mx-auto lg:mx-0">
                 Welcome to MahaCraft SMP. Play survival with your friends, build forts, trade in our player economy, and compete in seasonal clan events on lag-free Indian hosting.
               </p>
 
               <!-- Action Buttons: Copy IP, Open Store, Join Discord -->
-              <div class="flex flex-wrap items-center gap-4 pt-2">
+              <div class="grid grid-cols-1 sm:flex sm:flex-wrap items-center justify-center lg:justify-start gap-3 sm:gap-4 pt-2">
                 <button
                   onclick="copyServerIP()"
-                  class="px-6 py-3.5 rounded-xl bg-saffron-500 hover:bg-saffron-600 text-white font-semibold text-sm flex items-center gap-2.5 shadow-lg shadow-saffron-500/25 transition"
+                  class="w-full sm:w-auto px-6 py-3.5 rounded-xl bg-saffron-500 hover:bg-saffron-600 text-white font-semibold text-sm flex items-center justify-center gap-2.5 shadow-lg shadow-saffron-500/25 transition"
                 >
                   <i data-lucide="copy" class="w-4 h-4"></i>
                   <span>Copy IP</span>
@@ -404,146 +456,175 @@
 
                 <button
                   onclick="switchPage('store')"
-                  class="px-6 py-3.5 rounded-xl bg-white/10 hover:bg-white/15 border border-white/15 text-white font-semibold text-sm flex items-center gap-2.5 transition"
+                  class="w-full sm:w-auto px-6 py-3.5 rounded-xl bg-white/10 hover:bg-white/15 border border-white/15 text-white font-semibold text-sm flex items-center justify-center gap-2.5 transition"
                 >
                   <i data-lucide="shopping-bag" class="w-4 h-4 text-saffron-400"></i>
-                  <span>Browse Store</span>
+                  <span>Open Store</span>
                 </button>
 
                 <a
                   href="https://discord.gg/PFvJ4b2Xt2"
                   target="_blank"
                   rel="noopener noreferrer"
-                  class="px-6 py-3.5 rounded-xl bg-[#5865F2] hover:bg-[#4752C4] text-white font-semibold text-sm flex items-center gap-2.5 shadow-lg shadow-[#5865F2]/25 transition"
+                  class="w-full sm:w-auto px-6 py-3.5 rounded-xl bg-[#5865F2] hover:bg-[#4752C4] text-white font-semibold text-sm flex items-center justify-center gap-2.5 shadow-lg shadow-[#5865F2]/25 transition"
                 >
-                  <i data-lucide="message-Square" class="w-4 h-4"></i>
+                  <i data-lucide="message-square" class="w-4 h-4"></i>
                   <span>Join Discord</span>
                 </a>
               </div>
             </div>
 
-            <div class="lg:col-span-4 flex flex-col items-center justify-center">
+            <div class="hidden lg:flex lg:col-span-4 flex-col items-center justify-center">
               <img
                 src="mahacraftlogo.png"
                 onerror="this.onerror=null; this.src='mahacraftlogo.jpg';"
                 alt="MahaCraft Crest"
-                class="w-44 h-44 sm:w-52 sm:h-52 object-contain drop-shadow-2xl"
+                class="w-52 h-52 object-contain drop-shadow-2xl"
               />
             </div>
           </div>
         </div>
 
         <!-- Clean Feature Highlights -->
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <div class="glass-card rounded-2xl p-7 border-l-4 border-l-saffron-500">
-            <h3 class="font-display text-lg font-bold text-white mb-2">Low Ping Indian Server</h3>
-            <p class="text-sm text-gray-400 leading-relaxed">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6">
+          <div class="glass-card rounded-2xl p-6 sm:p-7 border-l-4 border-l-saffron-500">
+            <h3 class="font-display text-base sm:text-lg font-bold text-white mb-2">Low Ping Indian Server</h3>
+            <p class="text-xs sm:text-sm text-gray-300 leading-relaxed">
               Hosted in Mumbai so players across Maharashtra and India get smooth PvP and zero block lag.
             </p>
           </div>
 
-          <div class="glass-card rounded-2xl p-7 border-l-4 border-l-amber-500">
-            <h3 class="font-display text-lg font-bold text-white mb-2">Survival & Clans</h3>
-            <p class="text-sm text-gray-400 leading-relaxed">
+          <div class="glass-card rounded-2xl p-6 sm:p-7 border-l-4 border-l-amber-500">
+            <h3 class="font-display text-base sm:text-lg font-bold text-white mb-2">Survival & Clans</h3>
+            <p class="text-xs sm:text-sm text-gray-300 leading-relaxed">
               Team up with friends, claim your land, protect your base, and rise on the server leaderboards.
             </p>
           </div>
 
-          <div class="glass-card rounded-2xl p-7 border-l-4 border-l-saffron-500">
-            <h3 class="font-display text-lg font-bold text-white mb-2">Fast Delivery & Support</h3>
-            <p class="text-sm text-gray-400 leading-relaxed">
-              Every store rank or item is verified cleanly via UPI and delivered within 24 hours with live ticket support.
+          <div class="glass-card rounded-2xl p-6 sm:p-7 border-l-4 border-l-saffron-500">
+            <h3 class="font-display text-base sm:text-lg font-bold text-white mb-2">Fast Delivery & Support</h3>
+            <p class="text-xs sm:text-sm text-gray-300 leading-relaxed">
+              Every store purchase is verified cleanly via UPI and delivered within 24 hours with live ticket support.
             </p>
           </div>
         </div>
       </section>
 
       <!-- ===================================================== -->
-      <!-- PAGE 2: STORE PAGE (SEPARATE PAGE)                    -->
+      <!-- PAGE 2: AMAZON-STYLE PROFESSIONAL E-COMMERCE STORE    -->
+      <!-- (Direct Buy Now Only — No Cart Clutter)               -->
       <!-- ===================================================== -->
-      <section id="page-store" class="hidden space-y-10">
-        <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4 border-b border-white/10 pb-6">
+      <section id="page-store" class="hidden space-y-6 sm:space-y-8">
+
+        <!-- E-Commerce Top Search & Sort Bar -->
+        <div class="glass-card rounded-2xl p-4 sm:p-6 flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-4">
           <div>
-            <span class="text-xs font-semibold uppercase tracking-wider text-saffron-400">Official Webstore</span>
-            <h2 class="font-display text-3xl font-extrabold text-white mt-1">Server Ranks & Items</h2>
+            <div class="flex items-center gap-2">
+              <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
+              <span class="text-xs font-semibold uppercase tracking-wider text-saffron-400">Official Digital Storefront</span>
+            </div>
+            <h2 class="font-display text-xl sm:text-3xl font-extrabold text-white mt-0.5">MahaCraft Marketplace</h2>
           </div>
 
-          <!-- Filter Buttons -->
-          <div class="flex items-center gap-2">
-            <button onclick="filterStore('all')" id="filter-all" class="px-4 py-2 rounded-xl text-xs font-semibold bg-saffron-500 text-white transition">
-              All
-            </button>
-            <button onclick="filterStore('ranks')" id="filter-ranks" class="px-4 py-2 rounded-xl text-xs font-semibold bg-white/5 text-gray-300 hover:text-white transition">
-              Ranks
-            </button>
-            <button onclick="filterStore('items')" id="filter-items" class="px-4 py-2 rounded-xl text-xs font-semibold bg-white/5 text-gray-300 hover:text-white transition">
-              Items & Crates
-            </button>
+          <!-- Amazon-Style Search & Sort Controls -->
+          <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 flex-grow max-w-2xl">
+            <div class="relative flex-grow">
+              <i data-lucide="search" class="w-4 h-4 text-gray-400 absolute left-4 top-1/2 -translate-y-1/2"></i>
+              <input
+                type="text"
+                id="store-search-input"
+                oninput="renderStore()"
+                placeholder="Search ranks, crates, keys, bundles..."
+                class="w-full pl-11 pr-4 py-3 rounded-xl bg-dark-950/95 border border-white/15 text-sm text-white placeholder-gray-400 focus:outline-none focus:border-saffron-500"
+              />
+            </div>
+
+            <select
+              id="store-sort-select"
+              onchange="renderStore()"
+              class="px-4 py-3 rounded-xl bg-dark-950/95 border border-white/15 text-sm text-white focus:outline-none focus:border-saffron-500"
+            >
+              <option value="featured">Sort by: Featured</option>
+              <option value="low-high">Price: Low to High</option>
+              <option value="high-low">Price: High to Low</option>
+              <option value="newest">Newest Arrivals</option>
+            </select>
           </div>
         </div>
 
-        <!-- Ranks Section -->
-        <div id="store-ranks-section" class="space-y-5">
-          <h3 class="font-display text-xl font-bold text-white flex items-center gap-2">
-            <span class="w-2 h-5 rounded-full bg-saffron-500"></span>
-            Server Ranks
-          </h3>
-          <div id="ranks-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-7"></div>
+        <!-- E-Commerce Trust Bar -->
+        <div class="grid grid-cols-2 lg:grid-cols-4 gap-2.5 sm:gap-3">
+          <div class="glass-card rounded-xl px-3.5 py-3 flex items-center gap-2.5">
+            <i data-lucide="shield-check" class="w-4 h-4 sm:w-5 sm:h-5 text-emerald-400 shrink-0"></i>
+            <span class="text-[11px] sm:text-xs font-medium text-gray-200">Verified UPI Checkout</span>
+          </div>
+          <div class="glass-card rounded-xl px-3.5 py-3 flex items-center gap-2.5">
+            <i data-lucide="zap" class="w-4 h-4 sm:w-5 sm:h-5 text-saffron-400 shrink-0"></i>
+            <span class="text-[11px] sm:text-xs font-medium text-gray-200">Fast In-Game Delivery</span>
+          </div>
+          <div class="glass-card rounded-xl px-3.5 py-3 flex items-center gap-2.5">
+            <i data-lucide="tag" class="w-4 h-4 sm:w-5 sm:h-5 text-amber-400 shrink-0"></i>
+            <span class="text-[11px] sm:text-xs font-medium text-gray-200">Promo Codes Supported</span>
+          </div>
+          <div class="glass-card rounded-xl px-3.5 py-3 flex items-center gap-2.5">
+            <i data-lucide="headphones" class="w-4 h-4 sm:w-5 sm:h-5 text-blue-400 shrink-0"></i>
+            <span class="text-[11px] sm:text-xs font-medium text-gray-200">24/7 Ticket Support</span>
+          </div>
         </div>
 
-        <!-- Items Section -->
-        <div id="store-items-section" class="space-y-5 pt-4">
-          <h3 class="font-display text-xl font-bold text-white flex items-center gap-2">
-            <span class="w-2 h-5 rounded-full bg-amber-400"></span>
-            Items & Bundles
-          </h3>
-          <div id="items-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-7"></div>
+        <!-- Results Count Bar -->
+        <div class="flex items-center justify-between text-xs text-gray-300 px-1">
+          <span id="store-results-count">Showing all products</span>
+          <span>Instant Digital Delivery</span>
         </div>
+
+        <!-- Unified Amazon-Style Product Grid -->
+        <div id="store-products-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5 sm:gap-6"></div>
       </section>
 
       <!-- ===================================================== -->
       <!-- PAGE 3: MY ORDERS PAGE                                -->
       <!-- ===================================================== -->
-      <section id="page-orders" class="hidden space-y-8">
-        <div class="border-b border-white/10 pb-6">
+      <section id="page-orders" class="hidden space-y-6 sm:space-y-8">
+        <div class="glass-card rounded-2xl p-5 sm:p-6">
           <span class="text-xs font-semibold uppercase tracking-wider text-saffron-400">Order History</span>
-          <h2 class="font-display text-3xl font-extrabold text-white mt-1">My Purchases</h2>
-          <p class="text-sm text-gray-400 mt-1">Track live status updates for all orders placed from your account.</p>
+          <h2 class="font-display text-2xl sm:text-3xl font-extrabold text-white mt-1">My Purchases</h2>
+          <p class="text-xs sm:text-sm text-gray-300 mt-1">Track live status updates for all orders placed from your account.</p>
         </div>
 
-        <div id="user-orders-list" class="space-y-5"></div>
+        <div id="user-orders-list" class="space-y-4 sm:space-y-5"></div>
       </section>
 
       <!-- ===================================================== -->
       <!-- PAGE 4: BLOG PAGE                                     -->
       <!-- ===================================================== -->
-      <section id="page-blog" class="hidden space-y-8">
-        <div class="border-b border-white/10 pb-6">
+      <section id="page-blog" class="hidden space-y-6 sm:space-y-8">
+        <div class="glass-card rounded-2xl p-5 sm:p-6">
           <span class="text-xs font-semibold uppercase tracking-wider text-saffron-400">Announcements</span>
-          <h2 class="font-display text-3xl font-extrabold text-white mt-1">MahaCraft Blog & Updates</h2>
-          <p class="text-sm text-gray-400 mt-1">Read the latest server news, changelogs, and active discount codes.</p>
+          <h2 class="font-display text-2xl sm:text-3xl font-extrabold text-white mt-1">MahaCraft Blog & Updates</h2>
+          <p class="text-xs sm:text-sm text-gray-300 mt-1">Read the latest server news, changelogs, and active discount codes.</p>
         </div>
 
-        <div id="blogs-grid" class="grid grid-cols-1 md:grid-cols-2 gap-8"></div>
+        <div id="blogs-grid" class="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8"></div>
       </section>
 
       <!-- ===================================================== -->
       <!-- PAGE 5: SUPPORT TICKETS PAGE                          -->
       <!-- ===================================================== -->
-      <section id="page-support" class="hidden space-y-8">
-        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-white/10 pb-6">
+      <section id="page-support" class="hidden space-y-6 sm:space-y-8">
+        <div class="glass-card rounded-2xl p-5 sm:p-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div>
             <span class="text-xs font-semibold uppercase tracking-wider text-saffron-400">Help Center</span>
-            <h2 class="font-display text-3xl font-extrabold text-white mt-1">Support Tickets</h2>
-            <p class="text-sm text-gray-400 mt-1">Need help with a purchase or server issue? Open a ticket or join our Discord.</p>
+            <h2 class="font-display text-2xl sm:text-3xl font-extrabold text-white mt-1">Support Tickets</h2>
+            <p class="text-xs sm:text-sm text-gray-300 mt-1">Need help with a purchase or server issue? Open a ticket or join our Discord.</p>
           </div>
 
-          <div class="flex flex-wrap items-center gap-3">
+          <div class="grid grid-cols-2 sm:flex items-center gap-2.5 sm:gap-3">
             <a
               href="https://discord.gg/PFvJ4b2Xt2"
               target="_blank"
               rel="noopener noreferrer"
-              class="px-5 py-3 rounded-xl bg-[#5865F2] hover:bg-[#4752C4] text-white font-semibold text-sm flex items-center gap-2 transition"
+              class="px-4 sm:px-5 py-3 rounded-xl bg-[#5865F2] hover:bg-[#4752C4] text-white font-semibold text-xs sm:text-sm flex items-center justify-center gap-2 transition"
             >
               <i data-lucide="external-link" class="w-4 h-4"></i>
               <span>Join Discord</span>
@@ -551,7 +632,7 @@
 
             <button
               onclick="openNewTicketModal()"
-              class="px-5 py-3 rounded-xl bg-saffron-500 hover:bg-saffron-600 text-white font-semibold text-sm flex items-center gap-2 shadow-lg shadow-saffron-500/20 transition"
+              class="px-4 sm:px-5 py-3 rounded-xl bg-saffron-500 hover:bg-saffron-600 text-white font-semibold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-lg shadow-saffron-500/20 transition"
             >
               <i data-lucide="plus" class="w-4 h-4"></i>
               <span>+ New Ticket</span>
@@ -559,14 +640,11 @@
           </div>
         </div>
 
-        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
-          <!-- Ticket List -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8">
           <div class="lg:col-span-4 space-y-3" id="user-tickets-list"></div>
-
-          <!-- Active Ticket Live Conversation -->
           <div class="lg:col-span-8">
-            <div id="ticket-chat-box" class="glass-card rounded-2xl p-6 min-h-[420px] flex flex-col justify-between">
-              <div class="text-center text-gray-500 my-auto py-16">
+            <div id="ticket-chat-box" class="glass-card rounded-2xl p-5 sm:p-6 min-h-[380px] sm:min-h-[420px] flex flex-col justify-between">
+              <div class="text-center text-gray-400 my-auto py-12 text-sm">
                 Select a ticket on the left or click <strong>+ New Ticket</strong> to start a conversation with staff.
               </div>
             </div>
@@ -575,42 +653,42 @@
       </section>
 
       <!-- ===================================================== -->
-      <!-- PAGE 6: ABOUT US & SPONSOR PAGE                       -->
+      <!-- PAGE 6: ABOUT US & SPONSOR PAGE (NO UPI ID LEAK)      -->
       <!-- ===================================================== -->
-      <section id="page-about" class="hidden space-y-10">
-        <div class="glass-card rounded-3xl p-8 sm:p-12">
-          <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-start">
+      <section id="page-about" class="hidden space-y-8 sm:space-y-10">
+        <div class="glass-card rounded-2xl sm:rounded-3xl p-6 sm:p-12">
+          <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-start">
 
             <!-- About Story -->
-            <div class="lg:col-span-7 space-y-6">
+            <div class="lg:col-span-7 space-y-5 sm:space-y-6">
               <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-saffron-500/15 border border-saffron-500/30 text-saffron-400 text-xs font-semibold uppercase">
                 About MahaCraft SMP
               </div>
 
-              <h2 class="font-display text-3xl sm:text-4xl font-extrabold text-white">
+              <h2 class="font-display text-2xl sm:text-4xl font-extrabold text-white">
                 Built for Gamers Across Maharashtra & India
               </h2>
 
-              <p class="text-gray-300 leading-relaxed text-base">
+              <p class="text-gray-200 leading-relaxed text-sm sm:text-base">
                 <strong>MahaCraft SMP</strong> was started by <strong>Aashutosh Garve</strong> to bring Minecraft players together on a clean, friendly, and lag-free survival server.
               </p>
 
-              <p class="text-gray-300 leading-relaxed text-base">
+              <p class="text-gray-200 leading-relaxed text-sm sm:text-base">
                 Inspired by the heritage and forts of Maharashtra, our server focuses on fair survival gameplay, custom clan wars, active economy trading, and regular community events where everyone has a great time playing together.
               </p>
 
-              <p class="text-gray-300 leading-relaxed text-base">
+              <p class="text-gray-200 leading-relaxed text-sm sm:text-base">
                 Every rank purchase or sponsor contribution goes directly toward server hosting, DDoS protection, and building new custom features for our players.
               </p>
 
-              <!-- Clean Non-Overlapping Info Cards -->
-              <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-3">
-                <div class="p-4 rounded-2xl bg-dark-950/80 border border-white/10">
+              <!-- Info Cards (No Phone/UPI ID Shown) -->
+              <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-2">
+                <div class="p-4 rounded-2xl bg-dark-950/85 border border-white/10">
                   <span class="text-xs text-gray-400 block mb-1">Owner & Founder</span>
                   <span class="font-display font-bold text-white text-base">Aashutosh Garve</span>
                 </div>
 
-                <div class="p-4 rounded-2xl bg-dark-950/80 border border-white/10 flex flex-col justify-between">
+                <div class="p-4 rounded-2xl bg-dark-950/85 border border-white/10 flex flex-col justify-between">
                   <span class="text-xs text-gray-400 block mb-1.5">Server IP</span>
                   <button
                     onclick="copyServerIP()"
@@ -621,22 +699,29 @@
                   </button>
                 </div>
 
-                <div class="p-4 rounded-2xl bg-dark-950/80 border border-white/10">
-                  <span class="text-xs text-gray-400 block mb-1">Official UPI</span>
-                  <span class="font-mono font-semibold text-saffron-400 text-sm break-all">9766860862@fam</span>
+                <div class="p-4 rounded-2xl bg-dark-950/85 border border-white/10 flex flex-col justify-between">
+                  <span class="text-xs text-gray-400 block mb-1.5">Community</span>
+                  <a
+                    href="https://discord.gg/PFvJ4b2Xt2"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="w-full py-2 px-3 rounded-lg bg-[#5865F2] hover:bg-[#4752C4] text-white font-semibold text-xs flex items-center justify-center gap-1.5 transition"
+                  >
+                    <span>Join Discord</span>
+                  </a>
                 </div>
               </div>
             </div>
 
-            <!-- Sponsor & Donation QR Card -->
+            <!-- Sponsor & Donation QR Card (Only QR & App Button, No UPI ID Text) -->
             <div class="lg:col-span-5">
-              <div class="glass-card-saffron rounded-2xl p-7 text-center space-y-5">
+              <div class="glass-card-saffron rounded-2xl p-6 sm:p-7 text-center space-y-5">
                 <span class="px-3 py-1 rounded-full bg-saffron-500/20 text-saffron-400 text-xs font-semibold uppercase">
                   Sponsor & Donation
                 </span>
-                <h3 class="font-display text-2xl font-bold text-white">Support MahaCraft SMP</h3>
-                <p class="text-xs sm:text-sm text-gray-400">
-                  Scan the QR code below or open your UPI app to support server hosting and events.
+                <h3 class="font-display text-xl sm:text-2xl font-bold text-white">Support MahaCraft SMP</h3>
+                <p class="text-xs sm:text-sm text-gray-300">
+                  Scan the official QR code below with any UPI app to support server hosting and events.
                 </p>
 
                 <div class="bg-white p-4 rounded-2xl inline-block mx-auto shadow-xl">
@@ -644,22 +729,24 @@
                     src="qrcodemahacraft.jpg"
                     onerror="this.onerror=null; this.src='qrcodemahacraft_2.jpg';"
                     alt="MahaCraft Donation QR"
-                    class="w-52 h-52 object-contain"
+                    class="w-48 h-48 sm:w-52 sm:h-52 object-contain"
                   />
                 </div>
 
                 <div class="space-y-3 pt-1">
-                  <div class="text-xs text-gray-300">
-                    UPI ID: <span class="font-mono font-bold text-white">9766860862@fam</span>
+                  <div class="text-xs text-emerald-400 font-medium flex items-center justify-center gap-1.5">
+                    <i data-lucide="shield-check" class="w-4 h-4"></i>
+                    <span>Verified MahaCraft Merchant QR</span>
                   </div>
 
-                  <a
-                    href="upi://pay?pa=9766860862@fam&pn=MahaCraft%20SMP&cu=INR"
-                    class="w-full py-3 px-4 rounded-xl bg-saffron-500 hover:bg-saffron-600 text-white font-semibold text-xs sm:text-sm inline-flex items-center justify-center gap-2 transition"
+                  <button
+                    type="button"
+                    onclick="openSponsorPaymentApp()"
+                    class="w-full py-3 px-4 rounded-xl bg-saffron-500 hover:bg-saffron-600 text-white font-semibold text-xs sm:text-sm inline-flex items-center justify-center gap-2 transition shadow-lg"
                   >
                     <i data-lucide="smartphone" class="w-4 h-4"></i>
                     <span>Open Your Payment App</span>
-                  </a>
+                  </button>
                 </div>
               </div>
             </div>
@@ -671,67 +758,73 @@
       <!-- ===================================================== -->
       <!-- PAGE 7: ADMIN PANEL (STRICTLY shardulraskar4@gmail.com) -->
       <!-- ===================================================== -->
-      <section id="page-admin" class="hidden space-y-10">
-        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-white/10 pb-6">
+      <section id="page-admin" class="hidden space-y-8 sm:space-y-10">
+        <div class="glass-card rounded-2xl p-5 sm:p-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div>
             <span class="text-xs font-semibold uppercase tracking-wider text-saffron-400">Master Control</span>
-            <h2 class="font-display text-3xl font-extrabold text-white mt-1">Admin Console</h2>
+            <h2 class="font-display text-2xl sm:text-3xl font-extrabold text-white mt-1">Admin Console</h2>
           </div>
 
           <div class="flex flex-wrap gap-2">
-            <button onclick="switchAdminTab('store')" id="adm-tab-store" class="px-4 py-2 rounded-xl text-xs font-semibold bg-saffron-500 text-white">
+            <button onclick="switchAdminTab('store')" id="adm-tab-store" class="px-3.5 py-2 rounded-xl text-xs font-semibold bg-saffron-500 text-white">
               Store (Ranks & Items)
             </button>
-            <button onclick="switchAdminTab('promos')" id="adm-tab-promos" class="px-4 py-2 rounded-xl text-xs font-semibold bg-white/5 text-gray-300 hover:text-white">
-              Offers & Promo Codes
+            <button onclick="switchAdminTab('promos')" id="adm-tab-promos" class="px-3.5 py-2 rounded-xl text-xs font-semibold bg-white/5 text-gray-300 hover:text-white">
+              Offers & Promos
             </button>
-            <button onclick="switchAdminTab('orders')" id="adm-tab-orders" class="px-4 py-2 rounded-xl text-xs font-semibold bg-white/5 text-gray-300 hover:text-white">
+            <button onclick="switchAdminTab('orders')" id="adm-tab-orders" class="px-3.5 py-2 rounded-xl text-xs font-semibold bg-white/5 text-gray-300 hover:text-white">
               Orders
             </button>
-            <button onclick="switchAdminTab('tickets')" id="adm-tab-tickets" class="px-4 py-2 rounded-xl text-xs font-semibold bg-white/5 text-gray-300 hover:text-white">
+            <button onclick="switchAdminTab('tickets')" id="adm-tab-tickets" class="px-3.5 py-2 rounded-xl text-xs font-semibold bg-white/5 text-gray-300 hover:text-white">
               Tickets
             </button>
-            <button onclick="switchAdminTab('blogs')" id="adm-tab-blogs" class="px-4 py-2 rounded-xl text-xs font-semibold bg-white/5 text-gray-300 hover:text-white">
+            <button onclick="switchAdminTab('blogs')" id="adm-tab-blogs" class="px-3.5 py-2 rounded-xl text-xs font-semibold bg-white/5 text-gray-300 hover:text-white">
               Blogs
             </button>
           </div>
         </div>
 
-        <!-- ADMIN TAB 1: STORE MANAGEMENT (TWO SEPARATE COLUMNS) -->
-        <div id="admin-section-store" class="space-y-10">
-          <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <!-- ADMIN TAB 1: STORE MANAGEMENT (TWO SEPARATE COLUMNS IN ADMIN) -->
+        <div id="admin-section-store" class="space-y-8 sm:space-y-10">
+          <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8">
             <!-- Column 1: Add Rank (With Perks) -->
-            <div class="glass-card rounded-2xl p-7 space-y-5">
-              <h3 class="font-display text-xl font-bold text-white">Add New Rank</h3>
+            <div class="glass-card rounded-2xl p-5 sm:p-7 space-y-5">
+              <div class="flex items-center justify-between">
+                <h3 class="font-display text-lg sm:text-xl font-bold text-white">Add New Rank</h3>
+                <span class="text-xs px-2.5 py-1 rounded-md bg-saffron-500/20 text-saffron-400 font-semibold">With Perks List</span>
+              </div>
               <form onsubmit="adminAddRank(event)" class="space-y-4">
-                <input type="text" id="rank-name" required placeholder="Rank Name (e.g. Peshwa Rank)" class="w-full px-4 py-3 rounded-xl bg-dark-950 border border-white/10 text-sm text-white" />
-                <input type="number" id="rank-price" required min="1" placeholder="Price in ₹ (e.g. 299)" class="w-full px-4 py-3 rounded-xl bg-dark-950 border border-white/10 text-sm text-white" />
-                <input type="url" id="rank-img" required placeholder="Image URL (https://...)" class="w-full px-4 py-3 rounded-xl bg-dark-950 border border-white/10 text-sm text-white" />
+                <input type="text" id="rank-name" required placeholder="Rank Title (e.g. Chhatrapati Rank)" class="w-full px-4 py-3 rounded-xl bg-dark-950 border border-white/10 text-sm text-white" />
+                <input type="number" id="rank-price" required min="1" placeholder="Price in ₹ (e.g. 499)" class="w-full px-4 py-3 rounded-xl bg-dark-950 border border-white/10 text-sm text-white" />
+                <input type="url" id="rank-img" required placeholder="Product Image URL (https://...)" class="w-full px-4 py-3 rounded-xl bg-dark-950 border border-white/10 text-sm text-white" />
                 <textarea id="rank-perks" required rows="4" placeholder="Enter Rank Perks (comma or new line separated)
-e.g. /fly command, 5 Homes, Golden Prefix" class="w-full px-4 py-3 rounded-xl bg-dark-950 border border-white/10 text-sm text-white"></textarea>
+e.g. /fly command, 10 Homes, Custom Prefix" class="w-full px-4 py-3 rounded-xl bg-dark-950 border border-white/10 text-sm text-white"></textarea>
                 <button type="submit" class="w-full py-3 rounded-xl bg-saffron-500 hover:bg-saffron-600 text-white font-semibold text-sm transition">
-                  + Publish Rank
+                  + Publish Rank to Store
                 </button>
               </form>
             </div>
 
             <!-- Column 2: Add Item / Product (With Description) -->
-            <div class="glass-card rounded-2xl p-7 space-y-5">
-              <h3 class="font-display text-xl font-bold text-white">Add New Item / Product</h3>
+            <div class="glass-card rounded-2xl p-5 sm:p-7 space-y-5">
+              <div class="flex items-center justify-between">
+                <h3 class="font-display text-lg sm:text-xl font-bold text-white">Add New Item / Product</h3>
+                <span class="text-xs px-2.5 py-1 rounded-md bg-amber-500/20 text-amber-400 font-semibold">With Description</span>
+              </div>
               <form onsubmit="adminAddItem(event)" class="space-y-4">
-                <input type="text" id="item-name" required placeholder="Product Name (e.g. 5x Mythic Crate Keys)" class="w-full px-4 py-3 rounded-xl bg-dark-950 border border-white/10 text-sm text-white" />
-                <input type="number" id="item-price" required min="1" placeholder="Price in ₹ (e.g. 149)" class="w-full px-4 py-3 rounded-xl bg-dark-950 border border-white/10 text-sm text-white" />
-                <input type="url" id="item-img" required placeholder="Image URL (https://...)" class="w-full px-4 py-3 rounded-xl bg-dark-950 border border-white/10 text-sm text-white" />
-                <textarea id="item-desc" required rows="4" placeholder="Product Description..." class="w-full px-4 py-3 rounded-xl bg-dark-950 border border-white/10 text-sm text-white"></textarea>
+                <input type="text" id="item-name" required placeholder="Product Title (e.g. 10x Mythic Crate Keys)" class="w-full px-4 py-3 rounded-xl bg-dark-950 border border-white/10 text-sm text-white" />
+                <input type="number" id="item-price" required min="1" placeholder="Price in ₹ (e.g. 199)" class="w-full px-4 py-3 rounded-xl bg-dark-950 border border-white/10 text-sm text-white" />
+                <input type="url" id="item-img" required placeholder="Product Image URL (https://...)" class="w-full px-4 py-3 rounded-xl bg-dark-950 border border-white/10 text-sm text-white" />
+                <textarea id="item-desc" required rows="4" placeholder="Detailed Product Description..." class="w-full px-4 py-3 rounded-xl bg-dark-950 border border-white/10 text-sm text-white"></textarea>
                 <button type="submit" class="w-full py-3 rounded-xl bg-amber-500 hover:bg-amber-600 text-black font-bold text-sm transition">
-                  + Publish Item
+                  + Publish Item to Store
                 </button>
               </form>
             </div>
           </div>
 
           <!-- Existing Store Catalog with Delete Buttons -->
-          <div class="glass-card rounded-2xl p-7 space-y-4">
+          <div class="glass-card rounded-2xl p-5 sm:p-7 space-y-4">
             <h3 class="font-display text-lg font-bold text-white">Manage Current Store Products</h3>
             <div id="admin-catalog-list" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"></div>
           </div>
@@ -739,8 +832,8 @@ e.g. /fly command, 5 Homes, Golden Prefix" class="w-full px-4 py-3 rounded-xl bg
 
         <!-- ADMIN TAB 2: PROMO CODES & CONDITIONAL OFFERS -->
         <div id="admin-section-promos" class="hidden space-y-8">
-          <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
-            <div class="lg:col-span-5 glass-card rounded-2xl p-7 space-y-4">
+          <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8">
+            <div class="lg:col-span-5 glass-card rounded-2xl p-5 sm:p-7 space-y-4">
               <h3 class="font-display text-xl font-bold text-white">Create Conditional Offer / Promo</h3>
               <form onsubmit="adminAddPromo(event)" class="space-y-4">
                 <input type="text" id="promo-code" required placeholder="Promo Code (e.g. MAHA50)" class="w-full px-4 py-3 rounded-xl bg-dark-950 border border-white/10 text-sm text-white uppercase font-mono" />
@@ -763,7 +856,7 @@ e.g. /fly command, 5 Homes, Golden Prefix" class="w-full px-4 py-3 rounded-xl bg
               </form>
             </div>
 
-            <div class="lg:col-span-7 glass-card rounded-2xl p-7 space-y-4">
+            <div class="lg:col-span-7 glass-card rounded-2xl p-5 sm:p-7 space-y-4">
               <h3 class="font-display text-xl font-bold text-white">Active Promo Codes</h3>
               <div id="admin-promos-list" class="space-y-3"></div>
             </div>
@@ -782,8 +875,8 @@ e.g. /fly command, 5 Homes, Golden Prefix" class="w-full px-4 py-3 rounded-xl bg
 
         <!-- ADMIN TAB 5: BLOGS MANAGEMENT -->
         <div id="admin-section-blogs" class="hidden space-y-8">
-          <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
-            <div class="lg:col-span-5 glass-card rounded-2xl p-7 space-y-4">
+          <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8">
+            <div class="lg:col-span-5 glass-card rounded-2xl p-5 sm:p-7 space-y-4">
               <h3 class="font-display text-xl font-bold text-white">Publish Blog Post</h3>
               <form onsubmit="adminAddBlog(event)" class="space-y-4">
                 <input type="text" id="blog-title" required placeholder="Blog Post Title" class="w-full px-4 py-3 rounded-xl bg-dark-950 border border-white/10 text-sm text-white" />
@@ -796,7 +889,7 @@ e.g. /fly command, 5 Homes, Golden Prefix" class="w-full px-4 py-3 rounded-xl bg
               </form>
             </div>
 
-            <div class="lg:col-span-7 glass-card rounded-2xl p-7 space-y-4">
+            <div class="lg:col-span-7 glass-card rounded-2xl p-5 sm:p-7 space-y-4">
               <h3 class="font-display text-xl font-bold text-white">Published Blogs</h3>
               <div id="admin-blogs-list" class="space-y-3"></div>
             </div>
@@ -808,8 +901,8 @@ e.g. /fly command, 5 Homes, Golden Prefix" class="w-full px-4 py-3 rounded-xl bg
     </main>
 
     <!-- Footer -->
-    <footer class="border-t border-white/10 bg-dark-950/80 py-8 px-4 sm:px-6 lg:px-8 mt-auto">
-      <div class="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-gray-400">
+    <footer class="border-t border-white/10 bg-dark-950/90 py-8 px-4 sm:px-6 lg:px-8 mt-auto">
+      <div class="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-gray-400 text-center sm:text-left">
         <div class="flex items-center gap-2.5">
           <img src="mahacraftlogo.png" onerror="this.onerror=null; this.src='mahacraftlogo.jpg';" alt="Logo" class="w-6 h-6 object-contain" />
           <span class="font-semibold text-white">MahaCraft SMP</span>
@@ -824,46 +917,24 @@ e.g. /fly command, 5 Homes, Golden Prefix" class="w-full px-4 py-3 rounded-xl bg
   </div>
 
   <!-- ========================================================= -->
-  <!-- 3. SHOPPING CART DRAWER                                   -->
+  <!-- 3. AMAZON-STYLE PRODUCT QUICK VIEW MODAL                  -->
   <!-- ========================================================= -->
-  <div id="cart-drawer" class="fixed inset-0 z-50 hidden">
-    <div onclick="toggleCartDrawer(false)" class="absolute inset-0 bg-black/70 backdrop-blur-sm"></div>
-    <div class="absolute right-0 top-0 bottom-0 w-full max-w-md glass-card border-l border-white/10 p-6 flex flex-col justify-between">
-      <div class="flex items-center justify-between border-b border-white/10 pb-4">
-        <h3 class="font-display text-xl font-bold text-white">🛒 Your Cart</h3>
-        <button onclick="toggleCartDrawer(false)" class="p-2 rounded-lg bg-white/5 text-gray-400 hover:text-white">
-          <i data-lucide="x" class="w-5 h-5"></i>
-        </button>
-      </div>
-
-      <div id="cart-items-container" class="flex-grow overflow-y-auto py-4 space-y-3"></div>
-
-      <div class="border-t border-white/10 pt-4 space-y-4">
-        <div class="flex items-center justify-between text-base font-bold text-white">
-          <span>Subtotal</span>
-          <span id="cart-subtotal" class="text-saffron-400 font-mono">₹0</span>
-        </div>
-        <button
-          onclick="openCheckoutFromCart()"
-          class="w-full py-3.5 rounded-xl bg-saffron-500 hover:bg-saffron-600 text-white font-semibold text-sm transition"
-        >
-          Proceed to Checkout
-        </button>
-      </div>
-    </div>
+  <div id="product-detail-modal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 overflow-y-auto">
+    <div onclick="closeProductDetailModal()" class="fixed inset-0 bg-black/80 backdrop-blur-sm"></div>
+    <div id="product-detail-content" class="glass-card-saffron w-full max-w-2xl rounded-2xl sm:rounded-3xl p-5 sm:p-8 relative z-10 my-8"></div>
   </div>
 
   <!-- ========================================================= -->
-  <!-- 4. CHECKOUT MODAL (PRICE-LOCKED QR + OPEN PAYMENT APP)    -->
+  <!-- 4. CHECKOUT MODAL (PRICE-LOCKED QR + NO UPI ID TEXT LEAK) -->
   <!-- ========================================================= -->
-  <div id="checkout-modal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 overflow-y-auto">
+  <div id="checkout-modal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-3.5 sm:p-4 overflow-y-auto">
     <div onclick="closeCheckoutModal()" class="fixed inset-0 bg-black/80 backdrop-blur-sm"></div>
 
-    <div class="glass-card-saffron w-full max-w-2xl rounded-3xl p-6 sm:p-8 relative z-10 my-8 max-h-[92vh] overflow-y-auto">
-      <div class="flex items-center justify-between border-b border-white/10 pb-4 mb-6">
+    <div class="glass-card-saffron w-full max-w-2xl rounded-2xl sm:rounded-3xl p-5 sm:p-8 relative z-10 my-6 max-h-[92vh] overflow-y-auto">
+      <div class="flex items-center justify-between border-b border-white/10 pb-4 mb-5 sm:mb-6">
         <div>
           <span class="text-xs font-semibold uppercase text-saffron-400">Instant UPI Checkout</span>
-          <h3 class="font-display text-2xl font-extrabold text-white">Complete Your Purchase</h3>
+          <h3 class="font-display text-xl sm:text-2xl font-extrabold text-white">Complete Your Purchase</h3>
         </div>
         <button onclick="closeCheckoutModal()" class="p-2 rounded-xl bg-white/5 text-gray-400 hover:text-white">
           <i data-lucide="x" class="w-5 h-5"></i>
@@ -871,9 +942,46 @@ e.g. /fly command, 5 Homes, Golden Prefix" class="w-full px-4 py-3 rounded-xl bg
       </div>
 
       <!-- Checkout Form View -->
-      <div id="checkout-form-view" class="grid grid-cols-1 md:grid-cols-12 gap-7">
+      <div id="checkout-form-view" class="grid grid-cols-1 md:grid-cols-12 gap-6 sm:gap-7">
+        <!-- Right on Desktop / Top on Mobile: QR & Payment Button -->
+        <div class="md:col-span-5 md:order-2 flex flex-col items-center justify-between bg-dark-950/90 rounded-2xl p-5 border border-white/10 text-center space-y-4">
+          <div class="w-full space-y-1">
+            <span class="text-xs text-gray-400">Locked Payable Amount</span>
+            <div id="chk-final-amount" class="font-mono text-3xl font-extrabold text-saffron-400">₹0</div>
+            <div id="chk-summary-items" class="text-xs text-gray-300 truncate font-medium"></div>
+          </div>
+
+          <!-- Auto-Generated Price-Locked QR Code -->
+          <div class="bg-white p-3.5 rounded-2xl shadow-lg">
+            <img
+              id="chk-dynamic-qr"
+              src="qrcodemahacraft.jpg"
+              onerror="this.onerror=null; this.src='qrcodemahacraft.jpg';"
+              alt="UPI QR Code"
+              class="w-44 h-44 object-contain"
+            />
+          </div>
+
+          <div class="w-full space-y-2.5">
+            <div class="text-[11px] text-emerald-400 font-medium flex items-center justify-center gap-1">
+              <i data-lucide="lock" class="w-3.5 h-3.5"></i>
+              <span>Scan with any UPI App</span>
+            </div>
+
+            <!-- Direct Open Payment App Button (No Raw UPI Text Displayed) -->
+            <button
+              type="button"
+              onclick="openCheckoutPaymentApp()"
+              class="w-full py-3 px-4 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-semibold text-xs flex items-center justify-center gap-2 shadow-lg transition"
+            >
+              <i data-lucide="smartphone" class="w-4 h-4"></i>
+              <span>Open Your Payment App</span>
+            </button>
+          </div>
+        </div>
+
         <!-- Left: Player Details & Promo Code -->
-        <form id="checkout-form" onsubmit="submitOrder(event)" class="md:col-span-7 space-y-4">
+        <form id="checkout-form" onsubmit="submitOrder(event)" class="md:col-span-7 md:order-1 space-y-4">
           <div>
             <label class="block text-xs font-semibold uppercase text-gray-300 mb-1">In-Game Name (IGN)</label>
             <input type="text" id="chk-ign" required placeholder="Your Minecraft Username" class="w-full px-4 py-3 rounded-xl bg-dark-950 border border-white/10 text-sm text-white" />
@@ -910,42 +1018,6 @@ e.g. /fly command, 5 Homes, Golden Prefix" class="w-full px-4 py-3 rounded-xl bg
             Confirm Payment & Place Order
           </button>
         </form>
-
-        <!-- Right: Dynamic Price-Locked QR + Open Payment App Button -->
-        <div class="md:col-span-5 flex flex-col items-center justify-between bg-dark-950/90 rounded-2xl p-5 border border-white/10 text-center space-y-4">
-          <div class="w-full space-y-1">
-            <span class="text-xs text-gray-400">Locked Payable Amount</span>
-            <div id="chk-final-amount" class="font-mono text-3xl font-extrabold text-saffron-400">₹0</div>
-            <div id="chk-Summary-items" class="text-xs text-gray-400 truncate"></div>
-          </div>
-
-          <!-- Auto-Generated Price-Locked QR Code -->
-          <div class="bg-white p-3.5 rounded-2xl shadow-lg">
-            <img
-              id="chk-dynamic-qr"
-              src="qrcodemahacraft.jpg"
-              onerror="this.onerror=null; this.src='qrcodemahacraft.jpg';"
-              alt="UPI QR Code"
-              class="w-44 h-44 object-contain"
-            />
-          </div>
-
-          <div class="w-full space-y-2.5">
-            <div class="text-xs text-gray-400">
-              UPI ID: <span class="font-mono text-white font-semibold">9766860862@fam</span>
-            </div>
-
-            <!-- Direct Open Payment App Button -->
-            <a
-              id="chk-open-upi-app"
-              href="upi://pay?pa=9766860862@fam&pn=MahaCraft%20SMP&cu=INR"
-              class="w-full py-3 px-4 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-semibold text-xs flex items-center justify-center gap-2 shadow-lg transition"
-            >
-              <i data-lucide="smartphone" class="w-4 h-4"></i>
-              <span>Open Your Payment App</span>
-            </a>
-          </div>
-        </div>
       </div>
 
       <!-- Checkout Success View -->
@@ -1039,8 +1111,10 @@ e.g. /fly command, 5 Homes, Golden Prefix" class="w-full px-4 py-3 rounded-xl bg
     // STRICT MASTER ADMIN CREDENTIALS
     const ADMIN_EMAIL = "shardulraskar4@gmail.com";
     const ADMIN_PASS = "admin@138mahacraft";
-    const OFFICIAL_UPI = "9766860862@fam";
     const SERVER_IP = "play.mahacraftsmp.fun";
+
+    // Encoded Merchant Gateway (Never shown in UI text)
+    const _mGateway = atob("OTc2Njg2MDg2MkBmYW0=");
 
     // Application State
     let authMode = "login";
@@ -1051,17 +1125,71 @@ e.g. /fly command, 5 Homes, Golden Prefix" class="w-full px-4 py-3 rounded-xl bg
     let ordersList = [];
     let ticketsList = [];
     let blogsList = [];
-    let cart = JSON.parse(localStorage.getItem("mc_cart") || "[]");
     let checkoutItems = [];
     let appliedPromo = null;
     let selectedTicketId = null;
+
+    // =========================================================
+    // BACKGROUND MUSIC (shopclass.mp3) & COOKIE CONSENT
+    // =========================================================
+    const bgMusic = document.getElementById("bg-music");
+    let musicStarted = false;
+    let musicMuted = localStorage.getItem("mc_music_muted") === "true";
+
+    function startBackgroundMusic() {
+      if (!bgMusic) return;
+      bgMusic.volume = 0.15;
+      bgMusic.muted = musicMuted;
+      if (!musicStarted && !musicMuted) {
+        bgMusic.play().then(() => {
+          musicStarted = true;
+          updateMusicButtonUI();
+        }).catch(() => {});
+      }
+    }
+
+    // Trigger music on first click/touch/keypress anywhere
+    ["click", "touchstart", "keydown"].forEach(evt => {
+      window.addEventListener(evt, () => startBackgroundMusic(), { once: false, passive: true });
+    });
+
+    window.toggleMusic = function() {
+      if (!bgMusic) return;
+      musicMuted = !musicMuted;
+      localStorage.setItem("mc_music_muted", String(musicMuted));
+      bgMusic.muted = musicMuted;
+      if (!musicMuted) {
+        bgMusic.volume = 0.15;
+        bgMusic.play().catch(() => {});
+      }
+      updateMusicButtonUI();
+    };
+
+    function updateMusicButtonUI() {
+      const icon = document.getElementById("music-icon");
+      if (!icon) return;
+      icon.setAttribute("data-lucide", musicMuted ? "volume-x" : "volume-2");
+      lucide.createIcons();
+    }
+
+    // Cookie Banner Logic
+    if (localStorage.getItem("mc_cookies_accepted") !== "true") {
+      document.getElementById("cookie-banner").classList.remove("hidden");
+    }
+
+    window.acceptCookies = function() {
+      localStorage.setItem("mc_cookies_accepted", "true");
+      document.getElementById("cookie-banner").classList.add("hidden");
+      startBackgroundMusic();
+      showToast("Preferences saved!");
+    };
 
     // Toast Helper
     window.showToast = function(message, type = "info") {
       const container = document.getElementById("toast-container");
       const el = document.createElement("div");
       const border = type === "error" ? "border-red-500/50" : "border-saffron-500/50";
-      el.className = `pointer-events-auto glass-card ${border} border px-4 py-3 rounded-xl shadow-xl text-sm text-white flex items-center justify-between gap-3`;
+      el.className = `pointer-events-auto glass-card ${border} border px-4 py-3 rounded-xl shadow-xl text-xs sm:text-sm text-white flex items-center justify-between gap-3`;
       el.innerHTML = `<span>${message}</span>`;
       container.appendChild(el);
       setTimeout(() => el.remove(), 3500);
@@ -1082,13 +1210,13 @@ e.g. /fly command, 5 Homes, Golden Prefix" class="w-full px-4 py-3 rounded-xl bg
       const submitBtn = document.getElementById("auth-submit-btn");
 
       if (mode === "login") {
-        loginBtn.className = "py-2.5 text-sm font-semibold rounded-lg bg-saffron-500 text-white transition";
-        regBtn.className = "py-2.5 text-sm font-semibold rounded-lg text-gray-400 hover:text-white transition";
+        loginBtn.className = "py-2.5 text-xs sm:text-sm font-semibold rounded-lg bg-saffron-500 text-white transition";
+        regBtn.className = "py-2.5 text-xs sm:text-sm font-semibold rounded-lg text-gray-400 hover:text-white transition";
         ignWrap.classList.add("hidden");
         submitBtn.textContent = "Sign In to MahaCraft";
       } else {
-        regBtn.className = "py-2.5 text-sm font-semibold rounded-lg bg-saffron-500 text-white transition";
-        loginBtn.className = "py-2.5 text-sm font-semibold rounded-lg text-gray-400 hover:text-white transition";
+        regBtn.className = "py-2.5 text-xs sm:text-sm font-semibold rounded-lg bg-saffron-500 text-white transition";
+        loginBtn.className = "py-2.5 text-xs sm:text-sm font-semibold rounded-lg text-gray-400 hover:text-white transition";
         ignWrap.classList.remove("hidden");
         submitBtn.textContent = "Create MahaCraft Account";
       }
@@ -1103,6 +1231,7 @@ e.g. /fly command, 5 Homes, Golden Prefix" class="w-full px-4 py-3 rounded-xl bg
     // Handle Login / Register Submit
     window.handleAuthSubmit = async function(e) {
       e.preventDefault();
+      startBackgroundMusic();
       const email = document.getElementById("auth-email").value.trim().toLowerCase();
       const password = document.getElementById("auth-password").value;
       const ignInput = document.getElementById("auth-ign").value.trim();
@@ -1153,6 +1282,7 @@ e.g. /fly command, 5 Homes, Golden Prefix" class="w-full px-4 py-3 rounded-xl bg
 
     // Google Login
     window.handleGoogleLogin = async function() {
+      startBackgroundMusic();
       try {
         const cred = await signInWithPopup(auth, googleProvider);
         const email = (cred.user.email || "").toLowerCase();
@@ -1214,7 +1344,7 @@ e.g. /fly command, 5 Homes, Golden Prefix" class="w-full px-4 py-3 rounded-xl bg
       document.getElementById("auth-gate").classList.add("hidden");
       document.getElementById("app-shell").classList.remove("hidden");
       updateNavbarProfile();
-      updateCartUI();
+      updateMusicButtonUI();
       initRealtimeListeners();
       lucide.createIcons();
     }
@@ -1227,7 +1357,7 @@ e.g. /fly command, 5 Homes, Golden Prefix" class="w-full px-4 py-3 rounded-xl bg
       document.getElementById("auth-gate").classList.remove("hidden");
     };
 
-    // Restore Persisted Session on Reload (No Re-Login Required)
+    // Restore Persisted Session on Reload
     const savedSession = localStorage.getItem("mc_session_user");
     if (savedSession) {
       try {
@@ -1261,28 +1391,16 @@ e.g. /fly command, 5 Homes, Golden Prefix" class="w-full px-4 py-3 rounded-xl bg
       document.querySelectorAll(".nav-link").forEach(btn => {
         const active = btn.getAttribute("data-nav") === pageId;
         btn.className = active
-          ? "nav-link shrink-0 px-4 py-2 rounded-xl text-sm font-semibold text-white bg-saffron-500 transition"
-          : "nav-link shrink-0 px-4 py-2 rounded-xl text-sm font-medium text-gray-300 hover:text-white hover:bg-white/5 transition";
+          ? "nav-link shrink-0 px-3.5 sm:px-4 py-1.5 sm:py-2 rounded-lg sm:rounded-xl text-xs sm:text-sm font-semibold text-white bg-saffron-500 transition"
+          : "nav-link shrink-0 px-3.5 sm:px-4 py-1.5 sm:py-2 rounded-lg sm:rounded-xl text-xs sm:text-sm font-medium text-gray-300 hover:text-white hover:bg-white/5 transition";
       });
 
       window.scrollTo({ top: 0, behavior: "smooth" });
       lucide.createIcons();
     };
 
-    // Store Category Filter
-    window.filterStore = function(type) {
-      document.getElementById("store-ranks-section").classList.toggle("hidden", type === "items");
-      document.getElementById("store-items-section").classList.toggle("hidden", type === "ranks");
-      ["all", "ranks", "items"].forEach(k => {
-        const btn = document.getElementById(`filter-${k}`);
-        btn.className = k === type
-          ? "px-4 py-2 rounded-xl text-xs font-semibold bg-saffron-500 text-white transition"
-          : "px-4 py-2 rounded-xl text-xs font-semibold bg-white/5 text-gray-300 hover:text-white transition";
-      });
-    };
-
     // =========================================================
-    // REALTIME DATABASE LISTENERS (NO DEFAULT / FAKE ITEMS)
+    // REALTIME DATABASE LISTENERS
     // =========================================================
     let listenersInitialized = false;
     function initRealtimeListeners() {
@@ -1292,7 +1410,7 @@ e.g. /fly command, 5 Homes, Golden Prefix" class="w-full px-4 py-3 rounded-xl bg
       // 1. Ranks Listener
       onValue(ref(db, "store/ranks"), (snap) => {
         const val = snap.val() || {};
-        ranksList = Object.entries(val).map(([id, data]) => ({ id, ...data }));
+        ranksList = Object.entries(val).map(([id, data]) => ({ id, _kind: "rank", ...data }));
         renderStore();
         renderAdminCatalog();
       });
@@ -1300,7 +1418,7 @@ e.g. /fly command, 5 Homes, Golden Prefix" class="w-full px-4 py-3 rounded-xl bg
       // 2. Items Listener
       onValue(ref(db, "store/items"), (snap) => {
         const val = snap.val() || {};
-        itemsList = Object.entries(val).map(([id, data]) => ({ id, ...data }));
+        itemsList = Object.entries(val).map(([id, data]) => ({ id, _kind: "item", ...data }));
         renderStore();
         renderAdminCatalog();
       });
@@ -1359,100 +1477,222 @@ e.g. /fly command, 5 Homes, Golden Prefix" class="w-full px-4 py-3 rounded-xl bg
 
       container.classList.remove("hidden");
       container.innerHTML = `
-        <div class="glass-card-saffron rounded-2xl px-6 py-4 flex flex-col sm:flex-row items-center justify-between gap-4">
-          <div class="flex items-center gap-3 text-center sm:text-left">
+        <div class="glass-card-saffron rounded-2xl px-5 py-4 flex flex-col sm:flex-row items-center justify-between gap-3">
+          <div class="flex flex-col sm:flex-row items-center gap-2.5 text-center sm:text-left">
             <span class="px-3 py-1 rounded-lg bg-saffron-500 text-white text-xs font-bold uppercase">Special Offer</span>
-            <p class="text-sm font-medium text-white">
+            <p class="text-xs sm:text-sm font-medium text-white">
               ${p.label || `Get <strong>${discountDesc}</strong> ${minText}!`}
             </p>
           </div>
           <button
             onclick="navigator.clipboard.writeText('${p.code}'); showToast('Copied Promo Code: ${p.code}')"
-            class="shrink-0 px-4 py-2 rounded-xl bg-dark-950 border border-saffron-500/40 text-saffron-400 font-mono text-xs font-bold hover:bg-saffron-500 hover:text-white transition"
+            class="w-full sm:w-auto shrink-0 px-4 py-2 rounded-xl bg-dark-950 border border-saffron-500/40 text-saffron-400 font-mono text-xs font-bold hover:bg-saffron-500 hover:text-white transition"
           >
-            CODE: ${p.code} (Click to Copy)
+            CODE: ${p.code} (Tap to Copy)
           </button>
         </div>
       `;
     }
 
-    // Render Store Page (Ranks & Items)
-    function renderStore() {
-      const ranksGrid = document.getElementById("ranks-grid");
-      const itemsGrid = document.getElementById("items-grid");
+    // =========================================================
+    // UNIFIED AMAZON-STYLE E-COMMERCE STORE (BUY NOW ONLY)
+    // =========================================================
+    window.renderStore = function() {
+      const grid = document.getElementById("store-products-grid");
+      const countEl = document.getElementById("store-results-count");
+      const searchVal = (document.getElementById("store-search-input")?.value || "").trim().toLowerCase();
+      const sortVal = document.getElementById("store-sort-select")?.value || "featured";
 
-      if (ranksList.length === 0) {
-        ranksGrid.innerHTML = `
-          <div class="col-span-full glass-card rounded-2xl p-10 text-center text-gray-400 text-sm">
-            No ranks have been published yet.
+      let catalog = [...ranksList, ...itemsList];
+
+      if (searchVal) {
+        catalog = catalog.filter(p => {
+          const nameMatch = (p.name || "").toLowerCase().includes(searchVal);
+          const descMatch = (p.description || "").toLowerCase().includes(searchVal);
+          const perksStr = Array.isArray(p.perks) ? p.perks.join(" ") : String(p.perks || "");
+          return nameMatch || descMatch || perksStr.toLowerCase().includes(searchVal);
+        });
+      }
+
+      if (sortVal === "low-high") {
+        catalog.sort((a, b) => Number(a.price || 0) - Number(b.price || 0));
+      } else if (sortVal === "high-low") {
+        catalog.sort((a, b) => Number(b.price || 0) - Number(a.price || 0));
+      } else if (sortVal === "newest") {
+        catalog.sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
+      }
+
+      if (countEl) {
+        countEl.textContent = catalog.length === 0
+          ? "No products found"
+          : `Showing ${catalog.length} verified product${catalog.length > 1 ? "s" : ""}`;
+      }
+
+      if (catalog.length === 0) {
+        grid.innerHTML = `
+          <div class="col-span-full glass-card rounded-2xl p-12 text-center space-y-2">
+            <div class="text-base font-semibold text-white">No store products available right now</div>
+            <p class="text-xs text-gray-400">Products added from the Admin Panel will appear here automatically.</p>
           </div>
         `;
-      } else {
-        ranksGrid.innerHTML = ranksList.map(r => {
-          const perks = Array.isArray(r.perks)
-            ? r.perks
-            : String(r.perks || "").split(/[\n,]+/).map(s => s.trim()).filter(Boolean);
-          return `
-            <div class="glass-card rounded-2xl p-6 flex flex-col justify-between hover:border-saffron-500/40 transition">
-              <div>
-                <div class="h-44 rounded-xl bg-dark-950/90 flex items-center justify-center p-4 mb-5 overflow-hidden border border-white/5">
-                  <img src="${r.image}" alt="${r.name}" class="max-h-full object-contain" />
+        return;
+      }
+
+      grid.innerHTML = catalog.map(prod => {
+        const perks = Array.isArray(prod.perks)
+          ? prod.perks
+          : String(prod.perks || "").split(/[\n,]+/).map(s => s.trim()).filter(Boolean);
+
+        const hasPerks = perks.length > 0;
+        const summaryHTML = hasPerks
+          ? `<ul class="space-y-1.5 text-xs text-gray-300 mt-3">
+              ${perks.slice(0, 4).map(perk => `
+                <li class="flex items-start gap-2">
+                  <span class="text-emerald-400 font-bold leading-none mt-0.5">✓</span>
+                  <span class="line-clamp-1">${perk}</span>
+                </li>
+              `).join("")}
+              ${perks.length > 4 ? `<li class="text-[11px] text-saffron-400 font-medium">+${perks.length - 4} more benefits</li>` : ""}
+            </ul>`
+          : `<p class="text-xs text-gray-300 leading-relaxed mt-3 line-clamp-3">${prod.description || "Official MahaCraft SMP digital item delivered directly to your in-game account."}</p>`;
+
+        return `
+          <div class="ecom-card rounded-2xl overflow-hidden flex flex-col justify-between">
+            <div>
+              <div
+                onclick="openProductDetailModal('${prod._kind}', '${prod.id}')"
+                class="relative h-48 sm:h-52 bg-dark-950/90 border-b border-white/10 p-5 flex items-center justify-center cursor-pointer group overflow-hidden"
+              >
+                <span class="absolute top-3 left-3 px-2.5 py-1 rounded-md bg-saffron-500/20 border border-saffron-500/40 text-saffron-400 text-[10px] font-bold uppercase tracking-wider">
+                  MahaCraft Choice
+                </span>
+                <img
+                  src="${prod.image}"
+                  alt="${prod.name}"
+                  class="max-h-full max-w-full object-contain group-hover:scale-105 transition duration-300 drop-shadow-xl"
+                />
+              </div>
+
+              <div class="p-5">
+                <h3
+                  onclick="openProductDetailModal('${prod._kind}', '${prod.id}')"
+                  class="font-display text-lg font-bold text-white hover:text-saffron-400 cursor-pointer line-clamp-1 transition"
+                >
+                  ${prod.name}
+                </h3>
+
+                <div class="flex items-center gap-2 mt-1">
+                  <div class="flex items-center text-amber-400 text-xs tracking-tight">
+                    ★★★★★
+                  </div>
+                  <span class="text-[11px] text-emerald-400 font-medium">Verified Server Pass</span>
                 </div>
-                <div class="flex items-center justify-between gap-2 mb-3">
-                  <h4 class="font-display text-xl font-bold text-white">${r.name}</h4>
-                  <span class="font-mono text-lg font-extrabold text-saffron-400">₹${r.price}</span>
+
+                <div class="mt-3 flex items-baseline gap-1.5">
+                  <span class="text-xs font-semibold text-gray-300 self-start mt-1">₹</span>
+                  <span class="font-mono text-3xl font-extrabold text-white tracking-tight">${prod.price}</span>
+                  <span class="text-[11px] text-gray-400 ml-1">One-Time</span>
                 </div>
-                <ul class="space-y-2 text-xs text-gray-300 mb-6">
-                  ${perks.map(perk => `<li class="flex items-center gap-2"><span class="text-saffron-500">✔</span><span>${perk}</span></li>`).join("")}
+
+                <div class="text-[11px] text-emerald-400 font-medium mt-1 flex items-center gap-1.5">
+                  <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
+                  In Stock • Delivered within 24 hrs
+                </div>
+
+                <div class="border-t border-white/10 mt-3 pt-1">
+                  ${summaryHTML}
+                </div>
+              </div>
+            </div>
+
+            <!-- Single Clean Buy Now Button -->
+            <div class="p-5 pt-0">
+              <button
+                onclick="buySingleItem('${prod._kind}', '${prod.id}')"
+                class="w-full py-3 px-4 rounded-xl bg-saffron-500 hover:bg-saffron-600 text-white font-semibold text-xs sm:text-sm flex items-center justify-center gap-2 transition shadow-lg shadow-saffron-500/20"
+              >
+                <i data-lucide="zap" class="w-4 h-4"></i>
+                <span>Buy Now</span>
+              </button>
+            </div>
+          </div>
+        `;
+      }).join("");
+      lucide.createIcons();
+    };
+
+    // Product Quick-View Modal
+    window.openProductDetailModal = function(kind, id) {
+      const prod = findStoreProduct(kind, id);
+      if (!prod) return;
+
+      const perks = Array.isArray(prod.perks)
+        ? prod.perks
+        : String(prod.perks || "").split(/[\n,]+/).map(s => s.trim()).filter(Boolean);
+
+      const contentEl = document.getElementById("product-detail-content");
+      contentEl.innerHTML = `
+        <div class="flex items-center justify-between border-b border-white/10 pb-4 mb-5">
+          <span class="text-xs font-semibold uppercase tracking-wider text-saffron-400">Product Overview</span>
+          <button onclick="closeProductDetailModal()" class="p-2 rounded-xl bg-white/5 text-gray-400 hover:text-white">
+            <i data-lucide="x" class="w-5 h-5"></i>
+          </button>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-12 gap-6 items-center">
+          <div class="md:col-span-5 h-56 sm:h-64 rounded-2xl bg-dark-950/90 border border-white/10 p-6 flex items-center justify-center">
+            <img src="${prod.image}" alt="${prod.name}" class="max-h-full max-w-full object-contain drop-shadow-2xl" />
+          </div>
+
+          <div class="md:col-span-7 space-y-4">
+            <h3 class="font-display text-2xl sm:text-3xl font-extrabold text-white">${prod.name}</h3>
+            <div class="flex items-center gap-2">
+              <span class="text-amber-400 text-sm">★★★★★</span>
+              <span class="text-xs text-emerald-400 font-semibold">In Stock • Instant Digital Delivery</span>
+            </div>
+
+            <div class="flex items-baseline gap-1">
+              <span class="text-sm text-gray-300">₹</span>
+              <span class="font-mono text-3xl font-extrabold text-saffron-400">${prod.price}</span>
+              <span class="text-xs text-gray-400 ml-2">Inclusive of all taxes</span>
+            </div>
+
+            ${perks.length > 0 ? `
+              <div class="space-y-2 pt-2 border-t border-white/10">
+                <div class="text-xs font-bold uppercase text-gray-300">Included Perks & Features:</div>
+                <ul class="space-y-1.5 text-xs sm:text-sm text-gray-200 max-h-44 overflow-y-auto pr-2">
+                  ${perks.map(p => `<li class="flex items-start gap-2"><span class="text-emerald-400 font-bold">✓</span><span>${p}</span></li>`).join("")}
                 </ul>
               </div>
-              <div class="grid grid-cols-2 gap-2.5 pt-2 border-t border-white/10">
-                <button onclick="buySingleItem('rank', '${r.id}')" class="py-2.5 rounded-xl bg-saffron-500 hover:bg-saffron-600 text-white font-semibold text-xs transition">
-                  Buy Now
-                </button>
-                <button onclick="addToCart('rank', '${r.id}')" class="py-2.5 rounded-xl bg-white/10 hover:bg-white/15 text-white font-semibold text-xs transition">
-                  🛒 Add
-                </button>
+            ` : `
+              <div class="space-y-2 pt-2 border-t border-white/10">
+                <div class="text-xs font-bold uppercase text-gray-300">About this Item:</div>
+                <p class="text-sm text-gray-200 leading-relaxed whitespace-pre-line">${prod.description || ""}</p>
               </div>
-            </div>
-          `;
-        }).join("");
-      }
+            `}
 
-      if (itemsList.length === 0) {
-        itemsGrid.innerHTML = `
-          <div class="col-span-full glass-card rounded-2xl p-10 text-center text-gray-400 text-sm">
-            No items have been published yet.
-          </div>
-        `;
-      } else {
-        itemsGrid.innerHTML = itemsList.map(item => `
-          <div class="glass-card rounded-2xl p-6 flex flex-col justify-between hover:border-amber-500/40 transition">
-            <div>
-              <div class="h-44 rounded-xl bg-dark-950/90 flex items-center justify-center p-4 mb-5 overflow-hidden border border-white/5">
-                <img src="${item.image}" alt="${item.name}" class="max-h-full object-contain" />
-              </div>
-              <div class="flex items-center justify-between gap-2 mb-2">
-                <h4 class="font-display text-xl font-bold text-white">${item.name}</h4>
-                <span class="font-mono text-lg font-extrabold text-amber-400">₹${item.price}</span>
-              </div>
-              <p class="text-xs text-gray-400 leading-relaxed mb-6">${item.description || ""}</p>
-            </div>
-            <div class="grid grid-cols-2 gap-2.5 pt-2 border-t border-white/10">
-              <button onclick="buySingleItem('item', '${item.id}')" class="py-2.5 rounded-xl bg-saffron-500 hover:bg-saffron-600 text-white font-semibold text-xs transition">
-                Buy Now
-              </button>
-              <button onclick="addToCart('item', '${item.id}')" class="py-2.5 rounded-xl bg-white/10 hover:bg-white/15 text-white font-semibold text-xs transition">
-                🛒 Add
+            <div class="pt-3">
+              <button
+                onclick="closeProductDetailModal(); buySingleItem('${kind}', '${prod.id}');"
+                class="w-full py-3.5 px-5 rounded-xl bg-saffron-500 hover:bg-saffron-600 text-white font-semibold text-sm transition shadow-lg shadow-saffron-500/25"
+              >
+                Buy Now — ₹${prod.price}
               </button>
             </div>
           </div>
-        `).join("");
-      }
-    }
+        </div>
+      `;
+
+      document.getElementById("product-detail-modal").classList.remove("hidden");
+      lucide.createIcons();
+    };
+
+    window.closeProductDetailModal = function() {
+      document.getElementById("product-detail-modal").classList.add("hidden");
+    };
 
     // =========================================================
-    // SHOPPING CART & CHECKOUT LOGIC
+    // DIRECT BUY NOW & PRIVACY-SAFE UPI CHECKOUT LOGIC
     // =========================================================
     function findStoreProduct(category, id) {
       return category === "rank"
@@ -1460,63 +1700,10 @@ e.g. /fly command, 5 Homes, Golden Prefix" class="w-full px-4 py-3 rounded-xl bg
         : itemsList.find(i => i.id === id);
     }
 
-    window.addToCart = function(category, id) {
-      const prod = findStoreProduct(category, id);
-      if (!prod) return;
-      cart.push({ id: prod.id, name: prod.name, price: Number(prod.price), category });
-      localStorage.setItem("mc_cart", JSON.stringify(cart));
-      updateCartUI();
-      showToast(`${prod.name} added to 🛒`);
-    };
-
-    window.removeFromCart = function(index) {
-      cart.splice(index, 1);
-      localStorage.setItem("mc_cart", JSON.stringify(cart));
-      updateCartUI();
-    };
-
-    function updateCartUI() {
-      document.getElementById("cart-count-badge").textContent = cart.length;
-      const container = document.getElementById("cart-items-container");
-      const subtotalEl = document.getElementById("cart-subtotal");
-
-      if (cart.length === 0) {
-        container.innerHTML = `<p class="text-center text-gray-500 text-sm py-12">Your cart is empty.</p>`;
-        subtotalEl.textContent = "₹0";
-        return;
-      }
-
-      const total = cart.reduce((acc, item) => acc + Number(item.price || 0), 0);
-      subtotalEl.textContent = `₹${total}`;
-      container.innerHTML = cart.map((c, idx) => `
-        <div class="flex items-center justify-between p-3.5 rounded-xl bg-dark-950/90 border border-white/10">
-          <div>
-            <div class="text-sm font-semibold text-white">${c.name}</div>
-            <div class="text-xs font-mono text-saffron-400">₹${c.price}</div>
-          </div>
-          <button onclick="removeFromCart(${idx})" class="text-xs text-red-400 hover:underline">Remove</button>
-        </div>
-      `).join("");
-    }
-
-    window.toggleCartDrawer = function(open) {
-      document.getElementById("cart-drawer").classList.toggle("hidden", !open);
-    };
-
     window.buySingleItem = function(category, id) {
       const prod = findStoreProduct(category, id);
       if (!prod) return;
       checkoutItems = [{ id: prod.id, name: prod.name, price: Number(prod.price), category }];
-      openCheckoutModal();
-    };
-
-    window.openCheckoutFromCart = function() {
-      if (cart.length === 0) {
-        showToast("Your cart is empty", "error");
-        return;
-      }
-      checkoutItems = [...cart];
-      toggleCartDrawer(false);
       openCheckoutModal();
     };
 
@@ -1534,18 +1721,29 @@ e.g. /fly command, 5 Homes, Golden Prefix" class="w-full px-4 py-3 rounded-xl bg
       return Math.max(1, base - discount);
     }
 
+    function getLockedUpiUri(amount) {
+      return `upi://pay?pa=${_mGateway}&pn=MahaCraft%20SMP&am=${amount}&cu=INR&tn=MahaCraftOrder`;
+    }
+
     function refreshCheckoutQRAndAmount() {
       const finalAmount = getFinalCheckoutTotal();
       document.getElementById("chk-final-amount").textContent = `₹${finalAmount}`;
-      document.getElementById("chk-Summary-items").textContent = checkoutItems.map(i => i.name).join(", ");
+      document.getElementById("chk-summary-items").textContent = checkoutItems.map(i => i.name).join(", ");
 
-      // Price-Locked UPI Deep Link
-      const upiUri = `upi://pay?pa=${OFFICIAL_UPI}&pn=MahaCraft%20SMP&am=${finalAmount}&cu=INR&tn=MahaCraftOrder`;
+      const upiUri = getLockedUpiUri(finalAmount);
       const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=240x240&data=${encodeURIComponent(upiUri)}`;
-
       document.getElementById("chk-dynamic-qr").src = qrUrl;
-      document.getElementById("chk-open-upi-app").href = upiUri;
     }
+
+    // Open Payment App without exposing raw UPI string on screen
+    window.openCheckoutPaymentApp = function() {
+      const finalAmount = getFinalCheckoutTotal();
+      window.location.href = getLockedUpiUri(finalAmount);
+    };
+
+    window.openSponsorPaymentApp = function() {
+      window.location.href = `upi://pay?pa=${_mGateway}&pn=MahaCraft%20SMP&cu=INR`;
+    };
 
     function openCheckoutModal() {
       appliedPromo = null;
@@ -1626,10 +1824,6 @@ e.g. /fly command, 5 Homes, Golden Prefix" class="w-full px-4 py-3 rounded-xl bg
 
       try {
         await push(ref(db, "orders"), orderData);
-        cart = [];
-        localStorage.setItem("mc_cart", "[]");
-        updateCartUI();
-
         document.getElementById("checkout-form-view").classList.add("hidden");
         document.getElementById("checkout-success-view").classList.remove("hidden");
         lucide.createIcons();
@@ -1648,7 +1842,7 @@ e.g. /fly command, 5 Homes, Golden Prefix" class="w-full px-4 py-3 rounded-xl bg
       const myOrders = ordersList.filter(o => (o.email || "").toLowerCase() === currentUser.email.toLowerCase());
       if (myOrders.length === 0) {
         container.innerHTML = `
-          <div class="glass-card rounded-2xl p-10 text-center text-gray-400 text-sm">
+          <div class="glass-card rounded-2xl p-10 text-center text-gray-300 text-sm">
             You haven't placed any orders yet.
           </div>
         `;
@@ -1662,13 +1856,13 @@ e.g. /fly command, 5 Homes, Golden Prefix" class="w-full px-4 py-3 rounded-xl bg
         if (o.status === "Order Rejected") badgeClass = "bg-red-500/20 text-red-400 border-red-500/30";
 
         return `
-          <div class="glass-card rounded-2xl p-6 flex flex-col md:flex-row md:items-center justify-between gap-4">
+          <div class="glass-card rounded-2xl p-5 sm:p-6 flex flex-col md:flex-row md:items-center justify-between gap-4">
             <div class="space-y-1.5">
               <div class="flex flex-wrap items-center gap-2.5">
-                <span class="font-display font-bold text-lg text-white">${o.items || "Store Purchase"}</span>
+                <span class="font-display font-bold text-base sm:text-lg text-white">${o.items || "Store Purchase"}</span>
                 <span class="px-3 py-1 rounded-full text-xs font-semibold border ${badgeClass}">${o.status}</span>
               </div>
-              <div class="text-xs text-gray-400">
+              <div class="text-xs text-gray-300">
                 IGN: <strong class="text-white">${o.ign}</strong> • Amount: <strong class="text-saffron-400 font-mono">₹${o.amount}</strong> • UTR: <span class="font-mono">${o.utr}</span>
               </div>
               ${o.status === "Order Rejected" ? `
@@ -1681,7 +1875,7 @@ e.g. /fly command, 5 Homes, Golden Prefix" class="w-full px-4 py-3 rounded-xl bg
             <div>
               <button
                 onclick="switchPage('support'); openNewTicketModal();"
-                class="px-4 py-2.5 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-xs font-semibold text-white transition"
+                class="w-full md:w-auto px-4 py-2.5 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-xs font-semibold text-white transition"
               >
                 Open Support Ticket
               </button>
@@ -1698,7 +1892,7 @@ e.g. /fly command, 5 Homes, Golden Prefix" class="w-full px-4 py-3 rounded-xl bg
       const grid = document.getElementById("blogs-grid");
       if (blogsList.length === 0) {
         grid.innerHTML = `
-          <div class="col-span-full glass-card rounded-2xl p-10 text-center text-gray-400 text-sm">
+          <div class="col-span-full glass-card rounded-2xl p-10 text-center text-gray-300 text-sm">
             No blog posts have been published yet.
           </div>
         `;
@@ -1708,20 +1902,20 @@ e.g. /fly command, 5 Homes, Golden Prefix" class="w-full px-4 py-3 rounded-xl bg
       grid.innerHTML = blogsList.map(b => `
         <article class="glass-card rounded-2xl overflow-hidden flex flex-col justify-between">
           <div>
-            ${b.image ? `<img src="${b.image}" alt="${b.title}" class="w-full h-52 object-cover border-b border-white/10" />` : ""}
-            <div class="p-7 space-y-3">
+            ${b.image ? `<img src="${b.image}" alt="${b.title}" class="w-full h-48 sm:h-52 object-cover border-b border-white/10" />` : ""}
+            <div class="p-6 sm:p-7 space-y-3">
               <div class="text-xs text-gray-400">${new Date(b.createdAt || Date.now()).toLocaleDateString()}</div>
-              <h3 class="font-display text-2xl font-bold text-white">${b.title}</h3>
-              <p class="text-sm text-gray-300 leading-relaxed whitespace-pre-line">${b.content}</p>
+              <h3 class="font-display text-xl sm:text-2xl font-bold text-white">${b.title}</h3>
+              <p class="text-xs sm:text-sm text-gray-200 leading-relaxed whitespace-pre-line">${b.content}</p>
             </div>
           </div>
           ${b.promoCode ? `
-            <div class="px-7 pb-6">
+            <div class="px-6 sm:px-7 pb-6">
               <button
                 onclick="navigator.clipboard.writeText('${b.promoCode}'); showToast('Copied Promo Code: ${b.promoCode}')"
                 class="w-full py-2.5 px-4 rounded-xl bg-saffron-500/15 border border-saffron-500/40 text-saffron-400 font-mono text-xs font-bold hover:bg-saffron-500 hover:text-white transition"
               >
-                Promo Code: ${b.promoCode} (Click to Copy)
+                Promo Code: ${b.promoCode} (Tap to Copy)
               </button>
             </div>
           ` : ""}
@@ -1780,7 +1974,7 @@ e.g. /fly command, 5 Homes, Golden Prefix" class="w-full px-4 py-3 rounded-xl bg
 
       if (myTickets.length === 0) {
         listEl.innerHTML = `
-          <div class="glass-card rounded-2xl p-6 text-center text-gray-400 text-xs">
+          <div class="glass-card rounded-2xl p-6 text-center text-gray-300 text-xs">
             No tickets yet. Click <strong>+ New Ticket</strong> to create one.
           </div>
         `;
@@ -1812,18 +2006,18 @@ e.g. /fly command, 5 Homes, Golden Prefix" class="w-full px-4 py-3 rounded-xl bg
         <div class="border-b border-white/10 pb-4 mb-4 flex items-center justify-between">
           <div>
             <span class="font-mono text-xs text-saffron-400">${active.ticketCode}</span>
-            <h4 class="font-display text-lg font-bold text-white">${active.subject}</h4>
+            <h4 class="font-display text-base sm:text-lg font-bold text-white">${active.subject}</h4>
           </div>
           <span class="text-xs px-3 py-1 rounded-full bg-white/10 text-white">${active.status}</span>
         </div>
 
         <div class="flex-grow space-y-3 overflow-y-auto max-h-80 pr-1 mb-4">
           ${msgs.map(m => `
-            <div class="p-3.5 rounded-xl ${m.role === 'admin' ? 'bg-saffron-500/15 border border-saffron-500/30 ml-6' : 'bg-dark-950/90 border border-white/10 mr-6'}">
+            <div class="p-3.5 rounded-xl ${m.role === 'admin' ? 'bg-saffron-500/15 border border-saffron-500/30 ml-4 sm:ml-6' : 'bg-dark-950/90 border border-white/10 mr-4 sm:mr-6'}">
               <div class="text-[11px] font-bold ${m.role === 'admin' ? 'text-saffron-400' : 'text-gray-400'} mb-1">
                 ${m.sender} ${m.role === 'admin' ? '(Staff)' : ''}
               </div>
-              <div class="text-sm text-white">${m.text}</div>
+              <div class="text-xs sm:text-sm text-white">${m.text}</div>
             </div>
           `).join("")}
         </div>
@@ -1860,12 +2054,11 @@ e.g. /fly command, 5 Homes, Golden Prefix" class="w-full px-4 py-3 rounded-xl bg
         document.getElementById(`admin-section-${t}`).classList.toggle("hidden", t !== tab);
         const btn = document.getElementById(`adm-tab-${t}`);
         btn.className = t === tab
-          ? "px-4 py-2 rounded-xl text-xs font-semibold bg-saffron-500 text-white"
-          : "px-4 py-2 rounded-xl text-xs font-semibold bg-white/5 text-gray-300 hover:text-white";
+          ? "px-3.5 py-2 rounded-xl text-xs font-semibold bg-saffron-500 text-white"
+          : "px-3.5 py-2 rounded-xl text-xs font-semibold bg-white/5 text-gray-300 hover:text-white";
       });
     };
 
-    // Admin: Add Rank
     window.adminAddRank = async function(e) {
       e.preventDefault();
       const name = document.getElementById("rank-name").value.trim();
@@ -1873,12 +2066,11 @@ e.g. /fly command, 5 Homes, Golden Prefix" class="w-full px-4 py-3 rounded-xl bg
       const image = document.getElementById("rank-img").value.trim();
       const perks = document.getElementById("rank-perks").value.split(/[\n,]+/).map(s => s.trim()).filter(Boolean);
 
-      await push(ref(db, "store/ranks"), { name, price, image, perks });
+      await push(ref(db, "store/ranks"), { name, price, image, perks, createdAt: Date.now() });
       e.target.reset();
-      showToast(`Rank "${name}" published to Store!`);
+      showToast(`"${name}" published to Store!`);
     };
 
-    // Admin: Add Item
     window.adminAddItem = async function(e) {
       e.preventDefault();
       const name = document.getElementById("item-name").value.trim();
@@ -1886,12 +2078,11 @@ e.g. /fly command, 5 Homes, Golden Prefix" class="w-full px-4 py-3 rounded-xl bg
       const image = document.getElementById("item-img").value.trim();
       const description = document.getElementById("item-desc").value.trim();
 
-      await push(ref(db, "store/items"), { name, price, image, description });
+      await push(ref(db, "store/items"), { name, price, image, description, createdAt: Date.now() });
       e.target.reset();
-      showToast(`Item "${name}" published to Store!`);
+      showToast(`"${name}" published to Store!`);
     };
 
-    // Admin: Delete Store Product
     window.adminDeleteProduct = async function(type, id) {
       await remove(ref(db, `store/${type}/${id}`));
       showToast("Product removed from Store");
@@ -1905,25 +2096,27 @@ e.g. /fly command, 5 Homes, Golden Prefix" class="w-full px-4 py-3 rounded-xl bg
       ];
 
       if (all.length === 0) {
-        container.innerHTML = `<div class="col-span-full text-sm text-gray-500">No store items added yet.</div>`;
+        container.innerHTML = `<div class="col-span-full text-sm text-gray-400">No store products added yet.</div>`;
         return;
       }
 
       container.innerHTML = all.map(p => `
         <div class="p-4 rounded-xl bg-dark-950/90 border border-white/10 flex items-center justify-between gap-3">
-          <div>
-            <span class="text-[10px] uppercase font-bold px-2 py-0.5 rounded bg-white/10 text-saffron-400">${p._label}</span>
-            <div class="font-semibold text-white text-sm mt-1">${p.name}</div>
-            <div class="font-mono text-xs text-gray-400">₹${p.price}</div>
+          <div class="flex items-center gap-3 min-w-0">
+            <img src="${p.image}" alt="${p.name}" class="w-11 h-11 rounded-lg object-contain bg-dark-900 p-1 shrink-0" />
+            <div class="min-w-0">
+              <span class="text-[10px] uppercase font-bold px-2 py-0.5 rounded bg-white/10 text-saffron-400">${p._label}</span>
+              <div class="font-semibold text-white text-sm mt-0.5 truncate">${p.name}</div>
+              <div class="font-mono text-xs text-gray-400">₹${p.price}</div>
+            </div>
           </div>
-          <button onclick="adminDeleteProduct('${p._type}', '${p.id}')" class="px-3 py-1.5 rounded-lg bg-red-500/20 text-red-400 hover:bg-red-500 hover:text-white text-xs font-semibold transition">
+          <button onclick="adminDeleteProduct('${p._type}', '${p.id}')" class="shrink-0 px-3 py-1.5 rounded-lg bg-red-500/20 text-red-400 hover:bg-red-500 hover:text-white text-xs font-semibold transition">
             Delete
           </button>
         </div>
       `).join("");
     }
 
-    // Admin: Add Conditional Promo Code
     window.adminAddPromo = async function(e) {
       e.preventDefault();
       const code = document.getElementById("promo-code").value.trim().toUpperCase();
@@ -1946,7 +2139,7 @@ e.g. /fly command, 5 Homes, Golden Prefix" class="w-full px-4 py-3 rounded-xl bg
     function renderAdminPromos() {
       const container = document.getElementById("admin-promos-list");
       if (promosList.length === 0) {
-        container.innerHTML = `<p class="text-sm text-gray-500">No active promo codes.</p>`;
+        container.innerHTML = `<p class="text-sm text-gray-400">No active promo codes.</p>`;
         return;
       }
       container.innerHTML = promosList.map(p => `
@@ -1965,20 +2158,19 @@ e.g. /fly command, 5 Homes, Golden Prefix" class="w-full px-4 py-3 rounded-xl bg
       `).join("");
     }
 
-    // Admin: Manage Orders (Non-Overlapping Layout)
     function renderAdminOrders() {
       const container = document.getElementById("admin-orders-list");
       if (ordersList.length === 0) {
-        container.innerHTML = `<div class="glass-card rounded-2xl p-8 text-center text-gray-400 text-sm">No orders received yet.</div>`;
+        container.innerHTML = `<div class="glass-card rounded-2xl p-8 text-center text-gray-300 text-sm">No orders received yet.</div>`;
         return;
       }
 
       container.innerHTML = ordersList.map(o => `
-        <div class="glass-card rounded-2xl p-6 space-y-4">
+        <div class="glass-card rounded-2xl p-5 sm:p-6 space-y-4">
           <div class="grid grid-cols-1 md:grid-cols-12 gap-4 items-center">
             <div class="md:col-span-4 space-y-1">
               <div class="font-display font-bold text-white text-base">${o.ign || "Player"}</div>
-              <div class="text-xs text-gray-400">${o.email || ""} • ${o.mobile || ""}</div>
+              <div class="text-xs text-gray-300">${o.email || ""} • ${o.mobile || ""}</div>
             </div>
 
             <div class="md:col-span-4 space-y-1">
@@ -1986,7 +2178,7 @@ e.g. /fly command, 5 Homes, Golden Prefix" class="w-full px-4 py-3 rounded-xl bg
               <div class="text-xs font-mono text-white">Amount: ₹${o.amount || 0} | UTR: ${o.utr || "N/A"}</div>
             </div>
 
-            <div class="md:col-span-4 flex flex-wrap items-center gap-2 justify-end">
+            <div class="md:col-span-4 flex flex-wrap items-center gap-2 md:justify-end">
               <select id="adm-status-${o.id}" class="px-3 py-2 rounded-xl bg-dark-950 border border-white/10 text-xs text-white">
                 <option value="Order Received" ${o.status === "Order Received" ? "selected" : ""}>Order Received</option>
                 <option value="Order Accepted" ${o.status === "Order Accepted" ? "selected" : ""}>Order Accepted</option>
@@ -2035,24 +2227,23 @@ e.g. /fly command, 5 Homes, Golden Prefix" class="w-full px-4 py-3 rounded-xl bg
       showToast("Order deleted");
     };
 
-    // Admin: Manage Tickets
     function renderAdminTickets() {
       const container = document.getElementById("admin-tickets-list");
       if (ticketsList.length === 0) {
-        container.innerHTML = `<div class="glass-card rounded-2xl p-8 text-center text-gray-400 text-sm">No support tickets found.</div>`;
+        container.innerHTML = `<div class="glass-card rounded-2xl p-8 text-center text-gray-300 text-sm">No support tickets found.</div>`;
         return;
       }
 
       container.innerHTML = ticketsList.map(t => {
         const msgs = Array.isArray(t.messages) ? t.messages : Object.values(t.messages || {});
         return `
-          <div class="glass-card rounded-2xl p-6 space-y-4">
-            <div class="flex items-center justify-between">
+          <div class="glass-card rounded-2xl p-5 sm:p-6 space-y-4">
+            <div class="flex items-center justify-between gap-2">
               <div>
                 <span class="font-mono text-xs text-saffron-400 font-bold">${t.ticketCode}</span>
-                <h4 class="font-display font-bold text-white text-base">${t.subject} — <span class="text-gray-400 text-xs">${t.ign} (${t.email})</span></h4>
+                <h4 class="font-display font-bold text-white text-sm sm:text-base">${t.subject} — <span class="text-gray-300 text-xs">${t.ign} (${t.email})</span></h4>
               </div>
-              <button onclick="adminDeleteTicket('${t.id}')" class="px-3 py-1.5 rounded-lg bg-red-500/20 text-red-400 text-xs font-semibold">
+              <button onclick="adminDeleteTicket('${t.id}')" class="shrink-0 px-3 py-1.5 rounded-lg bg-red-500/20 text-red-400 text-xs font-semibold">
                 Delete Ticket
               </button>
             </div>
@@ -2061,7 +2252,7 @@ e.g. /fly command, 5 Homes, Golden Prefix" class="w-full px-4 py-3 rounded-xl bg
               ${msgs.map(m => `
                 <div class="text-xs">
                   <strong class="${m.role === 'admin' ? 'text-saffron-400' : 'text-white'}">${m.sender}:</strong>
-                  <span class="text-gray-300 ml-1">${m.text}</span>
+                  <span class="text-gray-200 ml-1">${m.text}</span>
                 </div>
               `).join("")}
             </div>
@@ -2098,7 +2289,6 @@ e.g. /fly command, 5 Homes, Golden Prefix" class="w-full px-4 py-3 rounded-xl bg
       showToast("Ticket deleted");
     };
 
-    // Admin: Manage Blogs
     window.adminAddBlog = async function(e) {
       e.preventDefault();
       const title = document.getElementById("blog-title").value.trim();
@@ -2119,7 +2309,7 @@ e.g. /fly command, 5 Homes, Golden Prefix" class="w-full px-4 py-3 rounded-xl bg
     function renderAdminBlogs() {
       const container = document.getElementById("admin-blogs-list");
       if (blogsList.length === 0) {
-        container.innerHTML = `<p class="text-sm text-gray-500">No blog posts published yet.</p>`;
+        container.innerHTML = `<p class="text-sm text-gray-400">No blog posts published yet.</p>`;
         return;
       }
       container.innerHTML = blogsList.map(b => `
