@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>MahaCraft SMP — Official Webstore & Community</title>
+  <title>MahaCraft SMP — Store</title>
 
   <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
@@ -71,6 +71,21 @@
       backdrop-filter: blur(16px);
       -webkit-backdrop-filter: blur(16px);
       border: 1px solid rgba(255, 107, 0, 0.35);
+    }
+
+    /* Team Credit Glass Box */
+    .credit-glass-box {
+      background: linear-gradient(145deg, rgba(24, 30, 44, 0.82) 0%, rgba(14, 18, 27, 0.92) 100%);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.6);
+      transition: all 0.25s ease;
+    }
+    .credit-glass-box:hover {
+      transform: translateY(-5px);
+      border-color: rgba(255, 107, 0, 0.55);
+      box-shadow: 0 18px 38px -12px rgba(255, 107, 0, 0.22);
     }
 
     /* E-Commerce Product Card Hover */
@@ -286,9 +301,8 @@
   <!-- ========================================================= -->
   <div id="app-shell" class="hidden min-h-screen flex flex-col">
 
-    <!-- Top Navigation Bar (Fixed Anti-Collapse Mobile & Desktop Header) -->
+    <!-- Top Navigation Bar -->
     <header class="fixed top-[3px] left-0 right-0 z-40 bg-dark-950/95 backdrop-blur-xl border-b border-white/10 shadow-lg">
-      <!-- Top Row -->
       <div class="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 h-16 sm:h-20 flex items-center justify-between gap-2">
         <!-- Brand -->
         <button onclick="switchPage('home')" class="flex items-center gap-2 sm:gap-3 text-left group shrink-0 min-w-0">
@@ -377,7 +391,7 @@
         </div>
       </div>
 
-      <!-- Second Row: Stable Mobile Navigation Bar (Never Collapses) -->
+      <!-- Second Row: Stable Mobile Navigation Bar -->
       <div class="md:hidden w-full border-t border-white/10 bg-dark-900/95">
         <div class="flex items-center justify-start sm:justify-center gap-1.5 overflow-x-auto no-scrollbar px-3 py-2">
           <button onclick="switchPage('home')" data-nav="home" class="nav-link shrink-0 px-3.5 py-1.5 rounded-lg text-xs font-semibold text-white bg-saffron-500 whitespace-nowrap">Home</button>
@@ -391,7 +405,7 @@
       </div>
     </header>
 
-    <!-- Main Content Container (pt-36 on Mobile ensures zero overlap with 2-row header) -->
+    <!-- Main Content Container -->
     <main class="flex-grow pt-36 md:pt-28 pb-16 px-3.5 sm:px-6 lg:px-8 max-w-7xl w-full mx-auto">
 
       <!-- ===================================================== -->
@@ -436,7 +450,7 @@
             <div class="lg:col-span-8 space-y-5 text-center lg:text-left">
               <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-saffron-500/15 border border-saffron-500/30 text-saffron-400 text-[11px] sm:text-xs font-semibold tracking-wide uppercase">
                 <span class="w-2 h-2 rounded-full bg-saffron-500 animate-pulse"></span>
-                Maharashtra's Survival Network
+                Maharashtra's Survival Network (Java & Bedrock)
               </div>
 
               <h1 class="font-display text-2xl sm:text-4xl lg:text-5xl font-extrabold text-white leading-tight">
@@ -444,22 +458,30 @@
               </h1>
 
               <p class="text-gray-200 text-sm sm:text-base lg:text-lg leading-relaxed max-w-2xl mx-auto lg:mx-0">
-                Welcome to MahaCraft SMP. Play survival with your friends, build forts, trade in our player economy, and compete in seasonal clan events on lag-free Indian hosting.
+                Welcome to MahaCraft SMP. Play survival with your friends on both Java and Bedrock editions, build forts, trade in our player economy, and compete in seasonal clan events.
               </p>
 
-              <!-- Action Buttons: Copy IP, Open Store, Join Discord -->
-              <div class="grid grid-cols-1 sm:flex sm:flex-wrap items-center justify-center lg:justify-start gap-3 sm:gap-4 pt-2">
+              <!-- Action Buttons: Copy Java IP, Copy Bedrock IP, Open Store, Join Discord -->
+              <div class="grid grid-cols-1 sm:flex sm:flex-wrap items-center justify-center lg:justify-start gap-3 sm:gap-3.5 pt-2">
                 <button
                   onclick="copyServerIP()"
-                  class="w-full sm:w-auto px-6 py-3.5 rounded-xl bg-saffron-500 hover:bg-saffron-600 text-white font-semibold text-sm flex items-center justify-center gap-2.5 shadow-lg shadow-saffron-500/25 transition"
+                  class="w-full sm:w-auto px-5 py-3.5 rounded-xl bg-saffron-500 hover:bg-saffron-600 text-white font-semibold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-lg shadow-saffron-500/25 transition"
                 >
                   <i data-lucide="copy" class="w-4 h-4"></i>
-                  <span>Copy IP</span>
+                  <span>Copy Java IP</span>
+                </button>
+
+                <button
+                  onclick="copyBedrockIP()"
+                  class="w-full sm:w-auto px-5 py-3.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-black font-bold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-lg transition"
+                >
+                  <i data-lucide="smartphone" class="w-4 h-4"></i>
+                  <span>Copy Bedrock IP (Port: 443)</span>
                 </button>
 
                 <button
                   onclick="switchPage('store')"
-                  class="w-full sm:w-auto px-6 py-3.5 rounded-xl bg-white/10 hover:bg-white/15 border border-white/15 text-white font-semibold text-sm flex items-center justify-center gap-2.5 transition"
+                  class="w-full sm:w-auto px-5 py-3.5 rounded-xl bg-white/10 hover:bg-white/15 border border-white/15 text-white font-semibold text-xs sm:text-sm flex items-center justify-center gap-2 transition"
                 >
                   <i data-lucide="shopping-bag" class="w-4 h-4 text-saffron-400"></i>
                   <span>Open Store</span>
@@ -469,7 +491,7 @@
                   href="https://discord.gg/PFvJ4b2Xt2"
                   target="_blank"
                   rel="noopener noreferrer"
-                  class="w-full sm:w-auto px-6 py-3.5 rounded-xl bg-[#5865F2] hover:bg-[#4752C4] text-white font-semibold text-sm flex items-center justify-center gap-2.5 shadow-lg shadow-[#5865F2]/25 transition"
+                  class="w-full sm:w-auto px-5 py-3.5 rounded-xl bg-[#5865F2] hover:bg-[#4752C4] text-white font-semibold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-lg shadow-[#5865F2]/25 transition"
                 >
                   <i data-lucide="message-square" class="w-4 h-4"></i>
                   <span>Join Discord</span>
@@ -491,9 +513,9 @@
         <!-- Clean Feature Highlights -->
         <div class="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6">
           <div class="glass-card rounded-2xl p-6 sm:p-7 border-l-4 border-l-saffron-500">
-            <h3 class="font-display text-base sm:text-lg font-bold text-white mb-2">Low Ping Indian Server</h3>
+            <h3 class="font-display text-base sm:text-lg font-bold text-white mb-2">Java & Bedrock Crossplay</h3>
             <p class="text-xs sm:text-sm text-gray-300 leading-relaxed">
-              Hosted in Mumbai so players across Maharashtra and India get smooth PvP and zero block lag.
+              Join from PC, Mobile (PE), or Console seamlessly. Hosted in India for smooth PvP and zero block lag.
             </p>
           </div>
 
@@ -611,7 +633,7 @@
       </section>
 
       <!-- ===================================================== -->
-      <!-- PAGE 5: SUPPORT TICKETS PAGE (SINGLE + FIXED)         -->
+      <!-- PAGE 5: SUPPORT TICKETS PAGE                          -->
       <!-- ===================================================== -->
       <section id="page-support" class="hidden space-y-6 sm:space-y-8">
         <div class="glass-card rounded-2xl p-5 sm:p-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
@@ -655,13 +677,15 @@
       </section>
 
       <!-- ===================================================== -->
-      <!-- PAGE 6: ABOUT US & SPONSOR PAGE                       -->
+      <!-- PAGE 6: ABOUT US, TEAM CREDITS & SPONSOR PAGE         -->
       <!-- ===================================================== -->
-      <section id="page-about" class="hidden space-y-8 sm:space-y-10">
-        <div class="glass-card rounded-2xl sm:rounded-3xl p-6 sm:p-12">
+      <section id="page-about" class="hidden space-y-8 sm:space-y-12">
+
+        <!-- About Story + Sponsor QR Card -->
+        <div class="glass-card rounded-2xl sm:rounded-3xl p-6 sm:p-10 lg:p-12">
           <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-start">
 
-            <!-- About Story -->
+            <!-- About Story & Server Connection Boxes -->
             <div class="lg:col-span-7 space-y-5 sm:space-y-6">
               <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-saffron-500/15 border border-saffron-500/30 text-saffron-400 text-xs font-semibold uppercase">
                 About MahaCraft SMP
@@ -672,7 +696,7 @@
               </h2>
 
               <p class="text-gray-200 leading-relaxed text-sm sm:text-base">
-                <strong>MahaCraft SMP</strong> was started by <strong>Aashutosh Garve</strong> to bring Minecraft players together on a clean, friendly, and lag-free survival server.
+                <strong>MahaCraft SMP</strong> was founded by <strong>Ashutosh</strong> to bring Minecraft players together on a clean, friendly, and lag-free survival server supporting both Java and Bedrock editions.
               </p>
 
               <p class="text-gray-200 leading-relaxed text-sm sm:text-base">
@@ -683,34 +707,37 @@
                 Every rank purchase or sponsor contribution goes directly toward server hosting, DDoS protection, and building new custom features for our players.
               </p>
 
-              <!-- Info Cards -->
-              <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-2">
-                <div class="p-4 rounded-2xl bg-dark-950/85 border border-white/10">
-                  <span class="text-xs text-gray-400 block mb-1">Owner & Founder</span>
-                  <span class="font-display font-bold text-white text-base">Aashutosh Garve</span>
-                </div>
-
-                <div class="p-4 rounded-2xl bg-dark-950/85 border border-white/10 flex flex-col justify-between">
-                  <span class="text-xs text-gray-400 block mb-1.5">Server IP</span>
+              <!-- Java & Bedrock Connection Cards -->
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
+                <!-- Java IP Card -->
+                <div class="p-4 rounded-2xl bg-dark-950/90 border border-white/10 flex flex-col justify-between gap-3">
+                  <div>
+                    <span class="text-[11px] font-semibold uppercase tracking-wider text-saffron-400 block">Java Edition IP</span>
+                    <span class="font-mono font-bold text-white text-sm mt-1 block">play.mahacraftsmp.fun</span>
+                  </div>
                   <button
                     onclick="copyServerIP()"
-                    class="w-full py-2 px-3 rounded-lg bg-saffron-500 hover:bg-saffron-600 text-white font-semibold text-xs flex items-center justify-center gap-1.5 transition"
+                    class="w-full py-2.5 px-3 rounded-xl bg-saffron-500 hover:bg-saffron-600 text-white font-semibold text-xs flex items-center justify-center gap-1.5 transition"
                   >
                     <i data-lucide="copy" class="w-3.5 h-3.5"></i>
-                    <span>Copy IP</span>
+                    <span>Copy Java IP</span>
                   </button>
                 </div>
 
-                <div class="p-4 rounded-2xl bg-dark-950/85 border border-white/10 flex flex-col justify-between">
-                  <span class="text-xs text-gray-400 block mb-1.5">Community</span>
-                  <a
-                    href="https://discord.gg/PFvJ4b2Xt2"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    class="w-full py-2 px-3 rounded-lg bg-[#5865F2] hover:bg-[#4752C4] text-white font-semibold text-xs flex items-center justify-center gap-1.5 transition"
+                <!-- Bedrock IP + Port Card -->
+                <div class="p-4 rounded-2xl bg-dark-950/90 border border-amber-500/30 flex flex-col justify-between gap-3">
+                  <div>
+                    <span class="text-[11px] font-semibold uppercase tracking-wider text-amber-400 block">Bedrock Edition IP & Port</span>
+                    <span class="font-mono font-bold text-white text-sm mt-1 block">mahacraftsmp.wdn.gg</span>
+                    <span class="font-mono text-xs text-amber-300 block mt-0.5">Port: <strong>443</strong></span>
+                  </div>
+                  <button
+                    onclick="copyBedrockIP()"
+                    class="w-full py-2.5 px-3 rounded-xl bg-amber-500 hover:bg-amber-400 text-black font-bold text-xs flex items-center justify-center gap-1.5 transition"
                   >
-                    <span>Join Discord</span>
-                  </a>
+                    <i data-lucide="smartphone" class="w-3.5 h-3.5"></i>
+                    <span>Copy Bedrock IP (Port 443)</span>
+                  </button>
                 </div>
               </div>
             </div>
@@ -755,6 +782,165 @@
 
           </div>
         </div>
+
+        <!-- =================================================== -->
+        <!-- OFFICIAL TEAM & CREDITS GLASSMORPHISM BOXES         -->
+        <!-- =================================================== -->
+        <div class="glass-card rounded-2xl sm:rounded-3xl p-6 sm:p-10 lg:p-12 space-y-8">
+          <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4 border-b border-white/10 pb-6">
+            <div>
+              <span class="text-xs font-semibold uppercase tracking-wider text-saffron-400">Leadership & Development</span>
+              <h3 class="font-display text-2xl sm:text-3xl font-extrabold text-white mt-1">
+                MahaCraft Team & Credits
+              </h3>
+              <p class="text-xs sm:text-sm text-gray-300 mt-1">
+                Meet the core team and developers behind MahaCraft SMP.
+              </p>
+            </div>
+          </div>
+
+          <!-- Individual Glassmorphism Boxes for Every Team Member -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+
+            <!-- 1. Owner: Ashutosh -->
+            <div class="credit-glass-box rounded-2xl p-6 relative overflow-hidden flex flex-col items-center text-center group">
+              <div class="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-saffron-500 via-amber-400 to-saffron-500"></div>
+              <img
+                src="https://mc-heads.net/avatar/Ashutosh/72"
+                alt="Ashutosh"
+                class="w-16 h-16 rounded-2xl mb-4 border-2 border-saffron-500/60 shadow-lg group-hover:scale-105 transition"
+              />
+              <span class="px-3 py-1 rounded-full bg-saffron-500/20 border border-saffron-500/40 text-saffron-400 text-[11px] font-bold uppercase tracking-wider mb-2">
+                Owner
+              </span>
+              <h4 class="font-display text-lg font-extrabold text-white tracking-tight">
+                Ashutosh
+              </h4>
+              <p class="text-xs text-gray-400 mt-1">Founder & Server Owner</p>
+            </div>
+
+            <!-- 2. Sr. Admin: RockingAry -->
+            <div class="credit-glass-box rounded-2xl p-6 relative overflow-hidden flex flex-col items-center text-center group">
+              <div class="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-red-500 via-rose-400 to-red-500"></div>
+              <img
+                src="https://mc-heads.net/avatar/RockingAry/72"
+                alt="RockingAry"
+                class="w-16 h-16 rounded-2xl mb-4 border-2 border-red-500/50 shadow-lg group-hover:scale-105 transition"
+              />
+              <span class="px-3 py-1 rounded-full bg-red-500/20 border border-red-500/40 text-red-400 text-[11px] font-bold uppercase tracking-wider mb-2">
+                Sr. Admin
+              </span>
+              <h4 class="font-display text-lg font-extrabold text-white tracking-tight">
+                RockingAry
+              </h4>
+              <p class="text-xs text-gray-400 mt-1">Senior Administration</p>
+            </div>
+
+            <!-- 3. Jr. Admin: rob23gamerz_54083 -->
+            <div class="credit-glass-box rounded-2xl p-6 relative overflow-hidden flex flex-col items-center text-center group">
+              <div class="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-amber-500 via-yellow-400 to-amber-500"></div>
+              <img
+                src="https://mc-heads.net/avatar/rob23gamerz_54083/72"
+                alt="rob23gamerz_54083"
+                class="w-16 h-16 rounded-2xl mb-4 border-2 border-amber-500/50 shadow-lg group-hover:scale-105 transition"
+              />
+              <span class="px-3 py-1 rounded-full bg-amber-500/20 border border-amber-500/40 text-amber-300 text-[11px] font-bold uppercase tracking-wider mb-2">
+                Jr. Admin
+              </span>
+              <h4 class="font-mono text-sm sm:text-base font-extrabold text-white break-all">
+                rob23gamerz_54083
+              </h4>
+              <p class="text-xs text-gray-400 mt-1">Junior Administrator</p>
+            </div>
+
+            <!-- 4. Jr. Admin: godxmaratha -->
+            <div class="credit-glass-box rounded-2xl p-6 relative overflow-hidden flex flex-col items-center text-center group">
+              <div class="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-amber-500 via-yellow-400 to-amber-500"></div>
+              <img
+                src="https://mc-heads.net/avatar/godxmaratha/72"
+                alt="godxmaratha"
+                class="w-16 h-16 rounded-2xl mb-4 border-2 border-amber-500/50 shadow-lg group-hover:scale-105 transition"
+              />
+              <span class="px-3 py-1 rounded-full bg-amber-500/20 border border-amber-500/40 text-amber-300 text-[11px] font-bold uppercase tracking-wider mb-2">
+                Jr. Admin
+              </span>
+              <h4 class="font-mono text-base font-extrabold text-white">
+                godxmaratha
+              </h4>
+              <p class="text-xs text-gray-400 mt-1">Junior Administrator</p>
+            </div>
+
+            <!-- 5. Developer: PixelFurry -->
+            <div class="credit-glass-box rounded-2xl p-6 relative overflow-hidden flex flex-col items-center text-center group">
+              <div class="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-cyan-500 via-sky-400 to-cyan-500"></div>
+              <img
+                src="https://mc-heads.net/avatar/PixelFurry/72"
+                alt="PixelFurry"
+                class="w-16 h-16 rounded-2xl mb-4 border-2 border-cyan-500/50 shadow-lg group-hover:scale-105 transition"
+              />
+              <span class="px-3 py-1 rounded-full bg-cyan-500/20 border border-cyan-500/40 text-cyan-300 text-[11px] font-bold uppercase tracking-wider mb-2">
+                Developer
+              </span>
+              <h4 class="font-display text-lg font-extrabold text-white tracking-tight">
+                PixelFurry
+              </h4>
+              <p class="text-xs text-gray-400 mt-1">Server Developer</p>
+            </div>
+
+            <!-- 6. Developer: rob23gamerz_54083 -->
+            <div class="credit-glass-box rounded-2xl p-6 relative overflow-hidden flex flex-col items-center text-center group">
+              <div class="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-cyan-500 via-sky-400 to-cyan-500"></div>
+              <img
+                src="https://mc-heads.net/avatar/rob23gamerz_54083/72"
+                alt="rob23gamerz_54083"
+                class="w-16 h-16 rounded-2xl mb-4 border-2 border-cyan-500/50 shadow-lg group-hover:scale-105 transition"
+              />
+              <span class="px-3 py-1 rounded-full bg-cyan-500/20 border border-cyan-500/40 text-cyan-300 text-[11px] font-bold uppercase tracking-wider mb-2">
+                Developer
+              </span>
+              <h4 class="font-mono text-sm sm:text-base font-extrabold text-white break-all">
+                rob23gamerz_54083
+              </h4>
+              <p class="text-xs text-gray-400 mt-1">Server Developer</p>
+            </div>
+
+            <!-- 7. Developer: godxmaratha -->
+            <div class="credit-glass-box rounded-2xl p-6 relative overflow-hidden flex flex-col items-center text-center group">
+              <div class="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-cyan-500 via-sky-400 to-cyan-500"></div>
+              <img
+                src="https://mc-heads.net/avatar/godxmaratha/72"
+                alt="godxmaratha"
+                class="w-16 h-16 rounded-2xl mb-4 border-2 border-cyan-500/50 shadow-lg group-hover:scale-105 transition"
+              />
+              <span class="px-3 py-1 rounded-full bg-cyan-500/20 border border-cyan-500/40 text-cyan-300 text-[11px] font-bold uppercase tracking-wider mb-2">
+                Developer
+              </span>
+              <h4 class="font-mono text-base font-extrabold text-white">
+                godxmaratha
+              </h4>
+              <p class="text-xs text-gray-400 mt-1">Server Developer</p>
+            </div>
+
+            <!-- 8. Website Developer: assassins_fox -->
+            <div class="credit-glass-box rounded-2xl p-6 relative overflow-hidden flex flex-col items-center text-center group">
+              <div class="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-emerald-500 via-teal-400 to-emerald-500"></div>
+              <img
+                src="https://mc-heads.net/avatar/assassins_fox/72"
+                alt="assassins_fox"
+                class="w-16 h-16 rounded-2xl mb-4 border-2 border-emerald-500/50 shadow-lg group-hover:scale-105 transition"
+              />
+              <span class="px-3 py-1 rounded-full bg-emerald-500/20 border border-emerald-500/40 text-emerald-300 text-[11px] font-bold uppercase tracking-wider mb-2">
+                Website Developer
+              </span>
+              <h4 class="font-mono text-base font-extrabold text-white">
+                assassins_fox
+              </h4>
+              <p class="text-xs text-gray-400 mt-1">Official Web Architect</p>
+            </div>
+
+          </div>
+        </div>
+
       </section>
 
       <!-- ===================================================== -->
@@ -908,10 +1094,11 @@ e.g. /fly command, 10 Homes, Custom Prefix" class="w-full px-4 py-3 rounded-xl b
         <div class="flex items-center gap-2.5">
           <img src="mahacraftlogo.png" onerror="this.onerror=null; this.src='mahacraftlogo.jpg';" alt="Logo" class="w-6 h-6 object-contain" />
           <span class="font-semibold text-white">MahaCraft SMP</span>
-          <span>— Founded by Aashutosh Garve</span>
+          <span>— Owner: Ashutosh | Web Dev: assassins_fox</span>
         </div>
-        <div class="flex items-center gap-4">
-          <button onclick="copyServerIP()" class="hover:text-saffron-400 transition">Copy IP</button>
+        <div class="flex flex-wrap items-center justify-center gap-4">
+          <button onclick="copyServerIP()" class="hover:text-saffron-400 transition">Copy Java IP</button>
+          <button onclick="copyBedrockIP()" class="hover:text-amber-400 transition">Copy Bedrock IP</button>
           <a href="https://discord.gg/PFvJ4b2Xt2" target="_blank" rel="noopener noreferrer" class="hover:text-saffron-400 transition">Discord</a>
         </div>
       </div>
@@ -1113,7 +1300,9 @@ e.g. /fly command, 10 Homes, Custom Prefix" class="w-full px-4 py-3 rounded-xl b
     // STRICT MASTER ADMIN CREDENTIALS
     const ADMIN_EMAIL = "shardulraskar4@gmail.com";
     const ADMIN_PASS = "admin@138mahacraft";
-    const SERVER_IP = "play.mahacraftsmp.fun";
+    const JAVA_IP = "play.mahacraftsmp.fun";
+    const BEDROCK_IP = "mahacraftsmp.wdn.gg";
+    const BEDROCK_PORT = "443";
 
     // Encoded Merchant Gateway (Never shown in UI text)
     const _mGateway = atob("OTc2Njg2MDg2MkBmYW0=");
@@ -1150,7 +1339,6 @@ e.g. /fly command, 10 Homes, Custom Prefix" class="w-full px-4 py-3 rounded-xl b
       }
     }
 
-    // Trigger music on first click/touch/keypress anywhere
     ["click", "touchstart", "keydown"].forEach(evt => {
       window.addEventListener(evt, () => startBackgroundMusic(), { once: false, passive: true });
     });
@@ -1174,7 +1362,6 @@ e.g. /fly command, 10 Homes, Custom Prefix" class="w-full px-4 py-3 rounded-xl b
       lucide.createIcons();
     }
 
-    // Cookie Banner Logic
     if (localStorage.getItem("mc_cookies_accepted") !== "true") {
       document.getElementById("cookie-banner").classList.remove("hidden");
     }
@@ -1197,10 +1384,15 @@ e.g. /fly command, 10 Homes, Custom Prefix" class="w-full px-4 py-3 rounded-xl b
       setTimeout(() => el.remove(), 3500);
     };
 
-    // Copy Server IP
+    // Copy Java & Bedrock Server IPs
     window.copyServerIP = function() {
-      navigator.clipboard.writeText(SERVER_IP);
-      showToast(`Copied Server IP: ${SERVER_IP}`);
+      navigator.clipboard.writeText(JAVA_IP);
+      showToast(`Copied Java IP: ${JAVA_IP}`);
+    };
+
+    window.copyBedrockIP = function() {
+      navigator.clipboard.writeText(BEDROCK_IP);
+      showToast(`Copied Bedrock IP: ${BEDROCK_IP} (Port: ${BEDROCK_PORT})`);
     };
 
     // Switch Auth Mode (Login / Register)
@@ -1409,7 +1601,6 @@ e.g. /fly command, 10 Homes, Custom Prefix" class="w-full px-4 py-3 rounded-xl b
       if (listenersInitialized) return;
       listenersInitialized = true;
 
-      // 1. Ranks Listener
       onValue(ref(db, "store/ranks"), (snap) => {
         const val = snap.val() || {};
         ranksList = Object.entries(val).map(([id, data]) => ({ id, _kind: "rank", ...data }));
@@ -1417,7 +1608,6 @@ e.g. /fly command, 10 Homes, Custom Prefix" class="w-full px-4 py-3 rounded-xl b
         renderAdminCatalog();
       });
 
-      // 2. Items Listener
       onValue(ref(db, "store/items"), (snap) => {
         const val = snap.val() || {};
         itemsList = Object.entries(val).map(([id, data]) => ({ id, _kind: "item", ...data }));
@@ -1425,7 +1615,6 @@ e.g. /fly command, 10 Homes, Custom Prefix" class="w-full px-4 py-3 rounded-xl b
         renderAdminCatalog();
       });
 
-      // 3. Promos Listener
       onValue(ref(db, "promos"), (snap) => {
         const val = snap.val() || {};
         promosList = Object.entries(val).map(([id, data]) => ({ id, ...data }));
@@ -1433,7 +1622,6 @@ e.g. /fly command, 10 Homes, Custom Prefix" class="w-full px-4 py-3 rounded-xl b
         renderAdminPromos();
       });
 
-      // 4. Orders Listener
       onValue(ref(db, "orders"), (snap) => {
         const val = snap.val() || {};
         ordersList = Object.entries(val)
@@ -1443,7 +1631,6 @@ e.g. /fly command, 10 Homes, Custom Prefix" class="w-full px-4 py-3 rounded-xl b
         renderAdminOrders();
       });
 
-      // 5. Tickets Listener
       onValue(ref(db, "tickets"), (snap) => {
         const val = snap.val() || {};
         ticketsList = Object.entries(val)
@@ -1453,7 +1640,6 @@ e.g. /fly command, 10 Homes, Custom Prefix" class="w-full px-4 py-3 rounded-xl b
         renderAdminTickets();
       });
 
-      // 6. Blogs Listener
       onValue(ref(db, "blogs"), (snap) => {
         const val = snap.val() || {};
         blogsList = Object.entries(val)
@@ -1737,7 +1923,6 @@ e.g. /fly command, 10 Homes, Custom Prefix" class="w-full px-4 py-3 rounded-xl b
       document.getElementById("chk-dynamic-qr").src = qrUrl;
     }
 
-    // Open Payment App without exposing raw UPI string on screen
     window.openCheckoutPaymentApp = function() {
       const finalAmount = getFinalCheckoutTotal();
       window.location.href = getLockedUpiUri(finalAmount);
