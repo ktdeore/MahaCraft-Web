@@ -1,1 +1,2141 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MahaCraft SMP — Official Webstore & Community</title>
 
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&family=JetBrains+Mono:wght@500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            display: ['Plus Jakarta Sans', 'sans-serif'],
+            mono: ['JetBrains Mono', 'monospace'],
+          },
+          colors: {
+            saffron: {
+              400: '#ff8533',
+              500: '#ff6b00',
+              600: '#e65c00',
+            },
+            dark: {
+              950: '#090b10',
+              900: '#0f131c',
+              800: '#161b28',
+              700: '#1f2637',
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      background-color: #090b10;
+      color: #f3f4f6;
+      font-family: 'Inter', sans-serif;
+      overflow-x: hidden;
+    }
+    /* Website Background Image with Visible Overlay */
+    .site-bg {
+      position: fixed;
+      inset: 0;
+      z-index: -2;
+      background-image: url('webbg.jpeg');
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
+      opacity: 0.34;
+    }
+    .site-bg-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: -1;
+      background: radial-gradient(circle at 50% 15%, rgba(15, 19, 28, 0.72) 0%, rgba(9, 11, 16, 0.94) 100%);
+    }
+    /* Clean Glass Cards */
+    .glass-card {
+      background: rgba(20, 25, 36, 0.86);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    .glass-card-saffron {
+      background: rgba(20, 25, 36, 0.9);
+      backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 107, 0, 0.28);
+    }
+    .saffron-top-line {
+      height: 3px;
+      background: linear-gradient(90deg, #ff6b00 0%, #f59e0b 50%, #ff6b00 100%);
+    }
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #090b10;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #262f45;
+      border-radius: 9999px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #ff6b00;
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col selection:bg-saffron-500 selection:text-white">
+
+  <!-- Background Layer (webbg.jpeg) -->
+  <div class="site-bg"></div>
+  <div class="site-bg-overlay"></div>
+
+  <!-- Top Saffron Accent Line -->
+  <div class="saffron-top-line fixed top-0 left-0 right-0 z-50"></div>
+
+  <!-- Toast Notification Container -->
+  <div id="toast-container" class="fixed bottom-6 right-6 z-[100] flex flex-col gap-3 max-w-sm w-full pointer-events-none px-4 sm:px-0"></div>
+
+  <!-- ========================================================= -->
+  <!-- 1. MANDATORY LOGIN / REGISTER GATE                        -->
+  <!-- ========================================================= -->
+  <div id="auth-gate" class="min-h-screen w-full flex items-center justify-center p-4 sm:p-6 relative z-40">
+    <div class="glass-card-saffron w-full max-w-md rounded-2xl p-7 sm:p-9 shadow-2xl relative overflow-hidden">
+      <!-- Subtle Saffron Corner Accent -->
+      <div class="absolute -top-16 -right-16 w-36 h-36 bg-saffron-500/15 rounded-full blur-2xl pointer-events-none"></div>
+
+      <!-- Brand Logo & Title -->
+      <div class="flex flex-col items-center text-center mb-7">
+        <img
+          src="mahacraftlogo.png"
+          onerror="this.onerror=null; this.src='mahacraftlogo.jpg';"
+          alt="MahaCraft Logo"
+          class="w-24 h-24 object-contain drop-shadow-lg mb-3 rounded-xl"
+        />
+        <h1 class="font-display text-2xl sm:text-3xl font-extrabold tracking-tight text-white">
+          Maha<span class="text-saffron-500">Craft</span> SMP
+        </h1>
+        <p class="text-sm text-gray-400 mt-1">Sign in to access the official store & community</p>
+      </div>
+
+      <!-- Auth Tabs -->
+      <div class="grid grid-cols-2 gap-2 p-1 bg-dark-950/80 rounded-xl border border-white/10 mb-6">
+        <button id="tab-login-btn" onclick="switchAuthTab('login')" class="py-2.5 text-sm font-semibold rounded-lg bg-saffron-500 text-white transition">
+          Login
+        </button>
+        <button id="tab-register-btn" onclick="switchAuthTab('register')" class="py-2.5 text-sm font-semibold rounded-lg text-gray-400 hover:text-white transition">
+          Create Account
+        </button>
+      </div>
+
+      <!-- Auth Form -->
+      <form id="auth-form" onsubmit="handleAuthSubmit(event)" class="space-y-4">
+        <!-- In-Game Name (Shown on Register) -->
+        <div id="ign-field-wrapper" class="hidden">
+          <label class="block text-xs font-semibold uppercase tracking-wider text-gray-300 mb-1.5">
+            Minecraft In-Game Name (IGN)
+          </label>
+          <input
+            type="text"
+            id="auth-ign"
+            placeholder="e.g. WarriorMaratha"
+            class="w-full px-4 py-3 rounded-xl bg-dark-950/90 border border-white/10 text-white placeholder-gray-500 text-sm focus:outline-none focus:border-saffron-500"
+          />
+        </div>
+
+        <div>
+          <label class="block text-xs font-semibold uppercase tracking-wider text-gray-300 mb-1.5">
+            Email Address
+          </label>
+          <input
+            type="email"
+            id="auth-email"
+            required
+            placeholder="you@example.com"
+            class="w-full px-4 py-3 rounded-xl bg-dark-950/90 border border-white/10 text-white placeholder-gray-500 text-sm focus:outline-none focus:border-saffron-500"
+          />
+        </div>
+
+        <div>
+          <div class="flex items-center justify-between mb-1.5">
+            <label class="block text-xs font-semibold uppercase tracking-wider text-gray-300">
+              Password
+            </label>
+            <button type="button" onclick="handleForgotPassword()" class="text-xs text-saffron-400 hover:underline">
+              Forgot Password?
+            </button>
+          </div>
+          <div class="relative">
+            <input
+              type="password"
+              id="auth-password"
+              required
+              placeholder="Enter your password"
+              class="w-full pl-4 pr-11 py-3 rounded-xl bg-dark-950/90 border border-white/10 text-white placeholder-gray-500 text-sm focus:outline-none focus:border-saffron-500"
+            />
+            <button
+              type="button"
+              onclick="togglePasswordVisibility()"
+              class="absolute right-3.5 top-1/2 -translate-y-1/2 text-gray-400 hover:text-white"
+              title="Show/Hide Password"
+            >
+              <i id="password-eye-icon" data-lucide="eye" class="w-4 h-4"></i>
+            </button>
+          </div>
+        </div>
+
+        <button
+          type="submit"
+          id="auth-submit-btn"
+          class="w-full py-3.5 rounded-xl bg-saffron-500 hover:bg-saffron-600 text-white font-semibold text-sm shadow-lg shadow-saffron-500/20 transition"
+        >
+          Sign In to MahaCraft
+        </button>
+      </form>
+
+      <div class="relative flex py-5 items-center">
+        <div class="flex-grow border-t border-white/10"></div>
+        <span class="flex-shrink mx-3 text-xs text-gray-500 uppercase">Or continue with</span>
+        <div class="flex-grow border-t border-white/10"></div>
+      </div>
+
+      <button
+        type="button"
+        onclick="handleGoogleLogin()"
+        class="w-full py-3 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-white font-medium text-sm flex items-center justify-center gap-2.5 transition"
+      >
+        <svg class="w-4 h-4" viewBox="0 0 24 24">
+          <path fill="#EA4335" d="M12 5c1.6 0 3 .6 4.1 1.7l3.1-3.1C17.3 1.8 14.8 1 12 1 7.4 1 3.5 3.6 1.6 7.4l3.7 2.8C6.2 7.2 8.9 5 12 5z"/>
+          <path fill="#4285F4" d="M23.5 12.3c0-.8-.1-1.6-.2-2.3H12v4.5h6.5c-.3 1.5-1.1 2.8-2.4 3.6l3.7 2.9c2.2-2 3.7-5 3.7-8.7z"/>
+          <path fill="#FBBC05" d="M5.3 14.8c-.2-.8-.4-1.6-.4-2.5s.2-1.7.4-2.5L1.6 7C.6 9 0 11.2 0 13.5s.6 4.5 1.6 6.5l3.7-2.9z"/>
+          <path fill="#34A853" d="M12 24c3.2 0 6-1.1 8-3l-3.7-2.9c-1.1.7-2.5 1.2-4.3 1.2-3.1 0-5.8-2.1-6.7-5l-3.7 2.8C3.5 21.4 7.4 24 12 24z"/>
+        </svg>
+        Sign in with Google
+      </button>
+    </div>
+  </div>
+
+  <!-- ========================================================= -->
+  <!-- 2. MAIN APPLICATION SHELL                                 -->
+  <!-- ========================================================= -->
+  <div id="app-shell" class="hidden min-h-screen flex flex-col">
+
+    <!-- Top Navigation Bar -->
+    <header class="fixed top-[3px] left-0 right-0 z-40 bg-dark-950/90 backdrop-blur-xl border-b border-white/10">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between gap-4">
+        <!-- Brand -->
+        <button onclick="switchPage('home')" class="flex items-center gap-3 text-left group">
+          <img
+            src="mahacraftlogo.png"
+            onerror="this.onerror=null; this.src='mahacraftlogo.jpg';"
+            alt="MahaCraft"
+            class="w-11 h-11 object-contain rounded-lg"
+          />
+          <div>
+            <span class="font-display font-extrabold text-lg sm:text-xl text-white tracking-tight block leading-none">
+              Maha<span class="text-saffron-500">Craft</span>
+            </span>
+            <span class="text-[11px] text-gray-400 font-medium">Official Portal</span>
+          </div>
+        </button>
+
+        <!-- Desktop Navigation Links -->
+        <nav class="hidden md:flex items-center gap-1.5">
+          <button onclick="switchPage('home')" data-nav="home" class="nav-link px-4 py-2 rounded-xl text-sm font-medium text-white bg-white/10 transition">
+            Home
+          </button>
+          <button onclick="switchPage('store')" data-nav="store" class="nav-link px-4 py-2 rounded-xl text-sm font-medium text-gray-300 hover:text-white hover:bg-white/5 transition">
+            Store
+          </button>
+          <button onclick="switchPage('orders')" data-nav="orders" class="nav-link px-4 py-2 rounded-xl text-sm font-medium text-gray-300 hover:text-white hover:bg-white/5 transition">
+            My Orders
+          </button>
+          <button onclick="switchPage('blog')" data-nav="blog" class="nav-link px-4 py-2 rounded-xl text-sm font-medium text-gray-300 hover:text-white hover:bg-white/5 transition">
+            Blog
+          </button>
+          <button onclick="switchPage('support')" data-nav="support" class="nav-link px-4 py-2 rounded-xl text-sm font-medium text-gray-300 hover:text-white hover:bg-white/5 transition">
+            Support
+          </button>
+          <button onclick="switchPage('about')" data-nav="about" class="nav-link px-4 py-2 rounded-xl text-sm font-medium text-gray-300 hover:text-white hover:bg-white/5 transition">
+            About & Sponsor
+          </button>
+          <!-- Strictly Visible ONLY to shardulraskar4@gmail.com -->
+          <button
+            id="nav-admin-btn"
+            onclick="switchPage('admin')"
+            data-nav="admin"
+            class="hidden ml-2 px-4 py-2 rounded-xl text-sm font-semibold text-saffron-400 border border-saffron-500/40 bg-saffron-500/10 hover:bg-saffron-500 hover:text-white transition"
+          >
+            Admin Panel
+          </button>
+        </nav>
+
+        <!-- Right Controls: Cart Emoji Only + IGN Profile Pill -->
+        <div class="flex items-center gap-3">
+          <!-- Cart Button (Emoji Only + Count Badge) -->
+          <button
+            onclick="toggleCartDrawer(true)"
+            class="relative h-11 px-3.5 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 flex items-center justify-center transition"
+            title="Shopping Cart"
+          >
+            <span class="text-lg leading-none">🛒</span>
+            <span
+              id="cart-count-badge"
+              class="ml-1.5 px-1.5 py-0.5 text-[11px] font-bold rounded-full bg-saffron-500 text-white leading-none"
+            >0</span>
+          </button>
+
+          <!-- Player IGN Button -->
+          <button
+            onclick="promptChangeIGN()"
+            class="flex items-center gap-2.5 pl-2 pr-3 py-1.5 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 transition"
+            title="Click to update your Minecraft IGN"
+          >
+            <img
+              id="nav-player-avatar"
+              src="https://mc-heads.net/avatar/Steve/32"
+              alt="Avatar"
+              class="w-7 h-7 rounded-md"
+            />
+            <span id="nav-player-ign" class="text-sm font-semibold text-white max-w-[110px] truncate">
+              Set IGN
+            </span>
+          </button>
+
+          <!-- Logout Button -->
+          <button
+            onclick="handleLogout()"
+            class="p-2.5 rounded-xl bg-white/5 hover:bg-red-500/20 border border-white/10 hover:border-red-500/40 text-gray-400 hover:text-red-400 transition"
+            title="Logout"
+          >
+            <i data-lucide="log-out" class="w-4 h-4"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- Mobile Navigation Bar -->
+      <div class="flex md:hidden items-center gap-1.5 overflow-x-auto px-4 py-2.5 border-t border-white/5 bg-dark-950/95">
+        <button onclick="switchPage('home')" data-nav="home" class="nav-link shrink-0 px-3.5 py-1.5 rounded-lg text-xs font-medium text-white bg-white/10">Home</button>
+        <button onclick="switchPage('store')" data-nav="store" class="nav-link shrink-0 px-3.5 py-1.5 rounded-lg text-xs font-medium text-gray-300">Store</button>
+        <button onclick="switchPage('orders')" data-nav="orders" class="nav-link shrink-0 px-3.5 py-1.5 rounded-lg text-xs font-medium text-gray-300">My Orders</button>
+        <button onclick="switchPage('blog')" data-nav="blog" class="nav-link shrink-0 px-3.5 py-1.5 rounded-lg text-xs font-medium text-gray-300">Blog</button>
+        <button onclick="switchPage('support')" data-nav="support" class="nav-link shrink-0 px-3.5 py-1.5 rounded-lg text-xs font-medium text-gray-300">Support</button>
+        <button onclick="switchPage('about')" data-nav="about" class="nav-link shrink-0 px-3.5 py-1.5 rounded-lg text-xs font-medium text-gray-300">About</button>
+        <button id="nav-admin-btn-mobile" onclick="switchPage('admin')" data-nav="admin" class="hidden shrink-0 px-3.5 py-1.5 rounded-lg text-xs font-semibold text-saffron-400 border border-saffron-500/40">Admin</button>
+      </div>
+    </header>
+
+    <!-- Main Content Container with Generous Top Spacing (Fixes Header Overlap) -->
+    <main class="flex-grow pt-32 md:pt-28 pb-20 px-4 sm:px-6 lg:px-8 max-w-7xl w-full mx-auto">
+
+      <!-- ===================================================== -->
+      <!-- PAGE 1: HOME PAGE                                     -->
+      <!-- ===================================================== -->
+      <section id="page-home" class="space-y-12">
+
+        <!-- Conditional Offer Banner (Controlled by Admin) -->
+        <div id="home-promo-banner" class="hidden"></div>
+
+        <!-- Hero Card with Subtle Saffron Lines & Bhagwa Flag Corner -->
+        <div class="glass-card-saffron rounded-3xl p-8 sm:p-12 lg:p-14 relative overflow-hidden">
+          <!-- Top Saffron Line inside Hero -->
+          <div class="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-saffron-500 via-amber-400 to-saffron-500"></div>
+
+          <!-- Realistic Bhagwa Dhwaj (Swallowtail Flag Graphic) in Top Right Corner -->
+          <div class="hidden sm:block absolute top-6 right-8 pointer-events-none opacity-90">
+            <svg width="88" height="72" viewBox="0 0 88 72" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect x="6" y="4" width="3.5" height="64" rx="1.75" fill="#D97706"/>
+              <circle cx="7.75" cy="4" r="3.5" fill="#F59E0B"/>
+              <path d="M9.5 7H82L64 23.5L82 40H9.5V7Z" fill="url(#bhagwaGrad)" stroke="#F59E0B" stroke-width="1"/>
+              <defs>
+                <linearGradient id="bhagwaGrad" x1="9.5" y1="7" x2="82" y2="40" gradientUnits="userSpaceOnUse">
+                  <stop stop-color="#FF5500"/>
+                  <stop offset="0.5" stop-color="#FF7700"/>
+                  <stop offset="1" stop-color="#EA580C"/>
+                </linearGradient>
+              </defs>
+            </svg>
+          </div>
+
+          <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
+            <div class="lg:col-span-8 space-y-6">
+              <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-saffron-500/15 border border-saffron-500/30 text-saffron-400 text-xs font-semibold tracking-wide uppercase">
+                <span class="w-2 h-2 rounded-full bg-saffron-500 animate-pulse"></span>
+                Maharashtra's Survival Network
+              </div>
+
+              <h1 class="font-display text-3xl sm:text-5xl font-extrabold text-white leading-tight">
+                Build Your Empire on <span class="text-saffron-500">MahaCraft SMP</span>
+              </h1>
+
+              <p class="text-gray-300 text-base sm:text-lg leading-relaxed max-w-2xl">
+                Welcome to MahaCraft SMP. Play survival with your friends, build forts, trade in our player economy, and compete in seasonal clan events on lag-free Indian hosting.
+              </p>
+
+              <!-- Action Buttons: Copy IP, Open Store, Join Discord -->
+              <div class="flex flex-wrap items-center gap-4 pt-2">
+                <button
+                  onclick="copyServerIP()"
+                  class="px-6 py-3.5 rounded-xl bg-saffron-500 hover:bg-saffron-600 text-white font-semibold text-sm flex items-center gap-2.5 shadow-lg shadow-saffron-500/25 transition"
+                >
+                  <i data-lucide="copy" class="w-4 h-4"></i>
+                  <span>Copy IP</span>
+                </button>
+
+                <button
+                  onclick="switchPage('store')"
+                  class="px-6 py-3.5 rounded-xl bg-white/10 hover:bg-white/15 border border-white/15 text-white font-semibold text-sm flex items-center gap-2.5 transition"
+                >
+                  <i data-lucide="shopping-bag" class="w-4 h-4 text-saffron-400"></i>
+                  <span>Browse Store</span>
+                </button>
+
+                <a
+                  href="https://discord.gg/PFvJ4b2Xt2"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="px-6 py-3.5 rounded-xl bg-[#5865F2] hover:bg-[#4752C4] text-white font-semibold text-sm flex items-center gap-2.5 shadow-lg shadow-[#5865F2]/25 transition"
+                >
+                  <i data-lucide="message-Square" class="w-4 h-4"></i>
+                  <span>Join Discord</span>
+                </a>
+              </div>
+            </div>
+
+            <div class="lg:col-span-4 flex flex-col items-center justify-center">
+              <img
+                src="mahacraftlogo.png"
+                onerror="this.onerror=null; this.src='mahacraftlogo.jpg';"
+                alt="MahaCraft Crest"
+                class="w-44 h-44 sm:w-52 sm:h-52 object-contain drop-shadow-2xl"
+              />
+            </div>
+          </div>
+        </div>
+
+        <!-- Clean Feature Highlights -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div class="glass-card rounded-2xl p-7 border-l-4 border-l-saffron-500">
+            <h3 class="font-display text-lg font-bold text-white mb-2">Low Ping Indian Server</h3>
+            <p class="text-sm text-gray-400 leading-relaxed">
+              Hosted in Mumbai so players across Maharashtra and India get smooth PvP and zero block lag.
+            </p>
+          </div>
+
+          <div class="glass-card rounded-2xl p-7 border-l-4 border-l-amber-500">
+            <h3 class="font-display text-lg font-bold text-white mb-2">Survival & Clans</h3>
+            <p class="text-sm text-gray-400 leading-relaxed">
+              Team up with friends, claim your land, protect your base, and rise on the server leaderboards.
+            </p>
+          </div>
+
+          <div class="glass-card rounded-2xl p-7 border-l-4 border-l-saffron-500">
+            <h3 class="font-display text-lg font-bold text-white mb-2">Fast Delivery & Support</h3>
+            <p class="text-sm text-gray-400 leading-relaxed">
+              Every store rank or item is verified cleanly via UPI and delivered within 24 hours with live ticket support.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===================================================== -->
+      <!-- PAGE 2: STORE PAGE (SEPARATE PAGE)                    -->
+      <!-- ===================================================== -->
+      <section id="page-store" class="hidden space-y-10">
+        <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4 border-b border-white/10 pb-6">
+          <div>
+            <span class="text-xs font-semibold uppercase tracking-wider text-saffron-400">Official Webstore</span>
+            <h2 class="font-display text-3xl font-extrabold text-white mt-1">Server Ranks & Items</h2>
+          </div>
+
+          <!-- Filter Buttons -->
+          <div class="flex items-center gap-2">
+            <button onclick="filterStore('all')" id="filter-all" class="px-4 py-2 rounded-xl text-xs font-semibold bg-saffron-500 text-white transition">
+              All
+            </button>
+            <button onclick="filterStore('ranks')" id="filter-ranks" class="px-4 py-2 rounded-xl text-xs font-semibold bg-white/5 text-gray-300 hover:text-white transition">
+              Ranks
+            </button>
+            <button onclick="filterStore('items')" id="filter-items" class="px-4 py-2 rounded-xl text-xs font-semibold bg-white/5 text-gray-300 hover:text-white transition">
+              Items & Crates
+            </button>
+          </div>
+        </div>
+
+        <!-- Ranks Section -->
+        <div id="store-ranks-section" class="space-y-5">
+          <h3 class="font-display text-xl font-bold text-white flex items-center gap-2">
+            <span class="w-2 h-5 rounded-full bg-saffron-500"></span>
+            Server Ranks
+          </h3>
+          <div id="ranks-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-7"></div>
+        </div>
+
+        <!-- Items Section -->
+        <div id="store-items-section" class="space-y-5 pt-4">
+          <h3 class="font-display text-xl font-bold text-white flex items-center gap-2">
+            <span class="w-2 h-5 rounded-full bg-amber-400"></span>
+            Items & Bundles
+          </h3>
+          <div id="items-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-7"></div>
+        </div>
+      </section>
+
+      <!-- ===================================================== -->
+      <!-- PAGE 3: MY ORDERS PAGE                                -->
+      <!-- ===================================================== -->
+      <section id="page-orders" class="hidden space-y-8">
+        <div class="border-b border-white/10 pb-6">
+          <span class="text-xs font-semibold uppercase tracking-wider text-saffron-400">Order History</span>
+          <h2 class="font-display text-3xl font-extrabold text-white mt-1">My Purchases</h2>
+          <p class="text-sm text-gray-400 mt-1">Track live status updates for all orders placed from your account.</p>
+        </div>
+
+        <div id="user-orders-list" class="space-y-5"></div>
+      </section>
+
+      <!-- ===================================================== -->
+      <!-- PAGE 4: BLOG PAGE                                     -->
+      <!-- ===================================================== -->
+      <section id="page-blog" class="hidden space-y-8">
+        <div class="border-b border-white/10 pb-6">
+          <span class="text-xs font-semibold uppercase tracking-wider text-saffron-400">Announcements</span>
+          <h2 class="font-display text-3xl font-extrabold text-white mt-1">MahaCraft Blog & Updates</h2>
+          <p class="text-sm text-gray-400 mt-1">Read the latest server news, changelogs, and active discount codes.</p>
+        </div>
+
+        <div id="blogs-grid" class="grid grid-cols-1 md:grid-cols-2 gap-8"></div>
+      </section>
+
+      <!-- ===================================================== -->
+      <!-- PAGE 5: SUPPORT TICKETS PAGE                          -->
+      <!-- ===================================================== -->
+      <section id="page-support" class="hidden space-y-8">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-white/10 pb-6">
+          <div>
+            <span class="text-xs font-semibold uppercase tracking-wider text-saffron-400">Help Center</span>
+            <h2 class="font-display text-3xl font-extrabold text-white mt-1">Support Tickets</h2>
+            <p class="text-sm text-gray-400 mt-1">Need help with a purchase or server issue? Open a ticket or join our Discord.</p>
+          </div>
+
+          <div class="flex flex-wrap items-center gap-3">
+            <a
+              href="https://discord.gg/PFvJ4b2Xt2"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="px-5 py-3 rounded-xl bg-[#5865F2] hover:bg-[#4752C4] text-white font-semibold text-sm flex items-center gap-2 transition"
+            >
+              <i data-lucide="external-link" class="w-4 h-4"></i>
+              <span>Join Discord</span>
+            </a>
+
+            <button
+              onclick="openNewTicketModal()"
+              class="px-5 py-3 rounded-xl bg-saffron-500 hover:bg-saffron-600 text-white font-semibold text-sm flex items-center gap-2 shadow-lg shadow-saffron-500/20 transition"
+            >
+              <i data-lucide="plus" class="w-4 h-4"></i>
+              <span>+ New Ticket</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+          <!-- Ticket List -->
+          <div class="lg:col-span-4 space-y-3" id="user-tickets-list"></div>
+
+          <!-- Active Ticket Live Conversation -->
+          <div class="lg:col-span-8">
+            <div id="ticket-chat-box" class="glass-card rounded-2xl p-6 min-h-[420px] flex flex-col justify-between">
+              <div class="text-center text-gray-500 my-auto py-16">
+                Select a ticket on the left or click <strong>+ New Ticket</strong> to start a conversation with staff.
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===================================================== -->
+      <!-- PAGE 6: ABOUT US & SPONSOR PAGE                       -->
+      <!-- ===================================================== -->
+      <section id="page-about" class="hidden space-y-10">
+        <div class="glass-card rounded-3xl p-8 sm:p-12">
+          <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-start">
+
+            <!-- About Story -->
+            <div class="lg:col-span-7 space-y-6">
+              <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-saffron-500/15 border border-saffron-500/30 text-saffron-400 text-xs font-semibold uppercase">
+                About MahaCraft SMP
+              </div>
+
+              <h2 class="font-display text-3xl sm:text-4xl font-extrabold text-white">
+                Built for Gamers Across Maharashtra & India
+              </h2>
+
+              <p class="text-gray-300 leading-relaxed text-base">
+                <strong>MahaCraft SMP</strong> was started by <strong>Aashutosh Garve</strong> to bring Minecraft players together on a clean, friendly, and lag-free survival server.
+              </p>
+
+              <p class="text-gray-300 leading-relaxed text-base">
+                Inspired by the heritage and forts of Maharashtra, our server focuses on fair survival gameplay, custom clan wars, active economy trading, and regular community events where everyone has a great time playing together.
+              </p>
+
+              <p class="text-gray-300 leading-relaxed text-base">
+                Every rank purchase or sponsor contribution goes directly toward server hosting, DDoS protection, and building new custom features for our players.
+              </p>
+
+              <!-- Clean Non-Overlapping Info Cards -->
+              <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-3">
+                <div class="p-4 rounded-2xl bg-dark-950/80 border border-white/10">
+                  <span class="text-xs text-gray-400 block mb-1">Owner & Founder</span>
+                  <span class="font-display font-bold text-white text-base">Aashutosh Garve</span>
+                </div>
+
+                <div class="p-4 rounded-2xl bg-dark-950/80 border border-white/10 flex flex-col justify-between">
+                  <span class="text-xs text-gray-400 block mb-1.5">Server IP</span>
+                  <button
+                    onclick="copyServerIP()"
+                    class="w-full py-2 px-3 rounded-lg bg-saffron-500 hover:bg-saffron-600 text-white font-semibold text-xs flex items-center justify-center gap-1.5 transition"
+                  >
+                    <i data-lucide="copy" class="w-3.5 h-3.5"></i>
+                    <span>Copy IP</span>
+                  </button>
+                </div>
+
+                <div class="p-4 rounded-2xl bg-dark-950/80 border border-white/10">
+                  <span class="text-xs text-gray-400 block mb-1">Official UPI</span>
+                  <span class="font-mono font-semibold text-saffron-400 text-sm break-all">9766860862@fam</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Sponsor & Donation QR Card -->
+            <div class="lg:col-span-5">
+              <div class="glass-card-saffron rounded-2xl p-7 text-center space-y-5">
+                <span class="px-3 py-1 rounded-full bg-saffron-500/20 text-saffron-400 text-xs font-semibold uppercase">
+                  Sponsor & Donation
+                </span>
+                <h3 class="font-display text-2xl font-bold text-white">Support MahaCraft SMP</h3>
+                <p class="text-xs sm:text-sm text-gray-400">
+                  Scan the QR code below or open your UPI app to support server hosting and events.
+                </p>
+
+                <div class="bg-white p-4 rounded-2xl inline-block mx-auto shadow-xl">
+                  <img
+                    src="qrcodemahacraft.jpg"
+                    onerror="this.onerror=null; this.src='qrcodemahacraft_2.jpg';"
+                    alt="MahaCraft Donation QR"
+                    class="w-52 h-52 object-contain"
+                  />
+                </div>
+
+                <div class="space-y-3 pt-1">
+                  <div class="text-xs text-gray-300">
+                    UPI ID: <span class="font-mono font-bold text-white">9766860862@fam</span>
+                  </div>
+
+                  <a
+                    href="upi://pay?pa=9766860862@fam&pn=MahaCraft%20SMP&cu=INR"
+                    class="w-full py-3 px-4 rounded-xl bg-saffron-500 hover:bg-saffron-600 text-white font-semibold text-xs sm:text-sm inline-flex items-center justify-center gap-2 transition"
+                  >
+                    <i data-lucide="smartphone" class="w-4 h-4"></i>
+                    <span>Open Your Payment App</span>
+                  </a>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+      <!-- ===================================================== -->
+      <!-- PAGE 7: ADMIN PANEL (STRICTLY shardulraskar4@gmail.com) -->
+      <!-- ===================================================== -->
+      <section id="page-admin" class="hidden space-y-10">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-white/10 pb-6">
+          <div>
+            <span class="text-xs font-semibold uppercase tracking-wider text-saffron-400">Master Control</span>
+            <h2 class="font-display text-3xl font-extrabold text-white mt-1">Admin Console</h2>
+          </div>
+
+          <div class="flex flex-wrap gap-2">
+            <button onclick="switchAdminTab('store')" id="adm-tab-store" class="px-4 py-2 rounded-xl text-xs font-semibold bg-saffron-500 text-white">
+              Store (Ranks & Items)
+            </button>
+            <button onclick="switchAdminTab('promos')" id="adm-tab-promos" class="px-4 py-2 rounded-xl text-xs font-semibold bg-white/5 text-gray-300 hover:text-white">
+              Offers & Promo Codes
+            </button>
+            <button onclick="switchAdminTab('orders')" id="adm-tab-orders" class="px-4 py-2 rounded-xl text-xs font-semibold bg-white/5 text-gray-300 hover:text-white">
+              Orders
+            </button>
+            <button onclick="switchAdminTab('tickets')" id="adm-tab-tickets" class="px-4 py-2 rounded-xl text-xs font-semibold bg-white/5 text-gray-300 hover:text-white">
+              Tickets
+            </button>
+            <button onclick="switchAdminTab('blogs')" id="adm-tab-blogs" class="px-4 py-2 rounded-xl text-xs font-semibold bg-white/5 text-gray-300 hover:text-white">
+              Blogs
+            </button>
+          </div>
+        </div>
+
+        <!-- ADMIN TAB 1: STORE MANAGEMENT (TWO SEPARATE COLUMNS) -->
+        <div id="admin-section-store" class="space-y-10">
+          <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <!-- Column 1: Add Rank (With Perks) -->
+            <div class="glass-card rounded-2xl p-7 space-y-5">
+              <h3 class="font-display text-xl font-bold text-white">Add New Rank</h3>
+              <form onsubmit="adminAddRank(event)" class="space-y-4">
+                <input type="text" id="rank-name" required placeholder="Rank Name (e.g. Peshwa Rank)" class="w-full px-4 py-3 rounded-xl bg-dark-950 border border-white/10 text-sm text-white" />
+                <input type="number" id="rank-price" required min="1" placeholder="Price in ₹ (e.g. 299)" class="w-full px-4 py-3 rounded-xl bg-dark-950 border border-white/10 text-sm text-white" />
+                <input type="url" id="rank-img" required placeholder="Image URL (https://...)" class="w-full px-4 py-3 rounded-xl bg-dark-950 border border-white/10 text-sm text-white" />
+                <textarea id="rank-perks" required rows="4" placeholder="Enter Rank Perks (comma or new line separated)
+e.g. /fly command, 5 Homes, Golden Prefix" class="w-full px-4 py-3 rounded-xl bg-dark-950 border border-white/10 text-sm text-white"></textarea>
+                <button type="submit" class="w-full py-3 rounded-xl bg-saffron-500 hover:bg-saffron-600 text-white font-semibold text-sm transition">
+                  + Publish Rank
+                </button>
+              </form>
+            </div>
+
+            <!-- Column 2: Add Item / Product (With Description) -->
+            <div class="glass-card rounded-2xl p-7 space-y-5">
+              <h3 class="font-display text-xl font-bold text-white">Add New Item / Product</h3>
+              <form onsubmit="adminAddItem(event)" class="space-y-4">
+                <input type="text" id="item-name" required placeholder="Product Name (e.g. 5x Mythic Crate Keys)" class="w-full px-4 py-3 rounded-xl bg-dark-950 border border-white/10 text-sm text-white" />
+                <input type="number" id="item-price" required min="1" placeholder="Price in ₹ (e.g. 149)" class="w-full px-4 py-3 rounded-xl bg-dark-950 border border-white/10 text-sm text-white" />
+                <input type="url" id="item-img" required placeholder="Image URL (https://...)" class="w-full px-4 py-3 rounded-xl bg-dark-950 border border-white/10 text-sm text-white" />
+                <textarea id="item-desc" required rows="4" placeholder="Product Description..." class="w-full px-4 py-3 rounded-xl bg-dark-950 border border-white/10 text-sm text-white"></textarea>
+                <button type="submit" class="w-full py-3 rounded-xl bg-amber-500 hover:bg-amber-600 text-black font-bold text-sm transition">
+                  + Publish Item
+                </button>
+              </form>
+            </div>
+          </div>
+
+          <!-- Existing Store Catalog with Delete Buttons -->
+          <div class="glass-card rounded-2xl p-7 space-y-4">
+            <h3 class="font-display text-lg font-bold text-white">Manage Current Store Products</h3>
+            <div id="admin-catalog-list" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"></div>
+          </div>
+        </div>
+
+        <!-- ADMIN TAB 2: PROMO CODES & CONDITIONAL OFFERS -->
+        <div id="admin-section-promos" class="hidden space-y-8">
+          <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+            <div class="lg:col-span-5 glass-card rounded-2xl p-7 space-y-4">
+              <h3 class="font-display text-xl font-bold text-white">Create Conditional Offer / Promo</h3>
+              <form onsubmit="adminAddPromo(event)" class="space-y-4">
+                <input type="text" id="promo-code" required placeholder="Promo Code (e.g. MAHA50)" class="w-full px-4 py-3 rounded-xl bg-dark-950 border border-white/10 text-sm text-white uppercase font-mono" />
+                <div class="grid grid-cols-2 gap-3">
+                  <select id="promo-type" class="px-4 py-3 rounded-xl bg-dark-950 border border-white/10 text-sm text-white">
+                    <option value="flat">Flat Discount (₹)</option>
+                    <option value="percent">Percentage (%)</option>
+                  </select>
+                  <input type="number" id="promo-value" required min="1" placeholder="Discount Value (e.g. 50)" class="px-4 py-3 rounded-xl bg-dark-950 border border-white/10 text-sm text-white" />
+                </div>
+                <input type="number" id="promo-min" required min="0" placeholder="Min Purchase Amount in ₹ (e.g. 500)" class="w-full px-4 py-3 rounded-xl bg-dark-950 border border-white/10 text-sm text-white" />
+                <input type="text" id="promo-label" placeholder="Banner Text (e.g. Get ₹50 OFF on orders above ₹500!)" class="w-full px-4 py-3 rounded-xl bg-dark-950 border border-white/10 text-sm text-white" />
+                <label class="flex items-center gap-2.5 text-sm text-gray-300 cursor-pointer">
+                  <input type="checkbox" id="promo-show-home" checked class="w-4 h-4 accent-saffron-500 rounded" />
+                  <span>Display this offer banner on the Home Page</span>
+                </label>
+                <button type="submit" class="w-full py-3 rounded-xl bg-saffron-500 hover:bg-saffron-600 text-white font-semibold text-sm transition">
+                  + Save Promo Code
+                </button>
+              </form>
+            </div>
+
+            <div class="lg:col-span-7 glass-card rounded-2xl p-7 space-y-4">
+              <h3 class="font-display text-xl font-bold text-white">Active Promo Codes</h3>
+              <div id="admin-promos-list" class="space-y-3"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ADMIN TAB 3: ORDERS MANAGEMENT -->
+        <div id="admin-section-orders" class="hidden space-y-4">
+          <div id="admin-orders-list" class="space-y-4"></div>
+        </div>
+
+        <!-- ADMIN TAB 4: TICKETS MANAGEMENT -->
+        <div id="admin-section-tickets" class="hidden space-y-4">
+          <div id="admin-tickets-list" class="space-y-4"></div>
+        </div>
+
+        <!-- ADMIN TAB 5: BLOGS MANAGEMENT -->
+        <div id="admin-section-blogs" class="hidden space-y-8">
+          <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+            <div class="lg:col-span-5 glass-card rounded-2xl p-7 space-y-4">
+              <h3 class="font-display text-xl font-bold text-white">Publish Blog Post</h3>
+              <form onsubmit="adminAddBlog(event)" class="space-y-4">
+                <input type="text" id="blog-title" required placeholder="Blog Post Title" class="w-full px-4 py-3 rounded-xl bg-dark-950 border border-white/10 text-sm text-white" />
+                <input type="url" id="blog-img" placeholder="Cover Image URL (optional)" class="w-full px-4 py-3 rounded-xl bg-dark-950 border border-white/10 text-sm text-white" />
+                <input type="text" id="blog-promo" placeholder="Attach Promo Code (optional, e.g. MAHA50)" class="w-full px-4 py-3 rounded-xl bg-dark-950 border border-white/10 text-sm text-white uppercase font-mono" />
+                <textarea id="blog-content" required rows="5" placeholder="Write your update or announcement..." class="w-full px-4 py-3 rounded-xl bg-dark-950 border border-white/10 text-sm text-white"></textarea>
+                <button type="submit" class="w-full py-3 rounded-xl bg-saffron-500 hover:bg-saffron-600 text-white font-semibold text-sm transition">
+                  Publish Blog Post
+                </button>
+              </form>
+            </div>
+
+            <div class="lg:col-span-7 glass-card rounded-2xl p-7 space-y-4">
+              <h3 class="font-display text-xl font-bold text-white">Published Blogs</h3>
+              <div id="admin-blogs-list" class="space-y-3"></div>
+            </div>
+          </div>
+        </div>
+
+      </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="border-t border-white/10 bg-dark-950/80 py-8 px-4 sm:px-6 lg:px-8 mt-auto">
+      <div class="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-gray-400">
+        <div class="flex items-center gap-2.5">
+          <img src="mahacraftlogo.png" onerror="this.onerror=null; this.src='mahacraftlogo.jpg';" alt="Logo" class="w-6 h-6 object-contain" />
+          <span class="font-semibold text-white">MahaCraft SMP</span>
+          <span>— Founded by Aashutosh Garve</span>
+        </div>
+        <div class="flex items-center gap-4">
+          <button onclick="copyServerIP()" class="hover:text-saffron-400 transition">Copy IP</button>
+          <a href="https://discord.gg/PFvJ4b2Xt2" target="_blank" rel="noopener noreferrer" class="hover:text-saffron-400 transition">Discord</a>
+        </div>
+      </div>
+    </footer>
+  </div>
+
+  <!-- ========================================================= -->
+  <!-- 3. SHOPPING CART DRAWER                                   -->
+  <!-- ========================================================= -->
+  <div id="cart-drawer" class="fixed inset-0 z-50 hidden">
+    <div onclick="toggleCartDrawer(false)" class="absolute inset-0 bg-black/70 backdrop-blur-sm"></div>
+    <div class="absolute right-0 top-0 bottom-0 w-full max-w-md glass-card border-l border-white/10 p-6 flex flex-col justify-between">
+      <div class="flex items-center justify-between border-b border-white/10 pb-4">
+        <h3 class="font-display text-xl font-bold text-white">🛒 Your Cart</h3>
+        <button onclick="toggleCartDrawer(false)" class="p-2 rounded-lg bg-white/5 text-gray-400 hover:text-white">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+
+      <div id="cart-items-container" class="flex-grow overflow-y-auto py-4 space-y-3"></div>
+
+      <div class="border-t border-white/10 pt-4 space-y-4">
+        <div class="flex items-center justify-between text-base font-bold text-white">
+          <span>Subtotal</span>
+          <span id="cart-subtotal" class="text-saffron-400 font-mono">₹0</span>
+        </div>
+        <button
+          onclick="openCheckoutFromCart()"
+          class="w-full py-3.5 rounded-xl bg-saffron-500 hover:bg-saffron-600 text-white font-semibold text-sm transition"
+        >
+          Proceed to Checkout
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================================= -->
+  <!-- 4. CHECKOUT MODAL (PRICE-LOCKED QR + OPEN PAYMENT APP)    -->
+  <!-- ========================================================= -->
+  <div id="checkout-modal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 overflow-y-auto">
+    <div onclick="closeCheckoutModal()" class="fixed inset-0 bg-black/80 backdrop-blur-sm"></div>
+
+    <div class="glass-card-saffron w-full max-w-2xl rounded-3xl p-6 sm:p-8 relative z-10 my-8 max-h-[92vh] overflow-y-auto">
+      <div class="flex items-center justify-between border-b border-white/10 pb-4 mb-6">
+        <div>
+          <span class="text-xs font-semibold uppercase text-saffron-400">Instant UPI Checkout</span>
+          <h3 class="font-display text-2xl font-extrabold text-white">Complete Your Purchase</h3>
+        </div>
+        <button onclick="closeCheckoutModal()" class="p-2 rounded-xl bg-white/5 text-gray-400 hover:text-white">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+
+      <!-- Checkout Form View -->
+      <div id="checkout-form-view" class="grid grid-cols-1 md:grid-cols-12 gap-7">
+        <!-- Left: Player Details & Promo Code -->
+        <form id="checkout-form" onsubmit="submitOrder(event)" class="md:col-span-7 space-y-4">
+          <div>
+            <label class="block text-xs font-semibold uppercase text-gray-300 mb-1">In-Game Name (IGN)</label>
+            <input type="text" id="chk-ign" required placeholder="Your Minecraft Username" class="w-full px-4 py-3 rounded-xl bg-dark-950 border border-white/10 text-sm text-white" />
+          </div>
+
+          <div>
+            <label class="block text-xs font-semibold uppercase text-gray-300 mb-1">Email Address</label>
+            <input type="email" id="chk-email" required placeholder="you@example.com" class="w-full px-4 py-3 rounded-xl bg-dark-950 border border-white/10 text-sm text-white" />
+          </div>
+
+          <div>
+            <label class="block text-xs font-semibold uppercase text-gray-300 mb-1">Mobile Number</label>
+            <input type="tel" id="chk-mobile" required placeholder="10-digit mobile number" class="w-full px-4 py-3 rounded-xl bg-dark-950 border border-white/10 text-sm text-white" />
+          </div>
+
+          <!-- Conditional Promo Code Box -->
+          <div>
+            <label class="block text-xs font-semibold uppercase text-gray-300 mb-1">Promo / Discount Code</label>
+            <div class="flex gap-2">
+              <input type="text" id="chk-promo-input" placeholder="Enter code" class="flex-grow px-4 py-2.5 rounded-xl bg-dark-950 border border-white/10 text-sm text-white uppercase font-mono" />
+              <button type="button" onclick="applyCheckoutPromo()" class="px-4 py-2.5 rounded-xl bg-white/10 hover:bg-white/15 text-xs font-semibold text-white">
+                Apply
+              </button>
+            </div>
+            <p id="chk-promo-msg" class="text-xs mt-1 hidden"></p>
+          </div>
+
+          <div>
+            <label class="block text-xs font-semibold uppercase text-gray-300 mb-1">UPI Transaction ID / UTR</label>
+            <input type="text" id="chk-utr" required placeholder="Enter 12-digit UPI Transaction ID after paying" class="w-full px-4 py-3 rounded-xl bg-dark-950 border border-white/10 text-sm text-white font-mono" />
+          </div>
+
+          <button type="submit" class="w-full py-3.5 rounded-xl bg-saffron-500 hover:bg-saffron-600 text-white font-semibold text-sm shadow-lg shadow-saffron-500/25 transition">
+            Confirm Payment & Place Order
+          </button>
+        </form>
+
+        <!-- Right: Dynamic Price-Locked QR + Open Payment App Button -->
+        <div class="md:col-span-5 flex flex-col items-center justify-between bg-dark-950/90 rounded-2xl p-5 border border-white/10 text-center space-y-4">
+          <div class="w-full space-y-1">
+            <span class="text-xs text-gray-400">Locked Payable Amount</span>
+            <div id="chk-final-amount" class="font-mono text-3xl font-extrabold text-saffron-400">₹0</div>
+            <div id="chk-Summary-items" class="text-xs text-gray-400 truncate"></div>
+          </div>
+
+          <!-- Auto-Generated Price-Locked QR Code -->
+          <div class="bg-white p-3.5 rounded-2xl shadow-lg">
+            <img
+              id="chk-dynamic-qr"
+              src="qrcodemahacraft.jpg"
+              onerror="this.onerror=null; this.src='qrcodemahacraft.jpg';"
+              alt="UPI QR Code"
+              class="w-44 h-44 object-contain"
+            />
+          </div>
+
+          <div class="w-full space-y-2.5">
+            <div class="text-xs text-gray-400">
+              UPI ID: <span class="font-mono text-white font-semibold">9766860862@fam</span>
+            </div>
+
+            <!-- Direct Open Payment App Button -->
+            <a
+              id="chk-open-upi-app"
+              href="upi://pay?pa=9766860862@fam&pn=MahaCraft%20SMP&cu=INR"
+              class="w-full py-3 px-4 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-semibold text-xs flex items-center justify-center gap-2 shadow-lg transition"
+            >
+              <i data-lucide="smartphone" class="w-4 h-4"></i>
+              <span>Open Your Payment App</span>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Checkout Success View -->
+      <div id="checkout-success-view" class="hidden text-center py-10 space-y-5">
+        <div class="w-16 h-16 rounded-full bg-emerald-500/20 border border-emerald-500/40 text-emerald-400 flex items-center justify-center mx-auto">
+          <i data-lucide="check-circle-2" class="w-9 h-9"></i>
+        </div>
+        <h4 class="font-display text-2xl font-extrabold text-white">Purchase Successful!</h4>
+        <p class="text-gray-300 text-sm max-w-md mx-auto leading-relaxed">
+          Your order has been received. <strong>Your order will be delivered within 24 hours</strong> once payment verification is complete.
+        </p>
+        <div class="pt-2">
+          <button onclick="closeCheckoutModal(); switchPage('orders');" class="px-6 py-3 rounded-xl bg-saffron-500 hover:bg-saffron-600 text-white font-semibold text-sm">
+            View Order Status
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================================= -->
+  <!-- 5. CREATE NEW TICKET MODAL                                -->
+  <!-- ========================================================= -->
+  <div id="ticket-modal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4">
+    <div onclick="closeNewTicketModal()" class="fixed inset-0 bg-black/80 backdrop-blur-sm"></div>
+    <div class="glass-card-saffron w-full max-w-md rounded-2xl p-6 sm:p-7 relative z-10 space-y-5">
+      <div class="flex items-center justify-between">
+        <h3 class="font-display text-xl font-bold text-white">Create Support Ticket</h3>
+        <button onclick="closeNewTicketModal()" class="text-gray-400 hover:text-white">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+      <form onsubmit="submitNewTicket(event)" class="space-y-4">
+        <div>
+          <label class="block text-xs font-semibold uppercase text-gray-300 mb-1">Issue Subject</label>
+          <input type="text" id="tkt-subject" required placeholder="e.g. Rank delivery query / Order issue" class="w-full px-4 py-3 rounded-xl bg-dark-950 border border-white/10 text-sm text-white" />
+        </div>
+        <div>
+          <label class="block text-xs font-semibold uppercase text-gray-300 mb-1">Describe Your Issue</label>
+          <textarea id="tkt-message" required rows="4" placeholder="Include your IGN and Transaction ID if asking about an order..." class="w-full px-4 py-3 rounded-xl bg-dark-950 border border-white/10 text-sm text-white"></textarea>
+        </div>
+        <button type="submit" class="w-full py-3 rounded-xl bg-saffron-500 hover:bg-saffron-600 text-white font-semibold text-sm">
+          Create Ticket
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- ========================================================= -->
+  <!-- 6. FIREBASE & APPLICATION LOGIC                           -->
+  <!-- ========================================================= -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+    import {
+      getAuth,
+      signInWithEmailAndPassword,
+      createUserWithEmailAndPassword,
+      GoogleAuthProvider,
+      signInWithPopup,
+      sendPasswordResetEmail,
+      onAuthStateChanged,
+      signOut
+    } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+    import {
+      getDatabase,
+      ref,
+      set,
+      push,
+      onValue,
+      update,
+      remove
+    } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
+
+    // Provided Firebase Configuration
+    const firebaseConfig = {
+      apiKey: "AIzaSyAcpi2g-1kVHqLEXZmkHv6rMh3k8ybPmoY",
+      authDomain: "mahacraft-29278.firebaseapp.com",
+      databaseURL: "https://mahacraft-29278-default-rtdb.asia-southeast1.firebasedatabase.app",
+      projectId: "mahacraft-29278",
+      storageBucket: "mahacraft-29278.firebasestorage.app",
+      messagingSenderId: "284988534099",
+      appId: "1:284988534099:web:9100a381609151941285a6",
+      measurementId: "G-V9XNLT89F6"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getDatabase(app);
+    const googleProvider = new GoogleAuthProvider();
+
+    // STRICT MASTER ADMIN CREDENTIALS
+    const ADMIN_EMAIL = "shardulraskar4@gmail.com";
+    const ADMIN_PASS = "admin@138mahacraft";
+    const OFFICIAL_UPI = "9766860862@fam";
+    const SERVER_IP = "play.mahacraftsmp.fun";
+
+    // Application State
+    let authMode = "login";
+    let currentUser = null;
+    let ranksList = [];
+    let itemsList = [];
+    let promosList = [];
+    let ordersList = [];
+    let ticketsList = [];
+    let blogsList = [];
+    let cart = JSON.parse(localStorage.getItem("mc_cart") || "[]");
+    let checkoutItems = [];
+    let appliedPromo = null;
+    let selectedTicketId = null;
+
+    // Toast Helper
+    window.showToast = function(message, type = "info") {
+      const container = document.getElementById("toast-container");
+      const el = document.createElement("div");
+      const border = type === "error" ? "border-red-500/50" : "border-saffron-500/50";
+      el.className = `pointer-events-auto glass-card ${border} border px-4 py-3 rounded-xl shadow-xl text-sm text-white flex items-center justify-between gap-3`;
+      el.innerHTML = `<span>${message}</span>`;
+      container.appendChild(el);
+      setTimeout(() => el.remove(), 3500);
+    };
+
+    // Copy Server IP
+    window.copyServerIP = function() {
+      navigator.clipboard.writeText(SERVER_IP);
+      showToast(`Copied Server IP: ${SERVER_IP}`);
+    };
+
+    // Switch Auth Mode (Login / Register)
+    window.switchAuthTab = function(mode) {
+      authMode = mode;
+      const loginBtn = document.getElementById("tab-login-btn");
+      const regBtn = document.getElementById("tab-register-btn");
+      const ignWrap = document.getElementById("ign-field-wrapper");
+      const submitBtn = document.getElementById("auth-submit-btn");
+
+      if (mode === "login") {
+        loginBtn.className = "py-2.5 text-sm font-semibold rounded-lg bg-saffron-500 text-white transition";
+        regBtn.className = "py-2.5 text-sm font-semibold rounded-lg text-gray-400 hover:text-white transition";
+        ignWrap.classList.add("hidden");
+        submitBtn.textContent = "Sign In to MahaCraft";
+      } else {
+        regBtn.className = "py-2.5 text-sm font-semibold rounded-lg bg-saffron-500 text-white transition";
+        loginBtn.className = "py-2.5 text-sm font-semibold rounded-lg text-gray-400 hover:text-white transition";
+        ignWrap.classList.remove("hidden");
+        submitBtn.textContent = "Create MahaCraft Account";
+      }
+    };
+
+    // Show/Hide Password Eye Toggle
+    window.togglePasswordVisibility = function() {
+      const input = document.getElementById("auth-password");
+      input.type = input.type === "password" ? "text" : "password";
+    };
+
+    // Handle Login / Register Submit
+    window.handleAuthSubmit = async function(e) {
+      e.preventDefault();
+      const email = document.getElementById("auth-email").value.trim().toLowerCase();
+      const password = document.getElementById("auth-password").value;
+      const ignInput = document.getElementById("auth-ign").value.trim();
+
+      // Master Admin Instant Override Check
+      if (email === ADMIN_EMAIL && password === ADMIN_PASS) {
+        const adminSession = {
+          uid: "master-admin-shardul",
+          email: ADMIN_EMAIL,
+          ign: localStorage.getItem(`mc_ign_${ADMIN_EMAIL}`) || "Admin"
+        };
+        localStorage.setItem("mc_session_user", JSON.stringify(adminSession));
+        try {
+          await signInWithEmailAndPassword(auth, email, password).catch(async () => {
+            await createUserWithEmailAndPassword(auth, email, password).catch(() => {});
+          });
+        } catch (_) {}
+        enterApp(adminSession);
+        showToast("Logged in as Master Admin");
+        return;
+      }
+
+      try {
+        if (authMode === "register") {
+          if (!ignInput) {
+            showToast("Please enter your Minecraft In-Game Name (IGN)", "error");
+            return;
+          }
+          const cred = await createUserWithEmailAndPassword(auth, email, password);
+          localStorage.setItem(`mc_ign_${email}`, ignInput);
+          await set(ref(db, `users/${cred.user.uid}`), { email, ign: ignInput });
+          const sessionObj = { uid: cred.user.uid, email, ign: ignInput };
+          localStorage.setItem("mc_session_user", JSON.stringify(sessionObj));
+          enterApp(sessionObj);
+          showToast("Account created! Welcome to MahaCraft.");
+        } else {
+          const cred = await signInWithEmailAndPassword(auth, email, password);
+          const savedIgn = localStorage.getItem(`mc_ign_${email}`) || email.split("@")[0];
+          const sessionObj = { uid: cred.user.uid, email, ign: savedIgn };
+          localStorage.setItem("mc_session_user", JSON.stringify(sessionObj));
+          enterApp(sessionObj);
+          showToast("Welcome back!");
+        }
+      } catch (err) {
+        showToast(err.message || "Authentication failed", "error");
+      }
+    };
+
+    // Google Login
+    window.handleGoogleLogin = async function() {
+      try {
+        const cred = await signInWithPopup(auth, googleProvider);
+        const email = (cred.user.email || "").toLowerCase();
+        let ign = localStorage.getItem(`mc_ign_${email}`);
+        if (!ign) {
+          ign = prompt("Enter your Minecraft In-Game Name (IGN):", cred.user.displayName?.replace(/\s+/g, "") || "MarathaPlayer") || "MarathaPlayer";
+          localStorage.setItem(`mc_ign_${email}`, ign);
+        }
+        const sessionObj = { uid: cred.user.uid, email, ign };
+        localStorage.setItem("mc_session_user", JSON.stringify(sessionObj));
+        enterApp(sessionObj);
+      } catch (err) {
+        showToast(err.message || "Google sign-in cancelled", "error");
+      }
+    };
+
+    // Forgot Password
+    window.handleForgotPassword = async function() {
+      const email = document.getElementById("auth-email").value.trim();
+      if (!email) {
+        showToast("Enter your email address first to reset password", "error");
+        return;
+      }
+      try {
+        await sendPasswordResetEmail(auth, email);
+        showToast("Password reset link sent to your email!");
+      } catch (err) {
+        showToast(err.message, "error");
+      }
+    };
+
+    // Change IGN anytime by clicking navbar profile pill
+    window.promptChangeIGN = function() {
+      if (!currentUser) return;
+      const nextIgn = prompt("Enter your Minecraft In-Game Name (IGN):", currentUser.ign || "");
+      if (nextIgn && nextIgn.trim()) {
+        currentUser.ign = nextIgn.trim();
+        localStorage.setItem(`mc_ign_${currentUser.email}`, currentUser.ign);
+        localStorage.setItem("mc_session_user", JSON.stringify(currentUser));
+        updateNavbarProfile();
+        showToast(`IGN updated to ${currentUser.ign}`);
+      }
+    };
+
+    function updateNavbarProfile() {
+      if (!currentUser) return;
+      const ignText = currentUser.ign || currentUser.email.split("@")[0];
+      document.getElementById("nav-player-ign").textContent = ignText;
+      document.getElementById("nav-player-avatar").src = `https://mc-heads.net/avatar/${encodeURIComponent(ignText)}/32`;
+
+      // STRICT ADMIN ACCESS ONLY FOR shardulraskar4@gmail.com
+      const isAdmin = currentUser.email.toLowerCase() === ADMIN_EMAIL;
+      document.getElementById("nav-admin-btn").classList.toggle("hidden", !isAdmin);
+      document.getElementById("nav-admin-btn-mobile").classList.toggle("hidden", !isAdmin);
+    }
+
+    function enterApp(userObj) {
+      currentUser = userObj;
+      document.getElementById("auth-gate").classList.add("hidden");
+      document.getElementById("app-shell").classList.remove("hidden");
+      updateNavbarProfile();
+      updateCartUI();
+      initRealtimeListeners();
+      lucide.createIcons();
+    }
+
+    window.handleLogout = async function() {
+      localStorage.removeItem("mc_session_user");
+      currentUser = null;
+      try { await signOut(auth); } catch (_) {}
+      document.getElementById("app-shell").classList.add("hidden");
+      document.getElementById("auth-gate").classList.remove("hidden");
+    };
+
+    // Restore Persisted Session on Reload (No Re-Login Required)
+    const savedSession = localStorage.getItem("mc_session_user");
+    if (savedSession) {
+      try {
+        enterApp(JSON.parse(savedSession));
+      } catch (_) {}
+    }
+
+    onAuthStateChanged(auth, (user) => {
+      if (user && !currentUser) {
+        const email = (user.email || "").toLowerCase();
+        const ign = localStorage.getItem(`mc_ign_${email}`) || email.split("@")[0];
+        const sessionObj = { uid: user.uid, email, ign };
+        localStorage.setItem("mc_session_user", JSON.stringify(sessionObj));
+        enterApp(sessionObj);
+      }
+    });
+
+    // Navigation Page Switcher
+    window.switchPage = function(pageId) {
+      if (pageId === "admin" && (!currentUser || currentUser.email.toLowerCase() !== ADMIN_EMAIL)) {
+        showToast("Access restricted to Master Admin only", "error");
+        return;
+      }
+
+      const pages = ["home", "store", "orders", "blog", "support", "about", "admin"];
+      pages.forEach(p => {
+        const sec = document.getElementById(`page-${p}`);
+        if (sec) sec.classList.toggle("hidden", p !== pageId);
+      });
+
+      document.querySelectorAll(".nav-link").forEach(btn => {
+        const active = btn.getAttribute("data-nav") === pageId;
+        btn.className = active
+          ? "nav-link shrink-0 px-4 py-2 rounded-xl text-sm font-semibold text-white bg-saffron-500 transition"
+          : "nav-link shrink-0 px-4 py-2 rounded-xl text-sm font-medium text-gray-300 hover:text-white hover:bg-white/5 transition";
+      });
+
+      window.scrollTo({ top: 0, behavior: "smooth" });
+      lucide.createIcons();
+    };
+
+    // Store Category Filter
+    window.filterStore = function(type) {
+      document.getElementById("store-ranks-section").classList.toggle("hidden", type === "items");
+      document.getElementById("store-items-section").classList.toggle("hidden", type === "ranks");
+      ["all", "ranks", "items"].forEach(k => {
+        const btn = document.getElementById(`filter-${k}`);
+        btn.className = k === type
+          ? "px-4 py-2 rounded-xl text-xs font-semibold bg-saffron-500 text-white transition"
+          : "px-4 py-2 rounded-xl text-xs font-semibold bg-white/5 text-gray-300 hover:text-white transition";
+      });
+    };
+
+    // =========================================================
+    // REALTIME DATABASE LISTENERS (NO DEFAULT / FAKE ITEMS)
+    // =========================================================
+    let listenersInitialized = false;
+    function initRealtimeListeners() {
+      if (listenersInitialized) return;
+      listenersInitialized = true;
+
+      // 1. Ranks Listener
+      onValue(ref(db, "store/ranks"), (snap) => {
+        const val = snap.val() || {};
+        ranksList = Object.entries(val).map(([id, data]) => ({ id, ...data }));
+        renderStore();
+        renderAdminCatalog();
+      });
+
+      // 2. Items Listener
+      onValue(ref(db, "store/items"), (snap) => {
+        const val = snap.val() || {};
+        itemsList = Object.entries(val).map(([id, data]) => ({ id, ...data }));
+        renderStore();
+        renderAdminCatalog();
+      });
+
+      // 3. Promos Listener
+      onValue(ref(db, "promos"), (snap) => {
+        const val = snap.val() || {};
+        promosList = Object.entries(val).map(([id, data]) => ({ id, ...data }));
+        renderHomePromoBanner();
+        renderAdminPromos();
+      });
+
+      // 4. Orders Listener
+      onValue(ref(db, "orders"), (snap) => {
+        const val = snap.val() || {};
+        ordersList = Object.entries(val)
+          .map(([id, data]) => ({ id, ...data }))
+          .sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
+        renderUserOrders();
+        renderAdminOrders();
+      });
+
+      // 5. Tickets Listener
+      onValue(ref(db, "tickets"), (snap) => {
+        const val = snap.val() || {};
+        ticketsList = Object.entries(val)
+          .map(([id, data]) => ({ id, ...data }))
+          .sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
+        renderUserTickets();
+        renderAdminTickets();
+      });
+
+      // 6. Blogs Listener
+      onValue(ref(db, "blogs"), (snap) => {
+        const val = snap.val() || {};
+        blogsList = Object.entries(val)
+          .map(([id, data]) => ({ id, ...data }))
+          .sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
+        renderBlogs();
+        renderAdminBlogs();
+      });
+    }
+
+    // Render Home Page Promo Banner
+    function renderHomePromoBanner() {
+      const container = document.getElementById("home-promo-banner");
+      const homePromos = promosList.filter(p => p.showOnHome);
+      if (homePromos.length === 0) {
+        container.classList.add("hidden");
+        container.innerHTML = "";
+        return;
+      }
+      const p = homePromos[0];
+      const discountDesc = p.type === "flat" ? `₹${p.value} OFF` : `${p.value}% OFF`;
+      const minText = Number(p.minAmount) > 0 ? `on orders of ₹${p.minAmount}+` : "on all store items";
+
+      container.classList.remove("hidden");
+      container.innerHTML = `
+        <div class="glass-card-saffron rounded-2xl px-6 py-4 flex flex-col sm:flex-row items-center justify-between gap-4">
+          <div class="flex items-center gap-3 text-center sm:text-left">
+            <span class="px-3 py-1 rounded-lg bg-saffron-500 text-white text-xs font-bold uppercase">Special Offer</span>
+            <p class="text-sm font-medium text-white">
+              ${p.label || `Get <strong>${discountDesc}</strong> ${minText}!`}
+            </p>
+          </div>
+          <button
+            onclick="navigator.clipboard.writeText('${p.code}'); showToast('Copied Promo Code: ${p.code}')"
+            class="shrink-0 px-4 py-2 rounded-xl bg-dark-950 border border-saffron-500/40 text-saffron-400 font-mono text-xs font-bold hover:bg-saffron-500 hover:text-white transition"
+          >
+            CODE: ${p.code} (Click to Copy)
+          </button>
+        </div>
+      `;
+    }
+
+    // Render Store Page (Ranks & Items)
+    function renderStore() {
+      const ranksGrid = document.getElementById("ranks-grid");
+      const itemsGrid = document.getElementById("items-grid");
+
+      if (ranksList.length === 0) {
+        ranksGrid.innerHTML = `
+          <div class="col-span-full glass-card rounded-2xl p-10 text-center text-gray-400 text-sm">
+            No ranks have been published yet.
+          </div>
+        `;
+      } else {
+        ranksGrid.innerHTML = ranksList.map(r => {
+          const perks = Array.isArray(r.perks)
+            ? r.perks
+            : String(r.perks || "").split(/[\n,]+/).map(s => s.trim()).filter(Boolean);
+          return `
+            <div class="glass-card rounded-2xl p-6 flex flex-col justify-between hover:border-saffron-500/40 transition">
+              <div>
+                <div class="h-44 rounded-xl bg-dark-950/90 flex items-center justify-center p-4 mb-5 overflow-hidden border border-white/5">
+                  <img src="${r.image}" alt="${r.name}" class="max-h-full object-contain" />
+                </div>
+                <div class="flex items-center justify-between gap-2 mb-3">
+                  <h4 class="font-display text-xl font-bold text-white">${r.name}</h4>
+                  <span class="font-mono text-lg font-extrabold text-saffron-400">₹${r.price}</span>
+                </div>
+                <ul class="space-y-2 text-xs text-gray-300 mb-6">
+                  ${perks.map(perk => `<li class="flex items-center gap-2"><span class="text-saffron-500">✔</span><span>${perk}</span></li>`).join("")}
+                </ul>
+              </div>
+              <div class="grid grid-cols-2 gap-2.5 pt-2 border-t border-white/10">
+                <button onclick="buySingleItem('rank', '${r.id}')" class="py-2.5 rounded-xl bg-saffron-500 hover:bg-saffron-600 text-white font-semibold text-xs transition">
+                  Buy Now
+                </button>
+                <button onclick="addToCart('rank', '${r.id}')" class="py-2.5 rounded-xl bg-white/10 hover:bg-white/15 text-white font-semibold text-xs transition">
+                  🛒 Add
+                </button>
+              </div>
+            </div>
+          `;
+        }).join("");
+      }
+
+      if (itemsList.length === 0) {
+        itemsGrid.innerHTML = `
+          <div class="col-span-full glass-card rounded-2xl p-10 text-center text-gray-400 text-sm">
+            No items have been published yet.
+          </div>
+        `;
+      } else {
+        itemsGrid.innerHTML = itemsList.map(item => `
+          <div class="glass-card rounded-2xl p-6 flex flex-col justify-between hover:border-amber-500/40 transition">
+            <div>
+              <div class="h-44 rounded-xl bg-dark-950/90 flex items-center justify-center p-4 mb-5 overflow-hidden border border-white/5">
+                <img src="${item.image}" alt="${item.name}" class="max-h-full object-contain" />
+              </div>
+              <div class="flex items-center justify-between gap-2 mb-2">
+                <h4 class="font-display text-xl font-bold text-white">${item.name}</h4>
+                <span class="font-mono text-lg font-extrabold text-amber-400">₹${item.price}</span>
+              </div>
+              <p class="text-xs text-gray-400 leading-relaxed mb-6">${item.description || ""}</p>
+            </div>
+            <div class="grid grid-cols-2 gap-2.5 pt-2 border-t border-white/10">
+              <button onclick="buySingleItem('item', '${item.id}')" class="py-2.5 rounded-xl bg-saffron-500 hover:bg-saffron-600 text-white font-semibold text-xs transition">
+                Buy Now
+              </button>
+              <button onclick="addToCart('item', '${item.id}')" class="py-2.5 rounded-xl bg-white/10 hover:bg-white/15 text-white font-semibold text-xs transition">
+                🛒 Add
+              </button>
+            </div>
+          </div>
+        `).join("");
+      }
+    }
+
+    // =========================================================
+    // SHOPPING CART & CHECKOUT LOGIC
+    // =========================================================
+    function findStoreProduct(category, id) {
+      return category === "rank"
+        ? ranksList.find(r => r.id === id)
+        : itemsList.find(i => i.id === id);
+    }
+
+    window.addToCart = function(category, id) {
+      const prod = findStoreProduct(category, id);
+      if (!prod) return;
+      cart.push({ id: prod.id, name: prod.name, price: Number(prod.price), category });
+      localStorage.setItem("mc_cart", JSON.stringify(cart));
+      updateCartUI();
+      showToast(`${prod.name} added to 🛒`);
+    };
+
+    window.removeFromCart = function(index) {
+      cart.splice(index, 1);
+      localStorage.setItem("mc_cart", JSON.stringify(cart));
+      updateCartUI();
+    };
+
+    function updateCartUI() {
+      document.getElementById("cart-count-badge").textContent = cart.length;
+      const container = document.getElementById("cart-items-container");
+      const subtotalEl = document.getElementById("cart-subtotal");
+
+      if (cart.length === 0) {
+        container.innerHTML = `<p class="text-center text-gray-500 text-sm py-12">Your cart is empty.</p>`;
+        subtotalEl.textContent = "₹0";
+        return;
+      }
+
+      const total = cart.reduce((acc, item) => acc + Number(item.price || 0), 0);
+      subtotalEl.textContent = `₹${total}`;
+      container.innerHTML = cart.map((c, idx) => `
+        <div class="flex items-center justify-between p-3.5 rounded-xl bg-dark-950/90 border border-white/10">
+          <div>
+            <div class="text-sm font-semibold text-white">${c.name}</div>
+            <div class="text-xs font-mono text-saffron-400">₹${c.price}</div>
+          </div>
+          <button onclick="removeFromCart(${idx})" class="text-xs text-red-400 hover:underline">Remove</button>
+        </div>
+      `).join("");
+    }
+
+    window.toggleCartDrawer = function(open) {
+      document.getElementById("cart-drawer").classList.toggle("hidden", !open);
+    };
+
+    window.buySingleItem = function(category, id) {
+      const prod = findStoreProduct(category, id);
+      if (!prod) return;
+      checkoutItems = [{ id: prod.id, name: prod.name, price: Number(prod.price), category }];
+      openCheckoutModal();
+    };
+
+    window.openCheckoutFromCart = function() {
+      if (cart.length === 0) {
+        showToast("Your cart is empty", "error");
+        return;
+      }
+      checkoutItems = [...cart];
+      toggleCartDrawer(false);
+      openCheckoutModal();
+    };
+
+    function getBaseCheckoutTotal() {
+      return checkoutItems.reduce((sum, item) => sum + Number(item.price || 0), 0);
+    }
+
+    function getFinalCheckoutTotal() {
+      const base = getBaseCheckoutTotal();
+      if (!appliedPromo) return base;
+      if (base < Number(appliedPromo.minAmount || 0)) return base;
+      const discount = appliedPromo.type === "flat"
+        ? Number(appliedPromo.value)
+        : Math.round((base * Number(appliedPromo.value)) / 100);
+      return Math.max(1, base - discount);
+    }
+
+    function refreshCheckoutQRAndAmount() {
+      const finalAmount = getFinalCheckoutTotal();
+      document.getElementById("chk-final-amount").textContent = `₹${finalAmount}`;
+      document.getElementById("chk-Summary-items").textContent = checkoutItems.map(i => i.name).join(", ");
+
+      // Price-Locked UPI Deep Link
+      const upiUri = `upi://pay?pa=${OFFICIAL_UPI}&pn=MahaCraft%20SMP&am=${finalAmount}&cu=INR&tn=MahaCraftOrder`;
+      const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=240x240&data=${encodeURIComponent(upiUri)}`;
+
+      document.getElementById("chk-dynamic-qr").src = qrUrl;
+      document.getElementById("chk-open-upi-app").href = upiUri;
+    }
+
+    function openCheckoutModal() {
+      appliedPromo = null;
+      document.getElementById("chk-promo-input").value = "";
+      document.getElementById("chk-promo-msg").classList.add("hidden");
+      document.getElementById("chk-utr").value = "";
+
+      if (currentUser) {
+        document.getElementById("chk-ign").value = currentUser.ign || "";
+        document.getElementById("chk-email").value = currentUser.email || "";
+      }
+
+      document.getElementById("checkout-form-view").classList.remove("hidden");
+      document.getElementById("checkout-success-view").classList.add("hidden");
+      document.getElementById("checkout-modal").classList.remove("hidden");
+      refreshCheckoutQRAndAmount();
+      lucide.createIcons();
+    }
+
+    window.closeCheckoutModal = function() {
+      document.getElementById("checkout-modal").classList.add("hidden");
+    };
+
+    // Apply Conditional Promo Code
+    window.applyCheckoutPromo = function() {
+      const code = document.getElementById("chk-promo-input").value.trim().toUpperCase();
+      const msgEl = document.getElementById("chk-promo-msg");
+      if (!code) return;
+
+      const found = promosList.find(p => String(p.code).toUpperCase() === code);
+      const baseTotal = getBaseCheckoutTotal();
+
+      if (!found) {
+        appliedPromo = null;
+        msgEl.textContent = "Invalid promo code.";
+        msgEl.className = "text-xs mt-1 text-red-400 block";
+        refreshCheckoutQRAndAmount();
+        return;
+      }
+
+      if (baseTotal < Number(found.minAmount || 0)) {
+        appliedPromo = null;
+        msgEl.textContent = `Minimum order of ₹${found.minAmount} required for this code.`;
+        msgEl.className = "text-xs mt-1 text-amber-400 block";
+        refreshCheckoutQRAndAmount();
+        return;
+      }
+
+      appliedPromo = found;
+      const finalAmt = getFinalCheckoutTotal();
+      msgEl.textContent = `Promo ${found.code} applied! Final Price: ₹${finalAmt}`;
+      msgEl.className = "text-xs mt-1 text-emerald-400 block";
+      refreshCheckoutQRAndAmount();
+    };
+
+    // Submit Order
+    window.submitOrder = async function(e) {
+      e.preventDefault();
+      const ign = document.getElementById("chk-ign").value.trim();
+      const email = document.getElementById("chk-email").value.trim().toLowerCase();
+      const mobile = document.getElementById("chk-mobile").value.trim();
+      const utr = document.getElementById("chk-utr").value.trim();
+      const finalAmount = getFinalCheckoutTotal();
+
+      const orderData = {
+        ign,
+        email,
+        mobile,
+        utr,
+        items: checkoutItems.map(i => i.name).join(", "),
+        amount: finalAmount,
+        promoCode: appliedPromo ? appliedPromo.code : "",
+        status: "Order Received",
+        rejectReason: "",
+        paymentNotReceived: false,
+        createdAt: Date.now()
+      };
+
+      try {
+        await push(ref(db, "orders"), orderData);
+        cart = [];
+        localStorage.setItem("mc_cart", "[]");
+        updateCartUI();
+
+        document.getElementById("checkout-form-view").classList.add("hidden");
+        document.getElementById("checkout-success-view").classList.remove("hidden");
+        lucide.createIcons();
+      } catch (err) {
+        showToast(err.message || "Could not submit order", "error");
+      }
+    };
+
+    // =========================================================
+    // MY ORDERS RENDERING
+    // =========================================================
+    function renderUserOrders() {
+      const container = document.getElementById("user-orders-list");
+      if (!currentUser) return;
+
+      const myOrders = ordersList.filter(o => (o.email || "").toLowerCase() === currentUser.email.toLowerCase());
+      if (myOrders.length === 0) {
+        container.innerHTML = `
+          <div class="glass-card rounded-2xl p-10 text-center text-gray-400 text-sm">
+            You haven't placed any orders yet.
+          </div>
+        `;
+        return;
+      }
+
+      container.innerHTML = myOrders.map(o => {
+        let badgeClass = "bg-blue-500/20 text-blue-400 border-blue-500/30";
+        if (o.status === "Order Accepted") badgeClass = "bg-amber-500/20 text-amber-400 border-amber-500/30";
+        if (o.status === "Order Delivered") badgeClass = "bg-emerald-500/20 text-emerald-400 border-emerald-500/30";
+        if (o.status === "Order Rejected") badgeClass = "bg-red-500/20 text-red-400 border-red-500/30";
+
+        return `
+          <div class="glass-card rounded-2xl p-6 flex flex-col md:flex-row md:items-center justify-between gap-4">
+            <div class="space-y-1.5">
+              <div class="flex flex-wrap items-center gap-2.5">
+                <span class="font-display font-bold text-lg text-white">${o.items || "Store Purchase"}</span>
+                <span class="px-3 py-1 rounded-full text-xs font-semibold border ${badgeClass}">${o.status}</span>
+              </div>
+              <div class="text-xs text-gray-400">
+                IGN: <strong class="text-white">${o.ign}</strong> • Amount: <strong class="text-saffron-400 font-mono">₹${o.amount}</strong> • UTR: <span class="font-mono">${o.utr}</span>
+              </div>
+              ${o.status === "Order Rejected" ? `
+                <div class="mt-2 p-3 rounded-xl bg-red-500/10 border border-red-500/30 text-xs text-red-300">
+                  <strong>Reason:</strong> ${o.paymentNotReceived ? "Payment not received. " : ""}${o.rejectReason || "Verification failed."}
+                </div>
+              ` : ""}
+            </div>
+
+            <div>
+              <button
+                onclick="switchPage('support'); openNewTicketModal();"
+                class="px-4 py-2.5 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-xs font-semibold text-white transition"
+              >
+                Open Support Ticket
+              </button>
+            </div>
+          </div>
+        `;
+      }).join("");
+    }
+
+    // =========================================================
+    // BLOG PAGE RENDERING
+    // =========================================================
+    function renderBlogs() {
+      const grid = document.getElementById("blogs-grid");
+      if (blogsList.length === 0) {
+        grid.innerHTML = `
+          <div class="col-span-full glass-card rounded-2xl p-10 text-center text-gray-400 text-sm">
+            No blog posts have been published yet.
+          </div>
+        `;
+        return;
+      }
+
+      grid.innerHTML = blogsList.map(b => `
+        <article class="glass-card rounded-2xl overflow-hidden flex flex-col justify-between">
+          <div>
+            ${b.image ? `<img src="${b.image}" alt="${b.title}" class="w-full h-52 object-cover border-b border-white/10" />` : ""}
+            <div class="p-7 space-y-3">
+              <div class="text-xs text-gray-400">${new Date(b.createdAt || Date.now()).toLocaleDateString()}</div>
+              <h3 class="font-display text-2xl font-bold text-white">${b.title}</h3>
+              <p class="text-sm text-gray-300 leading-relaxed whitespace-pre-line">${b.content}</p>
+            </div>
+          </div>
+          ${b.promoCode ? `
+            <div class="px-7 pb-6">
+              <button
+                onclick="navigator.clipboard.writeText('${b.promoCode}'); showToast('Copied Promo Code: ${b.promoCode}')"
+                class="w-full py-2.5 px-4 rounded-xl bg-saffron-500/15 border border-saffron-500/40 text-saffron-400 font-mono text-xs font-bold hover:bg-saffron-500 hover:text-white transition"
+              >
+                Promo Code: ${b.promoCode} (Click to Copy)
+              </button>
+            </div>
+          ` : ""}
+        </article>
+      `).join("");
+    }
+
+    // =========================================================
+    // SUPPORT TICKET SYSTEM
+    // =========================================================
+    window.openNewTicketModal = function() {
+      document.getElementById("ticket-modal").classList.remove("hidden");
+    };
+    window.closeNewTicketModal = function() {
+      document.getElementById("ticket-modal").classList.add("hidden");
+    };
+
+    window.submitNewTicket = async function(e) {
+      e.preventDefault();
+      if (!currentUser) return;
+      const subject = document.getElementById("tkt-subject").value.trim();
+      const msg = document.getElementById("tkt-message").value.trim();
+      const ticketCode = `#TKT-${Math.floor(1000 + Math.random() * 9000)}`;
+
+      const newTicket = {
+        ticketCode,
+        subject,
+        email: currentUser.email,
+        ign: currentUser.ign || "Player",
+        status: "Open",
+        createdAt: Date.now(),
+        messages: [
+          { sender: currentUser.ign || currentUser.email, role: "user", text: msg, time: Date.now() }
+        ]
+      };
+
+      const pushed = await push(ref(db, "tickets"), newTicket);
+      selectedTicketId = pushed.key;
+      document.getElementById("tkt-subject").value = "";
+      document.getElementById("tkt-message").value = "";
+      closeNewTicketModal();
+      showToast(`Ticket ${ticketCode} created!`);
+    };
+
+    window.selectTicket = function(id) {
+      selectedTicketId = id;
+      renderUserTickets();
+    };
+
+    function renderUserTickets() {
+      const listEl = document.getElementById("user-tickets-list");
+      const chatBox = document.getElementById("ticket-chat-box");
+      if (!currentUser) return;
+
+      const myTickets = ticketsList.filter(t => (t.email || "").toLowerCase() === currentUser.email.toLowerCase());
+
+      if (myTickets.length === 0) {
+        listEl.innerHTML = `
+          <div class="glass-card rounded-2xl p-6 text-center text-gray-400 text-xs">
+            No tickets yet. Click <strong>+ New Ticket</strong> to create one.
+          </div>
+        `;
+        return;
+      }
+
+      listEl.innerHTML = myTickets.map(t => `
+        <button
+          onclick="selectTicket('${t.id}')"
+          class="w-full text-left p-4 rounded-2xl border transition ${selectedTicketId === t.id ? 'glass-card-saffron border-saffron-500' : 'glass-card border-white/10 hover:border-white/20'}"
+        >
+          <div class="flex items-center justify-between text-xs mb-1">
+            <span class="font-mono font-bold text-saffron-400">${t.ticketCode}</span>
+            <span class="px-2 py-0.5 rounded-full ${t.status === 'Closed' ? 'bg-gray-500/20 text-gray-400' : 'bg-emerald-500/20 text-emerald-400'}">${t.status}</span>
+          </div>
+          <div class="font-semibold text-sm text-white truncate">${t.subject}</div>
+        </button>
+      `).join("");
+
+      const active = myTickets.find(t => t.id === selectedTicketId) || myTickets[0];
+      if (!active) return;
+      selectedTicketId = active.id;
+
+      const msgs = Array.isArray(active.messages)
+        ? active.messages
+        : Object.values(active.messages || {});
+
+      chatBox.innerHTML = `
+        <div class="border-b border-white/10 pb-4 mb-4 flex items-center justify-between">
+          <div>
+            <span class="font-mono text-xs text-saffron-400">${active.ticketCode}</span>
+            <h4 class="font-display text-lg font-bold text-white">${active.subject}</h4>
+          </div>
+          <span class="text-xs px-3 py-1 rounded-full bg-white/10 text-white">${active.status}</span>
+        </div>
+
+        <div class="flex-grow space-y-3 overflow-y-auto max-h-80 pr-1 mb-4">
+          ${msgs.map(m => `
+            <div class="p-3.5 rounded-xl ${m.role === 'admin' ? 'bg-saffron-500/15 border border-saffron-500/30 ml-6' : 'bg-dark-950/90 border border-white/10 mr-6'}">
+              <div class="text-[11px] font-bold ${m.role === 'admin' ? 'text-saffron-400' : 'text-gray-400'} mb-1">
+                ${m.sender} ${m.role === 'admin' ? '(Staff)' : ''}
+              </div>
+              <div class="text-sm text-white">${m.text}</div>
+            </div>
+          `).join("")}
+        </div>
+
+        <form onsubmit="sendUserTicketReply(event, '${active.id}')" class="flex gap-2 pt-2 border-t border-white/10">
+          <input type="text" id="user-tkt-reply" required placeholder="Write a message..." class="flex-grow px-4 py-2.5 rounded-xl bg-dark-950 border border-white/10 text-sm text-white" />
+          <button type="submit" class="px-5 py-2.5 rounded-xl bg-saffron-500 hover:bg-saffron-600 text-white text-xs font-semibold">
+            Send
+          </button>
+        </form>
+      `;
+    }
+
+    window.sendUserTicketReply = async function(e, ticketId) {
+      e.preventDefault();
+      const input = document.getElementById("user-tkt-reply");
+      const text = input.value.trim();
+      if (!text) return;
+
+      const tkt = ticketsList.find(t => t.id === ticketId);
+      if (!tkt) return;
+      const msgs = Array.isArray(tkt.messages) ? [...tkt.messages] : Object.values(tkt.messages || {});
+      msgs.push({ sender: currentUser.ign || currentUser.email, role: "user", text, time: Date.now() });
+
+      await update(ref(db, `tickets/${ticketId}`), { messages: msgs });
+      input.value = "";
+    };
+
+    // =========================================================
+    // ADMIN PANEL FUNCTIONS (STRICTLY shardulraskar4@gmail.com)
+    // =========================================================
+    window.switchAdminTab = function(tab) {
+      ["store", "promos", "orders", "tickets", "blogs"].forEach(t => {
+        document.getElementById(`admin-section-${t}`).classList.toggle("hidden", t !== tab);
+        const btn = document.getElementById(`adm-tab-${t}`);
+        btn.className = t === tab
+          ? "px-4 py-2 rounded-xl text-xs font-semibold bg-saffron-500 text-white"
+          : "px-4 py-2 rounded-xl text-xs font-semibold bg-white/5 text-gray-300 hover:text-white";
+      });
+    };
+
+    // Admin: Add Rank
+    window.adminAddRank = async function(e) {
+      e.preventDefault();
+      const name = document.getElementById("rank-name").value.trim();
+      const price = Number(document.getElementById("rank-price").value);
+      const image = document.getElementById("rank-img").value.trim();
+      const perks = document.getElementById("rank-perks").value.split(/[\n,]+/).map(s => s.trim()).filter(Boolean);
+
+      await push(ref(db, "store/ranks"), { name, price, image, perks });
+      e.target.reset();
+      showToast(`Rank "${name}" published to Store!`);
+    };
+
+    // Admin: Add Item
+    window.adminAddItem = async function(e) {
+      e.preventDefault();
+      const name = document.getElementById("item-name").value.trim();
+      const price = Number(document.getElementById("item-price").value);
+      const image = document.getElementById("item-img").value.trim();
+      const description = document.getElementById("item-desc").value.trim();
+
+      await push(ref(db, "store/items"), { name, price, image, description });
+      e.target.reset();
+      showToast(`Item "${name}" published to Store!`);
+    };
+
+    // Admin: Delete Store Product
+    window.adminDeleteProduct = async function(type, id) {
+      await remove(ref(db, `store/${type}/${id}`));
+      showToast("Product removed from Store");
+    };
+
+    function renderAdminCatalog() {
+      const container = document.getElementById("admin-catalog-list");
+      const all = [
+        ...ranksList.map(r => ({ ...r, _type: "ranks", _label: "Rank" })),
+        ...itemsList.map(i => ({ ...i, _type: "items", _label: "Item" }))
+      ];
+
+      if (all.length === 0) {
+        container.innerHTML = `<div class="col-span-full text-sm text-gray-500">No store items added yet.</div>`;
+        return;
+      }
+
+      container.innerHTML = all.map(p => `
+        <div class="p-4 rounded-xl bg-dark-950/90 border border-white/10 flex items-center justify-between gap-3">
+          <div>
+            <span class="text-[10px] uppercase font-bold px-2 py-0.5 rounded bg-white/10 text-saffron-400">${p._label}</span>
+            <div class="font-semibold text-white text-sm mt-1">${p.name}</div>
+            <div class="font-mono text-xs text-gray-400">₹${p.price}</div>
+          </div>
+          <button onclick="adminDeleteProduct('${p._type}', '${p.id}')" class="px-3 py-1.5 rounded-lg bg-red-500/20 text-red-400 hover:bg-red-500 hover:text-white text-xs font-semibold transition">
+            Delete
+          </button>
+        </div>
+      `).join("");
+    }
+
+    // Admin: Add Conditional Promo Code
+    window.adminAddPromo = async function(e) {
+      e.preventDefault();
+      const code = document.getElementById("promo-code").value.trim().toUpperCase();
+      const type = document.getElementById("promo-type").value;
+      const value = Number(document.getElementById("promo-value").value);
+      const minAmount = Number(document.getElementById("promo-min").value || 0);
+      const label = document.getElementById("promo-label").value.trim();
+      const showOnHome = document.getElementById("promo-show-home").checked;
+
+      await push(ref(db, "promos"), { code, type, value, minAmount, label, showOnHome });
+      e.target.reset();
+      showToast(`Promo Code ${code} created!`);
+    };
+
+    window.adminDeletePromo = async function(id) {
+      await remove(ref(db, `promos/${id}`));
+      showToast("Promo deleted");
+    };
+
+    function renderAdminPromos() {
+      const container = document.getElementById("admin-promos-list");
+      if (promosList.length === 0) {
+        container.innerHTML = `<p class="text-sm text-gray-500">No active promo codes.</p>`;
+        return;
+      }
+      container.innerHTML = promosList.map(p => `
+        <div class="p-4 rounded-xl bg-dark-950/90 border border-white/10 flex items-center justify-between gap-4">
+          <div>
+            <span class="font-mono font-bold text-saffron-400 text-sm">${p.code}</span>
+            <span class="text-xs text-gray-300 ml-2">
+              (${p.type === 'flat' ? '₹' + p.value : p.value + '%'} OFF on min ₹${p.minAmount || 0})
+            </span>
+            ${p.showOnHome ? `<span class="ml-2 text-[10px] px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-400">Shown on Home</span>` : ""}
+          </div>
+          <button onclick="adminDeletePromo('${p.id}')" class="px-3 py-1.5 rounded-lg bg-red-500/20 text-red-400 text-xs font-semibold">
+            Delete
+          </button>
+        </div>
+      `).join("");
+    }
+
+    // Admin: Manage Orders (Non-Overlapping Layout)
+    function renderAdminOrders() {
+      const container = document.getElementById("admin-orders-list");
+      if (ordersList.length === 0) {
+        container.innerHTML = `<div class="glass-card rounded-2xl p-8 text-center text-gray-400 text-sm">No orders received yet.</div>`;
+        return;
+      }
+
+      container.innerHTML = ordersList.map(o => `
+        <div class="glass-card rounded-2xl p-6 space-y-4">
+          <div class="grid grid-cols-1 md:grid-cols-12 gap-4 items-center">
+            <div class="md:col-span-4 space-y-1">
+              <div class="font-display font-bold text-white text-base">${o.ign || "Player"}</div>
+              <div class="text-xs text-gray-400">${o.email || ""} • ${o.mobile || ""}</div>
+            </div>
+
+            <div class="md:col-span-4 space-y-1">
+              <div class="font-semibold text-saffron-400 text-sm">${o.items || "Item"}</div>
+              <div class="text-xs font-mono text-white">Amount: ₹${o.amount || 0} | UTR: ${o.utr || "N/A"}</div>
+            </div>
+
+            <div class="md:col-span-4 flex flex-wrap items-center gap-2 justify-end">
+              <select id="adm-status-${o.id}" class="px-3 py-2 rounded-xl bg-dark-950 border border-white/10 text-xs text-white">
+                <option value="Order Received" ${o.status === "Order Received" ? "selected" : ""}>Order Received</option>
+                <option value="Order Accepted" ${o.status === "Order Accepted" ? "selected" : ""}>Order Accepted</option>
+                <option value="Order Rejected" ${o.status === "Order Rejected" ? "selected" : ""}>Order Rejected</option>
+                <option value="Order Delivered" ${o.status === "Order Delivered" ? "selected" : ""}>Order Delivered</option>
+              </select>
+
+              <button onclick="adminUpdateOrder('${o.id}')" class="px-4 py-2 rounded-xl bg-saffron-500 hover:bg-saffron-600 text-white text-xs font-semibold">
+                Update
+              </button>
+
+              <button onclick="adminDeleteOrder('${o.id}')" class="px-3 py-2 rounded-xl bg-red-500/20 text-red-400 hover:bg-red-500 hover:text-white text-xs font-semibold">
+                Delete
+              </button>
+            </div>
+          </div>
+
+          <div class="pt-3 border-t border-white/10 flex flex-col sm:flex-row sm:items-center gap-4">
+            <label class="flex items-center gap-2 text-xs text-gray-300 cursor-pointer shrink-0">
+              <input type="checkbox" id="adm-nopay-${o.id}" ${o.paymentNotReceived ? "checked" : ""} class="accent-red-500 rounded" />
+              <span>Payment not received</span>
+            </label>
+            <input
+              type="text"
+              id="adm-reason-${o.id}"
+              value="${o.rejectReason || ""}"
+              placeholder="Optional rejection reason or delivery note..."
+              class="flex-grow px-3.5 py-2 rounded-xl bg-dark-950 border border-white/10 text-xs text-white"
+            />
+          </div>
+        </div>
+      `).join("");
+    }
+
+    window.adminUpdateOrder = async function(id) {
+      const status = document.getElementById(`adm-status-${id}`).value;
+      const paymentNotReceived = document.getElementById(`adm-nopay-${id}`).checked;
+      const rejectReason = document.getElementById(`adm-reason-${id}`).value.trim();
+
+      await update(ref(db, `orders/${id}`), { status, paymentNotReceived, rejectReason });
+      showToast(`Order updated to "${status}"`);
+    };
+
+    window.adminDeleteOrder = async function(id) {
+      await remove(ref(db, `orders/${id}`));
+      showToast("Order deleted");
+    };
+
+    // Admin: Manage Tickets
+    function renderAdminTickets() {
+      const container = document.getElementById("admin-tickets-list");
+      if (ticketsList.length === 0) {
+        container.innerHTML = `<div class="glass-card rounded-2xl p-8 text-center text-gray-400 text-sm">No support tickets found.</div>`;
+        return;
+      }
+
+      container.innerHTML = ticketsList.map(t => {
+        const msgs = Array.isArray(t.messages) ? t.messages : Object.values(t.messages || {});
+        return `
+          <div class="glass-card rounded-2xl p-6 space-y-4">
+            <div class="flex items-center justify-between">
+              <div>
+                <span class="font-mono text-xs text-saffron-400 font-bold">${t.ticketCode}</span>
+                <h4 class="font-display font-bold text-white text-base">${t.subject} — <span class="text-gray-400 text-xs">${t.ign} (${t.email})</span></h4>
+              </div>
+              <button onclick="adminDeleteTicket('${t.id}')" class="px-3 py-1.5 rounded-lg bg-red-500/20 text-red-400 text-xs font-semibold">
+                Delete Ticket
+              </button>
+            </div>
+
+            <div class="space-y-2 max-h-48 overflow-y-auto bg-dark-950/60 p-4 rounded-xl">
+              ${msgs.map(m => `
+                <div class="text-xs">
+                  <strong class="${m.role === 'admin' ? 'text-saffron-400' : 'text-white'}">${m.sender}:</strong>
+                  <span class="text-gray-300 ml-1">${m.text}</span>
+                </div>
+              `).join("")}
+            </div>
+
+            <form onsubmit="adminReplyTicket(event, '${t.id}')" class="flex gap-2">
+              <input type="text" id="adm-tkt-input-${t.id}" required placeholder="Reply as Admin..." class="flex-grow px-3.5 py-2 rounded-xl bg-dark-950 border border-white/10 text-xs text-white" />
+              <button type="submit" class="px-4 py-2 rounded-xl bg-saffron-500 text-white text-xs font-semibold">
+                Send Reply
+              </button>
+            </form>
+          </div>
+        `;
+      }).join("");
+    }
+
+    window.adminReplyTicket = async function(e, id) {
+      e.preventDefault();
+      const input = document.getElementById(`adm-tkt-input-${id}`);
+      const text = input.value.trim();
+      if (!text) return;
+
+      const tkt = ticketsList.find(t => t.id === id);
+      if (!tkt) return;
+      const msgs = Array.isArray(tkt.messages) ? [...tkt.messages] : Object.values(tkt.messages || {});
+      msgs.push({ sender: "MahaCraft Admin", role: "admin", text, time: Date.now() });
+
+      await update(ref(db, `tickets/${id}`), { messages: msgs });
+      input.value = "";
+      showToast("Reply sent");
+    };
+
+    window.adminDeleteTicket = async function(id) {
+      await remove(ref(db, `tickets/${id}`));
+      showToast("Ticket deleted");
+    };
+
+    // Admin: Manage Blogs
+    window.adminAddBlog = async function(e) {
+      e.preventDefault();
+      const title = document.getElementById("blog-title").value.trim();
+      const image = document.getElementById("blog-img").value.trim();
+      const promoCode = document.getElementById("blog-promo").value.trim().toUpperCase();
+      const content = document.getElementById("blog-content").value.trim();
+
+      await push(ref(db, "blogs"), { title, image, promoCode, content, createdAt: Date.now() });
+      e.target.reset();
+      showToast("Blog post published!");
+    };
+
+    window.adminDeleteBlog = async function(id) {
+      await remove(ref(db, `blogs/${id}`));
+      showToast("Blog deleted");
+    };
+
+    function renderAdminBlogs() {
+      const container = document.getElementById("admin-blogs-list");
+      if (blogsList.length === 0) {
+        container.innerHTML = `<p class="text-sm text-gray-500">No blog posts published yet.</p>`;
+        return;
+      }
+      container.innerHTML = blogsList.map(b => `
+        <div class="p-4 rounded-xl bg-dark-950/90 border border-white/10 flex items-center justify-between gap-4">
+          <div>
+            <div class="font-semibold text-white text-sm">${b.title}</div>
+            ${b.promoCode ? `<span class="text-xs font-mono text-saffron-400">Promo: ${b.promoCode}</span>` : ""}
+          </div>
+          <button onclick="adminDeleteBlog('${b.id}')" class="px-3 py-1.5 rounded-lg bg-red-500/20 text-red-400 text-xs font-semibold">
+            Delete
+          </button>
+        </div>
+      `).join("");
+    }
+
+    lucide.createIcons();
+  </script>
+</body>
+</html>
